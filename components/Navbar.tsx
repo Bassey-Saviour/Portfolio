@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { personalData } from "@/data/personal";
 import { IconDownload } from "./Icons";
 
 export default function Navbar() {

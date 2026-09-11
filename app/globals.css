@@ -327,41 +327,6 @@
   background: #E8963C;
 }
 
-/* Trace Line Animations */
-@keyframes drawTrace {
-  0% {
-    stroke-dashoffset: 2000;
-  }
-
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes pulseNode {
-
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-
-  50% {
-    transform: scale(1.35);
-    opacity: 1;
-  }
-}
-
-.animate-draw-trace {
-  stroke-dasharray: 2000;
-  stroke-dashoffset: 2000;
-  animation: drawTrace 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animate-pulse-node {
-  animation: pulseNode 3s ease-in-out infinite;
-}
-
 /* Hide scrollbar while maintaining scroll functionality */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -389,10 +354,6 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-
-  .animate-draw-trace {
-    stroke-dashoffset: 0 !important;
   }
 
   .reveal-section,

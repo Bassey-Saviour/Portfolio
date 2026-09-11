@@ -452,65 +452,24 @@ export default function Work() {
                   </div>
 
                   {/* Flexible Action Links: Custom Primary & Secondary links */}
-                  <div className="mt-6 flex items-center justify-between gap-4 border-t border-[#F2E9DC]/[0.08] pt-4">
-                    {item.links ? (
-                      <>
-                        <ActionLink
-                          link={item.links.primary}
-                          item={item}
-                          isPrimary={true}
-                          onOpenToast={(msg) => setToast(msg)}
-                          onOpenShowcase={(it) => openShowcase(it)}
-                        />
-                        <ActionLink
-                          link={item.links.secondary}
-                          item={item}
-                          isPrimary={false}
-                          onOpenToast={(msg) => setToast(msg)}
-                          onOpenShowcase={(it) => openShowcase(it)}
-                        />
-                      </>
-                    ) : (
-                      <>
-                        {/* Fallback code link */}
-                        <a
-                          href={item.github || "https://github.com/Bassey-Saviour"}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="group/link inline-flex items-center gap-1.5 text-xs font-mono text-[#B8A996] hover:text-[#E8963C] transition-colors duration-200"
-                        >
-                          <IconGithub className="w-3.5 h-3.5 transition-transform duration-200 group-hover/link:scale-110" />
-                          <span>Code</span>
-                        </a>
-
-                        {/* Fallback live demo link */}
-                        {isPending ? (
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setToast(item.pendingToast || `${item.title}: Redeploying soon`)
-                            }
-                            className="group/link inline-flex items-center gap-1.5 text-xs font-mono text-[#B8A996]/75 hover:text-[#F3B866] transition-colors duration-200 cursor-pointer"
-                          >
-                            <span>Live demo</span>
-                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.05] text-[#B8A996]/60">
-                              Soon
-                            </span>
-                          </button>
-                        ) : (
-                          <a
-                            href={item.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group/link inline-flex items-center gap-1.5 text-xs font-mono text-[#F2E9DC] hover:text-[#E8963C] transition-colors duration-200"
-                          >
-                            <span>Live demo</span>
-                            <IconArrowUpRight className="h-3.5 w-3.5 text-[#E8963C] transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
-                          </a>
-                        )}
-                      </>
-                    )}
-                  </div>
+                  {item.links && (
+                    <div className="mt-6 flex items-center justify-between gap-4 border-t border-[#F2E9DC]/[0.08] pt-4">
+                      <ActionLink
+                        link={item.links.primary}
+                        item={item}
+                        isPrimary={true}
+                        onOpenToast={(msg) => setToast(msg)}
+                        onOpenShowcase={(it) => openShowcase(it)}
+                      />
+                      <ActionLink
+                        link={item.links.secondary}
+                        item={item}
+                        isPrimary={false}
+                        onOpenToast={(msg) => setToast(msg)}
+                        onOpenShowcase={(it) => openShowcase(it)}
+                      />
+                    </div>
+                  )}
                 </div>
               </article>
             );
