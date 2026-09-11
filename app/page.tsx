@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
 import SectionTracker from "@/components/SectionTracker";
+import ScrollReveal from "@/components/ScrollReveal";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Skills from "@/components/Skills";
@@ -37,6 +38,9 @@ export default function Home() {
 
       {/* Top Fixed Navigation */}
       <Navbar />
+
+      {/* Global Scroll Reveal Observer */}
+      <ScrollReveal />
 
       {/* Subtle Floating Section Tracker (Bottom Right) */}
       <SectionTracker />

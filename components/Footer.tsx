@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { personalData } from "@/data/personal";
 
 const footerLinks = [
@@ -10,8 +10,11 @@ const footerLinks = [
   { label: "Top", href: "#hero" },
 ];
 
+const WATERMARK_LETTERS = ["S", "A", "V", "I", "O", "U", "R"];
+
 export default function Footer() {
   const [lagosTime, setLagosTime] = useState("");
+  const watermarkRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const updateTime = () =>
@@ -28,17 +31,76 @@ export default function Footer() {
     return () => window.clearInterval(interval);
   }, []);
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!watermarkRef.current) return;
+    const rect = watermarkRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    watermarkRef.current.style.setProperty("--wm-x", `${x}px`);
+    watermarkRef.current.style.setProperty("--wm-y", `${y}px`);
+    watermarkRef.current.style.setProperty("--wm-opacity", "1");
+  };
+
+  const handleMouseLeave = () => {
+    if (!watermarkRef.current) return;
+    watermarkRef.current.style.setProperty("--wm-opacity", "0");
+  };
+
   return (
-    <footer className="reveal-section relative overflow-hidden pb-8 pt-4">
-      {/* Subtle giant watermark typography with ambient depth */}
+    <footer className="relative overflow-hidden pb-8 pt-8 md:pt-12">
+      {/* Interactive Cinematic Watermark Stage */}
       <div
-        aria-hidden="true"
-        className="pointer-events-none flex justify-center select-none whitespace-nowrap text-center font-display text-[20vw] font-bold leading-[0.78] tracking-[-0.055em] text-[#F2E9DC]/[0.035] sm:text-[16vw] transition-opacity duration-1000"
+        ref={watermarkRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        className="group/wm relative flex flex-col items-center justify-center select-none py-4 overflow-visible"
+        style={
+          {
+            "--wm-x": "50%",
+            "--wm-y": "50%",
+            "--wm-opacity": "0",
+          } as React.CSSProperties
+        }
       >
-        SAVIOUR
+        {/* The Giant Watermark Typography Layers */}
+        <div className="relative font-display text-[20vw] sm:text-[17vw] font-black leading-[0.76] tracking-[-0.055em] text-center whitespace-nowrap">
+          {/* Layer 1: Hollow architectural base stroke with tactile letter-by-letter spring physics */}
+          <div className="watermark-text-base relative z-10 flex justify-center">
+            {WATERMARK_LETTERS.map((letter, i) => (
+              <span key={i} className="watermark-letter">
+                {letter}
+              </span>
+            ))}
+          </div>
+
+          {/* Layer 2: Continuous slow cinematic glint sheen traveling across letters */}
+          <div
+            aria-hidden="true"
+            className="watermark-glint pointer-events-none absolute inset-0 z-20 flex justify-center select-none"
+          >
+            {WATERMARK_LETTERS.join("")}
+          </div>
+
+          {/* Layer 3: Interactive cursor torch (molten amber glow following mouse inside the typography) */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-30 flex justify-center select-none transition-opacity duration-300 ease-out"
+            style={{
+              opacity: "var(--wm-opacity, 0)",
+              background:
+                "radial-gradient(420px circle at var(--wm-x, 50%) var(--wm-y, 50%), rgba(232, 150, 60, 0.42) 0%, rgba(242, 233, 220, 0.16) 35%, transparent 70%)",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              color: "transparent",
+              WebkitTextStroke: "1px rgba(232, 150, 60, 0.55)",
+            }}
+          >
+            {WATERMARK_LETTERS.join("")}
+          </div>
+        </div>
       </div>
 
-      <div className="relative z-10 mt-8 flex flex-col gap-8 border-t border-[#F2E9DC]/10 pt-6 sm:mt-12 sm:flex-row sm:items-end sm:justify-between">
+      <div className="reveal-on-scroll relative z-10 mt-6 flex flex-col gap-8 border-t border-[#F2E9DC]/10 pt-6 sm:mt-10 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <a
             href="#hero"

@@ -16,10 +16,10 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="reveal-section py-24 md:py-32 border-t section-rule">
+    <section id="contact" className="py-24 md:py-32 border-t section-rule">
       <div
         onMouseMove={handleMouseMove}
-        className="spotlight-card relative overflow-hidden rounded-[2rem] border border-[#F2E9DC]/10 bg-[#17141d]/65 px-6 py-8 shadow-[0_30px_100px_rgba(0,0,0,.24)] backdrop-blur-2xl sm:px-10 sm:py-12 lg:px-14 lg:py-16"
+        className="reveal-on-scroll spotlight-card relative overflow-hidden rounded-[2rem] border border-[#F2E9DC]/10 bg-[#17141d]/65 px-6 py-8 shadow-[0_30px_100px_rgba(0,0,0,.24)] backdrop-blur-2xl sm:px-10 sm:py-12 lg:px-14 lg:py-16"
       >
         <div aria-hidden="true" className="aura-pulse absolute -left-32 top-8 h-72 w-72 rounded-full bg-[#4F7CAC]/15 blur-3xl pointer-events-none" />
         <div aria-hidden="true" className="aura-pulse absolute -right-24 -bottom-28 h-80 w-80 rounded-full bg-[#E8963C]/15 blur-3xl pointer-events-none" />

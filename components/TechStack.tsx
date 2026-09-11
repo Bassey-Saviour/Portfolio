@@ -115,8 +115,8 @@ function BrandMark({ type, color }: { type: string; color: string }) {
 
 export default function TechStack() {
   return (
-    <section id="tools" className="reveal-section py-20 md:py-24 border-t section-rule">
-      <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+    <section id="tools" className="py-20 md:py-24 border-t section-rule">
+      <div className="reveal-on-scroll flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
         <div>
           <span className="section-kicker">03 / Daily drivers</span>
           <h2 className="mt-3 font-display text-4xl font-bold tracking-tight text-[#F2E9DC] sm:text-5xl">
@@ -127,7 +127,7 @@ export default function TechStack() {
           A compact stack for building, designing, and keeping the lights on.
         </p>
       </div>
-      <div className="mt-10 grid grid-cols-3 gap-2 sm:grid-cols-5 lg:grid-cols-9">
+      <div className="reveal-on-scroll reveal-delay-200 mt-10 grid grid-cols-3 gap-2 sm:grid-cols-5 lg:grid-cols-9">
         {tools.map((tool) => (
           <div
             key={tool.name}

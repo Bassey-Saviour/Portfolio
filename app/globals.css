@@ -205,18 +205,28 @@
     color: #F2E9DC;
   }
 
-  /* Scroll-driven section entrance */
-  .reveal-section {
-    animation: reveal-section linear both;
-    animation-timeline: view();
-    animation-range: entry 8% cover 28%;
+  /* Smooth, luxurious delayed reveal animation on scroll */
+  .reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(36px) scale(0.985);
+    transition: opacity 1000ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
   }
 
-  @supports not (animation-timeline: view()) {
-    .reveal-section {
-      opacity: 1;
-    }
+  .reveal-on-scroll.is-revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
+
+  .reveal-delay-100 { transition-delay: 100ms; }
+  .reveal-delay-150 { transition-delay: 150ms; }
+  .reveal-delay-200 { transition-delay: 200ms; }
+  .reveal-delay-250 { transition-delay: 250ms; }
+  .reveal-delay-300 { transition-delay: 300ms; }
+  .reveal-delay-350 { transition-delay: 350ms; }
+  .reveal-delay-400 { transition-delay: 400ms; }
+  .reveal-delay-500 { transition-delay: 500ms; }
 
   .float-slow {
     animation: float-slow 9s ease-in-out infinite;
@@ -228,26 +238,6 @@
 
   .aura-pulse {
     animation: auraPulse 3.2s ease-in-out infinite;
-  }
-}
-
-@keyframes reveal-section {
-  0% {
-    opacity: 0;
-    transform: translateY(28px);
-    filter: blur(3px);
-  }
-
-  30% {
-    opacity: 0.5;
-    transform: translateY(14px);
-    filter: blur(1.5px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
   }
 }
 
@@ -309,6 +299,57 @@
   animation: checkmarkPop 400ms var(--ease-spring) forwards;
 }
 
+/* Watermark Glint & Kinetic Physics */
+@keyframes watermarkGlint {
+  0% {
+    background-position: -120% 0;
+  }
+
+  35% {
+    background-position: 120% 0;
+  }
+
+  100% {
+    background-position: 120% 0;
+  }
+}
+
+.watermark-text-base {
+  -webkit-text-stroke: 1.5px rgba(242, 233, 220, 0.08);
+  color: rgba(242, 233, 220, 0.015);
+  transition: all 400ms var(--ease-spring);
+}
+
+.watermark-glint {
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 42%,
+    rgba(232, 150, 60, 0.22) 50%,
+    transparent 58%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: watermarkGlint 9s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.watermark-letter {
+  display: inline-block;
+  transition: transform 350ms var(--ease-spring), -webkit-text-stroke 300ms ease, color 300ms ease, filter 350ms ease;
+  cursor: default;
+}
+
+.watermark-letter:hover {
+  transform: translateY(-10px) scale(1.04);
+  -webkit-text-stroke: 1.5px rgba(232, 150, 60, 0.75);
+  color: rgba(232, 150, 60, 0.18);
+  filter: drop-shadow(0 0 24px rgba(232, 150, 60, 0.5));
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 7px;
@@ -356,15 +397,21 @@
     scroll-behavior: auto !important;
   }
 
-  .reveal-section,
+  .reveal-on-scroll,
   .float-slow,
   .tracker-enter,
   .aura-pulse,
-  .btn-shimmer::after {
+  .btn-shimmer::after,
+  .watermark-glint {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
     transition: none !important;
+  }
+
+  .watermark-letter:hover {
+    transform: none !important;
+    filter: none !important;
   }
 }

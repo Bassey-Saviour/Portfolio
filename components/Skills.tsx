@@ -40,8 +40,8 @@ export default function Skills() {
   const { handleMouseMove } = useCardSpotlight();
 
   return (
-    <section id="skills" className="reveal-section py-20 md:py-24">
-      <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+    <section id="skills" className="py-20 md:py-24">
+      <div className="reveal-on-scroll flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
         <div>
           <span className="section-kicker">02 / What I bring</span>
           <h2 className="mt-3 font-display text-4xl font-bold tracking-tight text-[#F2E9DC] sm:text-5xl">
@@ -58,7 +58,8 @@ export default function Skills() {
           <article
             key={item.title}
             onMouseMove={handleMouseMove}
-            className="group relative min-h-64 overflow-hidden rounded-2xl border border-[#F2E9DC]/[0.08] bg-[#17141d]/45 p-5 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:border-[#F2E9DC]/25 hover:bg-[#211d28]/70 hover:shadow-[0_16px_40px_rgba(0,0,0,0.25)]"
+            style={{ transitionDelay: `${index * 130}ms` }}
+            className="reveal-on-scroll group relative min-h-64 overflow-hidden rounded-2xl border border-[#F2E9DC]/[0.08] bg-[#17141d]/45 p-5 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:border-[#F2E9DC]/25 hover:bg-[#211d28]/70 hover:shadow-[0_16px_40px_rgba(0,0,0,0.25)]"
           >
             {/* Watermark Number with 3D Depth Shift */}
             <span

@@ -386,10 +386,10 @@ export default function Work() {
   };
 
   return (
-    <section id="work" className="reveal-section py-24 md:py-32 border-t section-rule">
+    <section id="work" className="py-24 md:py-32 border-t section-rule">
       <div className="w-full">
         {/* Clean, quiet section header */}
-        <div className="mb-12 md:mb-14">
+        <div className="reveal-on-scroll mb-12 md:mb-14">
           <span className="section-kicker">Projects</span>
           <h2 className="text-4xl sm:text-5xl font-display font-bold text-[#F2E9DC] tracking-tight mt-3">
             Work worth<br /><span className="text-[#E8963C]">opening up.</span>
@@ -408,7 +408,8 @@ export default function Work() {
               <article
                 key={item.id}
                 onMouseMove={handleMouseMove}
-                className="spotlight-card group flex flex-col overflow-hidden rounded-[1.4rem] border border-[#F2E9DC]/[0.09] bg-[#17141d]/55 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-2 hover:border-[#E8963C]/40 hover:shadow-[0_28px_70px_rgba(0,0,0,0.3)]"
+                style={{ transitionDelay: `${(index % 2) * 180}ms` }}
+                className="reveal-on-scroll spotlight-card group flex flex-col overflow-hidden rounded-[1.4rem] border border-[#F2E9DC]/[0.09] bg-[#17141d]/55 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-2 hover:border-[#E8963C]/40 hover:shadow-[0_28px_70px_rgba(0,0,0,0.3)]"
               >
                 {/* Project Screenshot Container */}
                 <ProjectCardMedia

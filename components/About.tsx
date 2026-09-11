@@ -14,9 +14,9 @@ export default function About() {
   const { handleMouseMove } = useCardSpotlight();
 
   return (
-    <section id="about" className="reveal-section py-24 md:py-32 border-t section-rule">
+    <section id="about" className="py-24 md:py-32 border-t section-rule">
       <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
-        <div className="flex flex-col justify-between gap-8">
+        <div className="reveal-on-scroll flex flex-col justify-between gap-8">
           <div>
             <span className="section-kicker">01 / Profile</span>
             <h2 className="mt-3 font-display text-4xl font-bold tracking-tight text-[#F2E9DC] sm:text-5xl">
@@ -48,16 +48,16 @@ export default function About() {
         </div>
 
         <div>
-          <p className="font-display text-[clamp(1.9rem,4vw,3.6rem)] font-bold leading-[1.08] tracking-[-0.045em] text-[#F2E9DC]">
+          <p className="reveal-on-scroll font-display text-[clamp(1.9rem,4vw,3.6rem)] font-bold leading-[1.08] tracking-[-0.045em] text-[#F2E9DC]">
             Bassey Saviour is a First-Class CS graduate with real{" "}
             <span className="text-[#E8963C]">infrastructure experience</span> and a habit of
             turning technical work into something people can actually use.
           </p>
-          <p className="mt-7 max-w-3xl text-sm leading-7 text-[#B8A996] sm:text-base">
+          <p className="reveal-on-scroll reveal-delay-100 mt-7 max-w-3xl text-sm leading-7 text-[#B8A996] sm:text-base">
             I work where infrastructure, product thinking, and visual clarity meet — from configuring enterprise networks at TotalEnergies, to shaping BayesVest&apos;s investment model, to leading design across GDG Babcock&apos;s flagship initiatives. The through-line is simple: make the complex legible and the important durable.
           </p>
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+          <div className="reveal-on-scroll reveal-delay-200 mt-10 grid gap-4 sm:grid-cols-2">
             <article
               onMouseMove={handleMouseMove}
               className="glass-panel glass-panel-hover spotlight-card rounded-2xl p-5 sm:p-6 cursor-default"
@@ -119,7 +119,7 @@ export default function About() {
             </article>
           </div>
 
-          <div className="mt-7">
+          <div className="reveal-on-scroll reveal-delay-300 mt-7">
             <a
               href="#contact"
               className="btn-shimmer btn-tactile group inline-flex items-center gap-2 rounded-full bg-[#E8963C] px-5 py-3 text-xs font-display font-semibold text-[#1C1712] shadow-[0_2px_12px_rgba(232,150,60,0.25)] hover:shadow-[0_4px_24px_rgba(232,150,60,0.45)]"

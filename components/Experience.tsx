@@ -7,10 +7,57 @@ import { IconArrowUpRight } from "./Icons";
 export default function Experience() {
   const [openId, setOpenId] = useState<string | null>(experienceData[0]?.id ?? null);
 
+  const handleToggle = (id: string) => {
+    if (openId === id) {
+      setOpenId(null);
+      return;
+    }
+
+    const currentIndex = experienceData.findIndex((it) => it.id === openId);
+    const targetIndex = experienceData.findIndex((it) => it.id === id);
+
+    // If an open card is strictly ABOVE the clicked card, its collapse will shift the clicked card up in document flow.
+    // We compute the exact space it will vacate so we don't double-count the upward displacement.
+    let heightAboveToCollapse = 0;
+    if (currentIndex !== -1 && currentIndex < targetIndex && openId) {
+      const closingGrid = document.getElementById(`exp-grid-${openId}`);
+      const closingGridHeight = closingGrid ? closingGrid.offsetHeight : 0;
+
+      const teaserInner = document.getElementById(`exp-teaser-inner-${openId}`);
+      const fullTeaserHeight = teaserInner ? teaserInner.scrollHeight + 12 : 36;
+      const teaserContainer = document.getElementById(`exp-teaser-${openId}`);
+      const currentTeaserHeight = teaserContainer ? teaserContainer.offsetHeight : 0;
+      const teaserGrowth = Math.max(0, fullTeaserHeight - currentTeaserHeight);
+
+      heightAboveToCollapse = Math.max(0, closingGridHeight - teaserGrowth);
+    }
+
+    const targetCard = document.getElementById(`exp-${id}`);
+    if (targetCard) {
+      const currentScrollY = window.scrollY;
+      const currentCardDocY = currentScrollY + targetCard.getBoundingClientRect().top;
+      const finalCardDocY = currentCardDocY - heightAboveToCollapse;
+
+      // Target position: ~130px from top of viewport (~65px breathing room beneath the ~65px fixed navbar)
+      const desiredTop = 130;
+      const targetScrollY = Math.max(0, finalCardDocY - desiredTop);
+
+      // Only scroll if card isn't already comfortably close to the desired position
+      if (Math.abs(currentScrollY - targetScrollY) > 15) {
+        window.scrollTo({
+          top: targetScrollY,
+          behavior: "smooth",
+        });
+      }
+    }
+
+    setOpenId(id);
+  };
+
   return (
-    <section id="experience" className="reveal-section py-24 md:py-32 border-t section-rule">
+    <section id="experience" className="py-24 md:py-32 border-t section-rule">
       <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
-        <div>
+        <div className="reveal-on-scroll">
           <span className="section-kicker">04 / Work Experience</span>
           <h2 className="mt-3 font-display text-4xl font-bold tracking-tight text-[#F2E9DC] sm:text-5xl">
             Experience,<br /><span className="text-[#4F7CAC]">distilled.</span>
@@ -20,21 +67,22 @@ export default function Experience() {
           </p>
         </div>
 
-        <div className="space-y-3">
+        <div className="reveal-on-scroll reveal-delay-200 space-y-3">
           {experienceData.map((item, index) => {
             const isOpen = openId === item.id;
             const shortSummary = item.summary.split(". ")[0] + ".";
             return (
               <article
                 key={item.id}
-                className={`overflow-hidden rounded-2xl border transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen
+                id={`exp-${item.id}`}
+                className={`scroll-mt-28 overflow-hidden rounded-2xl border transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen
                   ? "border-[#F2E9DC]/18 bg-[#211d28]/75 shadow-[0_20px_50px_rgba(0,0,0,.22)]"
                   : "border-[#F2E9DC]/[0.07] bg-[#17141d]/35 hover:border-[#F2E9DC]/16 hover:bg-[#211d28]/45"
                   }`}
               >
                 <button
                   type="button"
-                  onClick={() => setOpenId(isOpen ? null : item.id)}
+                  onClick={() => handleToggle(item.id)}
                   aria-expanded={isOpen}
                   className="group flex w-full items-start gap-4 p-5 text-left sm:p-6 cursor-pointer focus:outline-none"
                 >
@@ -53,11 +101,21 @@ export default function Experience() {
                     <span className="mt-1 block text-sm text-[#F3B866]">
                       {item.title}
                     </span>
-                    {!isOpen && (
-                      <span className="mt-3 block max-w-xl text-xs leading-relaxed text-[#B8A996] transition-opacity duration-300">
+                    <div
+                      id={`exp-teaser-${item.id}`}
+                      className={`grid transition-[grid-template-rows,opacity] duration-300 ${
+                        isOpen
+                          ? "grid-rows-[0fr] opacity-0 pointer-events-none"
+                          : "grid-rows-[1fr] opacity-100 mt-3"
+                      }`}
+                    >
+                      <span
+                        id={`exp-teaser-inner-${item.id}`}
+                        className="overflow-hidden block max-w-xl text-xs leading-relaxed text-[#B8A996]"
+                      >
                         {shortSummary}
                       </span>
-                    )}
+                    </div>
                   </span>
                   <span
                     className={`mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#F2E9DC]/10 text-lg text-[#B8A996] transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isOpen
@@ -71,10 +129,11 @@ export default function Experience() {
 
                 {/* 60fps Zero-Jump Animated Accordion */}
                 <div
+                  id={`exp-grid-${item.id}`}
                   className="accordion-grid"
                   data-open={isOpen ? "true" : "false"}
                 >
-                  <div className="accordion-inner">
+                  <div id={`exp-inner-${item.id}`} className="accordion-inner">
                     <div className="border-t border-[#F2E9DC]/[0.08] px-5 pb-6 pt-5 sm:px-6">
                       <p className="max-w-2xl text-sm leading-relaxed text-[#B8A996]">
                         {item.summary}
