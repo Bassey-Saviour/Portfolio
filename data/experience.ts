@@ -33,25 +33,10 @@ export const experienceData: ExperienceItem[] = [
     tags: ["Cisco CLI", "PuTTY", "Switch & Router Config", "LAN/WAN Diagnostics", "Data Room Operations", "Server Deployment"],
   },
   {
-    id: "eventnav",
-    company: "EventNav",
-    title: "Co-Founder & COO",
-    dateRange: "2024–2025",
-    status: "Development Paused",
-    summary:
-      "Co-founded EventNav, owning day-to-day operations and driving product decisions — UI/UX direction, feature prioritization, roadmap calls — while balancing this against the founding team's bandwidth across other ventures. Development is currently paused, but the role sharpened how to structure ambiguous, resource-constrained work and translate ideas into decisions a small team can actually execute on.",
-    highlights: [
-      "Defined product architecture and core feature scope for MVP, balancing technical feasibility against launch timelines.",
-      "Spearheaded user research and produced Figma interface designs for discovery, ticketing, and interactive venue navigation.",
-      "Managed team operational workflows, maintaining documentation clarity and feature backlog prioritization.",
-    ],
-    tags: ["Product Strategy", "UI/UX Design", "Figma", "Feature Prioritization", "Operations Management"],
-  },
-  {
     id: "gdg-babcock",
     company: "GDG Babcock",
     title: "Lead Product Designer",
-    dateRange: "2024–Present",
+    dateRange: "2025–2026",
     summary:
       "Google Developer Group's Babcock University chapter — a university-wide community open beyond the computing faculty. Led and contributed to design across the chapter's flagship initiatives — Orbit, the BIV Innovation Summit, and Babcock 100 (see Work section) — alongside day-to-day event and community materials.",
     highlights: [
@@ -80,5 +65,34 @@ export const experienceData: ExperienceItem[] = [
       },
     ],
     tags: ["Product Design", "Event Branding", "Web Design", "Design Systems", "Community Leadership"],
+  },
+  {
+    id: "eventnav",
+    company: "EventNav",
+    title: "Co-Founder & COO",
+    dateRange: "2025-present",
+    status: "Development Paused",
+    summary:
+      "Co-founded EventNav, owning day-to-day operations and driving product decisions — UI/UX direction, feature prioritization, roadmap calls — while balancing this against the founding team's bandwidth across other ventures. Development is currently paused, but the role sharpened how to structure ambiguous, resource-constrained work and translate ideas into decisions a small team can actually execute on.",
+    highlights: [
+      "Defined product architecture and core feature scope for MVP, balancing technical feasibility against launch timelines.",
+      "Spearheaded user research and produced Figma interface designs for discovery, ticketing, and interactive venue navigation.",
+      "Managed team operational workflows, maintaining documentation clarity and feature backlog prioritization.",
+    ],
+    tags: ["Product Strategy", "UI/UX Design", "Figma", "Feature Prioritization", "Operations Management"],
+  },
+  {
+    id: "imprint",
+    company: "Imprint Global",
+    title: "Graphics Designer",
+    dateRange: "2026",
+    summary:
+      "Graphic designer for the ministry, including program flyers, youtube tumbnails, birthday flyers and institution branding",
+    highlights: [
+      "Created and edited high-quality graphics for programs and events",
+      "Produced professional youtube thumbnails, promotional flyers, and presentation slides.",
+      "Designed and maintained the ministry's visual identity across digital and print platforms.",
+    ],
+    tags: ["Figma", "Canva", "Graphics Design", "Youtube Thumbnails", "Promotional Flyers", "Design Systems"],
   },
 ];

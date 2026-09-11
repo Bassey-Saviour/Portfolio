@@ -1,4 +1,29 @@
 import React from "react";
+import {
+  SiReact,
+  SiNextdotjs,
+  SiTailwindcss,
+  SiPython,
+  SiGit,
+  SiMysql,
+  SiFigma,
+  SiCisco,
+} from "react-icons/si";
+
+// Authentic Canva vector icon (excluded from react-icons due to Canva trademark policy)
+function CanvaIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      style={style}
+      aria-hidden="true"
+    >
+      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm3.834 16.71c-1.42 1.34-3.414 1.76-5.26 1.11-2.48-.87-3.9-3.32-3.48-5.96.4-2.52 2.5-4.43 5.04-4.59 1.63-.1 3.2.49 4.31 1.64.44.46.39 1.2-.1 1.62-.48.4-1.2.35-1.63-.12-.76-.8-1.84-1.2-2.94-1.1-1.74.15-3.17 1.47-3.44 3.2-.34 2.1 1.1 3.96 3.1 4.26 1.42.21 2.85-.29 3.82-1.33.48-.51 1.29-.53 1.79-.05.51.48.53 1.28.05 1.79l-.26.23z" />
+    </svg>
+  );
+}
 
 const tools = [
   { name: "React", color: "#61DAFB", bg: "rgba(97,218,251,.12)", type: "react" },
@@ -13,15 +38,79 @@ const tools = [
 ];
 
 function BrandMark({ type, color }: { type: string; color: string }) {
-  if (type === "react") return <svg viewBox="-11.5 -10.2 23 20.4" fill="none" className="h-7 w-7 transition-transform duration-300 group-hover:rotate-180" style={{ color }}><circle r="2.05" fill="currentColor" /><g stroke="currentColor" strokeWidth="1"><ellipse rx="11" ry="4.2" /><ellipse rx="11" ry="4.2" transform="rotate(60)" /><ellipse rx="11" ry="4.2" transform="rotate(120)" /></g></svg>;
-  if (type === "tailwind") return <svg viewBox="0 0 24 24" className="h-7 w-7 transition-transform duration-300 group-hover:scale-110" fill="currentColor" style={{ color }}><path d="M12 5.2C8.8 5.2 6.8 6.8 6 10c1.2-1.6 2.6-2.2 4.2-1.8.91.23 1.57.89 2.29 1.62C13.67 11.02 15.03 12.4 18 12.4c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.91-.23-1.57-.89-2.29-1.62C16.34 6.58 14.98 5.2 12 5.2ZM6 12.4c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.91.23 1.57.89 2.29 1.62C7.67 18.22 9.03 19.6 12 19.6c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.91-.23-1.57-.89-2.29-1.62C10.34 13.78 8.98 12.4 6 12.4Z" /></svg>;
-  if (type === "git") return <svg viewBox="0 0 24 24" className="h-7 w-7 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" fill="currentColor" style={{ color }}><path d="M23.55 10.93 13.07.45a1.5 1.5 0 0 0-2.13 0L8.81 2.59l3.25 3.25a2.21 2.21 0 0 1 2.8 2.8l3.14 3.14a2.21 2.21 0 1 1-1.07 1.07l-2.92-2.92a2.21 2.21 0 0 1-2.48-.5l-3.28 3.28a2.21 2.21 0 1 1-1.07-1.07l3.22-3.22a2.21 2.21 0 0 1 .5-2.48L7.63 2.76 1.45 8.94a1.5 1.5 0 0 0 0 2.13l10.48 10.48a1.5 1.5 0 0 0 2.13 0l9.49-9.49a1.5 1.5 0 0 0 0-2.13Z" /></svg>;
-  if (type === "figma") return <svg viewBox="0 0 24 24" className="h-7 w-7 transition-transform duration-300 group-hover:scale-110" style={{ color }}><path fill="#F24E1E" d="M8 0h4v8H8a4 4 0 1 1 0-8Z" /><path fill="#FF7262" d="M12 0h4a4 4 0 1 1 0 8h-4Z" /><path fill="#A259FF" d="M8 8h4v8H8a4 4 0 1 1 0-8Z" /><path fill="#1ABCFE" d="M12 8h4a4 4 0 1 1 0 8h-4Z" /><path fill="#0ACF83" d="M8 16h4v4a4 4 0 1 1-4-4Z" /></svg>;
-  if (type === "next") return <span className="font-display text-2xl font-bold tracking-tighter transition-transform duration-300 group-hover:scale-110" style={{ color }}>N</span>;
-  if (type === "python") return <span className="font-display text-xl font-bold transition-transform duration-300 group-hover:scale-110" style={{ color }}>Py</span>;
-  if (type === "mysql") return <span className="font-display text-xl font-bold italic transition-transform duration-300 group-hover:scale-110" style={{ color }}>My</span>;
-  if (type === "canva") return <span className="font-display text-xl font-bold italic transition-transform duration-300 group-hover:scale-110" style={{ color }}>C</span>;
-  return <span className="font-display text-xl font-bold transition-transform duration-300 group-hover:scale-110" style={{ color }}>⌁</span>;
+  if (type === "react") {
+    return (
+      <SiReact
+        className="h-6 w-6 transition-transform duration-500 group-hover:rotate-180"
+        style={{ color }}
+      />
+    );
+  }
+  if (type === "next") {
+    return (
+      <SiNextdotjs
+        className="h-6 w-6 transition-transform duration-300 group-hover:scale-110"
+        style={{ color }}
+      />
+    );
+  }
+  if (type === "tailwind") {
+    return (
+      <SiTailwindcss
+        className="h-6 w-6 transition-transform duration-300 group-hover:scale-110"
+        style={{ color }}
+      />
+    );
+  }
+  if (type === "python") {
+    return (
+      <SiPython
+        className="h-6 w-6 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
+        style={{ color }}
+      />
+    );
+  }
+  if (type === "git") {
+    return (
+      <SiGit
+        className="h-6 w-6 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
+        style={{ color }}
+      />
+    );
+  }
+  if (type === "mysql") {
+    return (
+      <SiMysql
+        className="h-7 w-7 transition-transform duration-300 group-hover:scale-110"
+        style={{ color }}
+      />
+    );
+  }
+  if (type === "figma") {
+    return (
+      <SiFigma
+        className="h-6 w-6 transition-transform duration-300 group-hover:scale-110"
+        style={{ color }}
+      />
+    );
+  }
+  if (type === "canva") {
+    return (
+      <CanvaIcon
+        className="h-6 w-6 transition-transform duration-300 group-hover:scale-110"
+        style={{ color }}
+      />
+    );
+  }
+  if (type === "cisco") {
+    return (
+      <SiCisco
+        className="h-6 w-6 transition-transform duration-300 group-hover:scale-110"
+        style={{ color }}
+      />
+    );
+  }
+  return null;
 }
 
 export default function TechStack() {

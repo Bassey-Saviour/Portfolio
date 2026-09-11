@@ -2,18 +2,21 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { workData, WorkItem } from "@/data/work";
+import { workData, WorkItem, WorkLink } from "@/data/work";
 import { IconArrowUpRight, IconGithub } from "./Icons";
+import { SiFigma, SiInstagram } from "react-icons/si";
 import { useCardSpotlight } from "@/hooks/useCardSpotlight";
 
 function ProjectCardMedia({
   item,
   index,
   isPending,
+  onOpenShowcase,
 }: {
   item: WorkItem;
   index: number;
   isPending: boolean;
+  onOpenShowcase?: () => void;
 }) {
   const images = item.images && item.images.length > 0 ? item.images : [item.image];
   const hasMultipleImages = images.length > 1;
@@ -46,7 +49,13 @@ function ProjectCardMedia({
 
   return (
     <div
-      className="relative aspect-[16/10] w-full overflow-hidden bg-[#2A231C] group/media select-none"
+      onClick={() => {
+        if (item.showcaseItems && onOpenShowcase) {
+          onOpenShowcase();
+        }
+      }}
+      className={`relative aspect-[16/10] w-full overflow-hidden bg-[#2A231C] group/media select-none ${item.showcaseItems ? "cursor-pointer" : ""
+        }`}
     >
       {/* Media: Single Image vs Scrollable Multi-Image */}
       {!hasMultipleImages ? (
@@ -109,12 +118,16 @@ function ProjectCardMedia({
           <span className="text-[#F2E9DC]/40 mx-1">/</span>
           <span className="text-[#F2E9DC]/60">{images.length}</span>
         </span>
+      ) : item.showcaseItems ? (
+        <span className="absolute top-3 right-3 rounded-full bg-[#E8963C]/20 border border-[#E8963C]/40 backdrop-blur-xl px-2.5 py-1 text-[10.5px] font-mono text-[#F3B866] shadow-[0_2px_10px_rgba(0,0,0,0.25)] z-10 pointer-events-none transition-opacity duration-300">
+          Flyer Gallery ↗
+        </span>
       ) : null}
 
       {/* Carousel navigation controls (only when multiple images) */}
       {hasMultipleImages && (
         <>
-          {/* Previous image button (remains mounted at bounds to absorb accidental clicks) */}
+          {/* Previous image button */}
           <button
             type="button"
             onClick={(e) => {
@@ -144,7 +157,7 @@ function ProjectCardMedia({
             </svg>
           </button>
 
-          {/* Next image button (remains mounted at bounds to absorb accidental clicks) */}
+          {/* Next image button */}
           <button
             type="button"
             onClick={(e) => {
@@ -174,7 +187,7 @@ function ProjectCardMedia({
             </svg>
           </button>
 
-          {/* Subtle, glassy, chill pagination indicator */}
+          {/* Subtle glassy pagination indicator */}
           <div
             onClick={(e) => e.stopPropagation()}
             className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 py-1 px-2.5 rounded-full bg-black/35 backdrop-blur-xl border border-white/[0.08] shadow-[0_4px_16px_rgba(0,0,0,0.3)] opacity-70 group-hover/media:opacity-100 transition-opacity duration-300"
@@ -201,8 +214,145 @@ function ProjectCardMedia({
   );
 }
 
+function ActionLink({
+  link,
+  item,
+  isPrimary,
+  onOpenToast,
+  onOpenShowcase,
+}: {
+  link: WorkLink;
+  item: WorkItem;
+  isPrimary: boolean;
+  onOpenToast: (msg: string) => void;
+  onOpenShowcase: (item: WorkItem) => void;
+}) {
+  const isPending = link.status === "pending";
+  const hasNoUrl = !link.url || link.url === "#";
+  const isGallery = link.type === "gallery";
+
+  // Icon selector based on link type
+  const renderIcon = () => {
+    switch (link.type) {
+      case "github":
+        return (
+          <IconGithub className="w-3.5 h-3.5 transition-transform duration-200 group-hover/link:scale-110" />
+        );
+      case "figma":
+        return (
+          <SiFigma className="w-3 h-3 text-[#F24E1E] transition-transform duration-200 group-hover/link:scale-110" />
+        );
+      case "instagram":
+        return (
+          <SiInstagram className="w-3.5 h-3.5 text-[#E1306C] transition-transform duration-200 group-hover/link:scale-110" />
+        );
+      case "download":
+        return (
+          <svg
+            className="w-3.5 h-3.5 text-[#E8963C] transition-transform duration-200 group-hover/link:translate-y-0.5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+        );
+      case "gallery":
+        return (
+          <svg
+            className="w-3.5 h-3.5 text-[#E8963C] transition-transform duration-200 group-hover/link:scale-110"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <polyline points="21 15 16 10 5 21" />
+          </svg>
+        );
+      case "live":
+      default:
+        return (
+          <IconArrowUpRight className="h-3.5 w-3.5 text-[#E8963C] transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
+        );
+    }
+  };
+
+  // Gallery button handler
+  if (isGallery) {
+    return (
+      <button
+        type="button"
+        onClick={() => onOpenShowcase(item)}
+        className={`group/link inline-flex items-center gap-1.5 text-xs font-mono transition-colors duration-200 cursor-pointer ${isPrimary
+          ? "text-[#B8A996] hover:text-[#E8963C]"
+          : "text-[#F2E9DC] hover:text-[#E8963C]"
+          }`}
+      >
+        {renderIcon()}
+        <span>{link.label}</span>
+      </button>
+    );
+  }
+
+  // Placeholder / Pending link handler
+  if (hasNoUrl || isPending) {
+    return (
+      <button
+        type="button"
+        onClick={() =>
+          onOpenToast(
+            link.pendingToast ||
+            `${item.title} — ${link.label}: Available on request / archiving`
+          )
+        }
+        className={`group/link inline-flex items-center gap-1.5 text-xs font-mono transition-colors duration-200 cursor-pointer ${isPrimary
+          ? "text-[#B8A996] hover:text-[#E8963C]"
+          : "text-[#F2E9DC] hover:text-[#E8963C]"
+          }`}
+      >
+        {isPrimary && renderIcon()}
+        <span>{link.label}</span>
+        {!isPrimary && renderIcon()}
+        {isPending && (
+          <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.05] text-[#B8A996]/60">
+            Soon
+          </span>
+        )}
+      </button>
+    );
+  }
+
+  // Active external link
+  return (
+    <a
+      href={link.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`group/link inline-flex items-center gap-1.5 text-xs font-mono transition-colors duration-200 ${isPrimary
+        ? "text-[#B8A996] hover:text-[#E8963C]"
+        : "text-[#F2E9DC] hover:text-[#E8963C]"
+        }`}
+    >
+      {isPrimary && renderIcon()}
+      <span>{link.label}</span>
+      {!isPrimary && renderIcon()}
+    </a>
+  );
+}
+
 export default function Work() {
   const [toast, setToast] = useState<string | null>(null);
+  const [showcaseItem, setShowcaseItem] = useState<WorkItem | null>(null);
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const { handleMouseMove } = useCardSpotlight();
 
   useEffect(() => {
@@ -213,12 +363,26 @@ export default function Work() {
     return () => clearTimeout(timer);
   }, [toast]);
 
-  const handleItemClick = (item: WorkItem) => {
-    if (item.linkStatus === "pending") {
-      setToast(item.pendingToast || `${item.title}: Redeploying soon`);
-    } else if (item.link && item.link !== "#") {
-      window.open(item.link, "_blank", "noopener,noreferrer");
+  // Handle ESC key to close showcase modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setShowcaseItem(null);
+      }
+    };
+    if (showcaseItem) {
+      window.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
     }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "unset";
+    };
+  }, [showcaseItem]);
+
+  const openShowcase = (item: WorkItem) => {
+    setShowcaseItem(item);
+    setActiveSlideIndex(0);
   };
 
   return (
@@ -251,6 +415,7 @@ export default function Work() {
                   item={item}
                   index={index}
                   isPending={isPending}
+                  onOpenShowcase={() => openShowcase(item)}
                 />
 
                 {/* Minimal Text Block: Title, Role, One-sentence description, 2-3 tags */}
@@ -276,7 +441,7 @@ export default function Work() {
 
                   {/* 2-3 Tags Max */}
                   <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-6">
-                    {item.tags.slice(0, 3).map((tag) => (
+                    {item.tags.slice(0, 4).map((tag) => (
                       <span
                         key={tag}
                         className="soft-chip text-[11px] font-mono text-[#B8A996]/75 px-2.5 py-1"
@@ -286,39 +451,64 @@ export default function Work() {
                     ))}
                   </div>
 
-                  {/* Two dedicated action links: Code & Live Demo */}
+                  {/* Flexible Action Links: Custom Primary & Secondary links */}
                   <div className="mt-6 flex items-center justify-between gap-4 border-t border-[#F2E9DC]/[0.08] pt-4">
-                    {/* Code link */}
-                    <a
-                      href={item.github || "https://github.com/Bassey-Saviour"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group/link inline-flex items-center gap-1.5 text-xs font-mono text-[#B8A996] hover:text-[#E8963C] transition-colors duration-200"
-                    >
-                      <IconGithub className="w-3.5 h-3.5 transition-transform duration-200 group-hover/link:scale-110" />
-                      <span>Code</span>
-                    </a>
-
-                    {/* Live demo link */}
-                    {isPending ? (
-                      <button
-                        type="button"
-                        onClick={() => handleItemClick(item)}
-                        className="group/link inline-flex items-center gap-1.5 text-xs font-mono text-[#B8A996]/75 hover:text-[#F3B866] transition-colors duration-200 cursor-pointer"
-                      >
-                        <span>Live demo</span>
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.05] text-[#B8A996]/60">Soon</span>
-                      </button>
+                    {item.links ? (
+                      <>
+                        <ActionLink
+                          link={item.links.primary}
+                          item={item}
+                          isPrimary={true}
+                          onOpenToast={(msg) => setToast(msg)}
+                          onOpenShowcase={(it) => openShowcase(it)}
+                        />
+                        <ActionLink
+                          link={item.links.secondary}
+                          item={item}
+                          isPrimary={false}
+                          onOpenToast={(msg) => setToast(msg)}
+                          onOpenShowcase={(it) => openShowcase(it)}
+                        />
+                      </>
                     ) : (
-                      <a
-                        href={item.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group/link inline-flex items-center gap-1.5 text-xs font-mono text-[#F2E9DC] hover:text-[#E8963C] transition-colors duration-200"
-                      >
-                        <span>Live demo</span>
-                        <IconArrowUpRight className="h-3.5 w-3.5 text-[#E8963C] transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
-                      </a>
+                      <>
+                        {/* Fallback code link */}
+                        <a
+                          href={item.github || "https://github.com/Bassey-Saviour"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group/link inline-flex items-center gap-1.5 text-xs font-mono text-[#B8A996] hover:text-[#E8963C] transition-colors duration-200"
+                        >
+                          <IconGithub className="w-3.5 h-3.5 transition-transform duration-200 group-hover/link:scale-110" />
+                          <span>Code</span>
+                        </a>
+
+                        {/* Fallback live demo link */}
+                        {isPending ? (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setToast(item.pendingToast || `${item.title}: Redeploying soon`)
+                            }
+                            className="group/link inline-flex items-center gap-1.5 text-xs font-mono text-[#B8A996]/75 hover:text-[#F3B866] transition-colors duration-200 cursor-pointer"
+                          >
+                            <span>Live demo</span>
+                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.05] text-[#B8A996]/60">
+                              Soon
+                            </span>
+                          </button>
+                        ) : (
+                          <a
+                            href={item.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group/link inline-flex items-center gap-1.5 text-xs font-mono text-[#F2E9DC] hover:text-[#E8963C] transition-colors duration-200"
+                          >
+                            <span>Live demo</span>
+                            <IconArrowUpRight className="h-3.5 w-3.5 text-[#E8963C] transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
+                          </a>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
@@ -339,13 +529,151 @@ export default function Work() {
           <span>{toast}</span>
           <button
             onClick={() => setToast(null)}
-            className="ml-2 text-[#B8A996] hover:text-[#F2E9DC] p-0.5 transition-colors"
+            className="ml-2 text-[#B8A996] hover:text-[#F2E9DC] p-0.5 transition-colors cursor-pointer"
             aria-label="Dismiss notification"
           >
             ✕
           </button>
         </div>
       )}
+
+      {/* Full-Feature Design Showcase Modal (For Imprint Global flyers & design deliverables) */}
+      {showcaseItem && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setShowcaseItem(null)}
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-fade-in"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-3xl max-h-[92vh] flex flex-col rounded-2xl border border-[#F2E9DC]/15 bg-[#17141d] shadow-[0_25px_80px_rgba(0,0,0,0.85)] overflow-hidden"
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-[#F2E9DC]/[0.08] px-5 py-4 sm:px-6">
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#E8963C]">
+                  Design Showcase // {showcaseItem.title}
+                </span>
+                <h3 className="font-display font-semibold text-lg sm:text-xl text-[#F2E9DC] mt-0.5">
+                  {showcaseItem.showcaseItems
+                    ? showcaseItem.showcaseItems[activeSlideIndex]?.title
+                    : showcaseItem.title}
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowcaseItem(null)}
+                aria-label="Close design showcase"
+                className="h-8 w-8 rounded-full border border-white/10 bg-white/[0.05] text-[#B8A996] hover:text-white hover:bg-white/10 flex items-center justify-center text-sm transition-colors cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Body with Image Display */}
+            <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-5">
+              {/* Media viewer container */}
+              <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-[#100f14] border border-white/[0.08] flex items-center justify-center">
+                {showcaseItem.showcaseItems ? (
+                  <>
+                    <Image
+                      src={showcaseItem.showcaseItems[activeSlideIndex]?.image || showcaseItem.image}
+                      alt={showcaseItem.showcaseItems[activeSlideIndex]?.title || showcaseItem.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 768px"
+                      className="object-contain"
+                    />
+                    <span className="absolute bottom-3 right-3 rounded-full bg-black/50 backdrop-blur-md px-2.5 py-1 text-[11px] font-mono text-[#F2E9DC]/80 border border-white/10">
+                      {activeSlideIndex + 1} / {showcaseItem.showcaseItems.length}
+                    </span>
+                  </>
+                ) : (
+                  <Image
+                    src={showcaseItem.image}
+                    alt={showcaseItem.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 768px"
+                    className="object-contain"
+                  />
+                )}
+              </div>
+
+              {/* Deliverables switcher tabs */}
+              {showcaseItem.showcaseItems && showcaseItem.showcaseItems.length > 1 && (
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {showcaseItem.showcaseItems.map((slide, idx) => (
+                    <button
+                      key={slide.title}
+                      type="button"
+                      onClick={() => setActiveSlideIndex(idx)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all cursor-pointer ${idx === activeSlideIndex
+                        ? "bg-[#E8963C] text-black font-semibold shadow-[0_0_12px_rgba(232,150,60,0.3)]"
+                        : "bg-white/[0.05] text-[#B8A996] hover:bg-white/[0.09] hover:text-[#F2E9DC] border border-white/[0.05]"
+                        }`}
+                    >
+                      {slide.category}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Narrative & Contribution Breakdown */}
+              <div className="rounded-xl border border-[#F2E9DC]/[0.08] bg-white/[0.02] p-4 sm:p-5 space-y-3">
+                <p className="text-xs sm:text-sm text-[#F2E9DC]/90 leading-relaxed">
+                  {showcaseItem.showcaseItems
+                    ? showcaseItem.showcaseItems[activeSlideIndex]?.description
+                    : showcaseItem.description}
+                </p>
+
+                {/* Deliverable Tags */}
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {(showcaseItem.showcaseItems
+                    ? showcaseItem.showcaseItems[activeSlideIndex]?.tags || showcaseItem.tags
+                    : showcaseItem.tags
+                  ).map((tag) => (
+                    <span
+                      key={tag}
+                      className="soft-chip text-[10.5px] font-mono text-[#B8A996] px-2 py-0.5"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer Actions */}
+            <div className="flex items-center justify-between border-t border-[#F2E9DC]/[0.08] px-5 py-3.5 sm:px-6 bg-[#121017]">
+              {showcaseItem.links?.secondary ? (
+                <a
+                  href={showcaseItem.links.secondary.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/ext inline-flex items-center gap-2 text-xs font-mono text-[#F2E9DC] hover:text-[#E8963C] transition-colors"
+                >
+                  <SiInstagram className="w-3.5 h-3.5 text-[#E1306C]" />
+                  <span>Visit {showcaseItem.title} on Instagram</span>
+                  <IconArrowUpRight className="h-3.5 w-3.5 text-[#E8963C] transition-transform duration-200 group-hover/ext:translate-x-0.5 group-hover/ext:-translate-y-0.5" />
+                </a>
+              ) : (
+                <span className="text-xs font-mono text-[#B8A996]">
+                  Production Design Archive
+                </span>
+              )}
+
+              <button
+                type="button"
+                onClick={() => setShowcaseItem(null)}
+                className="text-xs font-mono text-[#B8A996] hover:text-white transition-colors cursor-pointer px-3 py-1.5 rounded-lg hover:bg-white/[0.05]"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
+
