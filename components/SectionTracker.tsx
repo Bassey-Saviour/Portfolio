@@ -62,13 +62,13 @@ export default function SectionTracker() {
   return (
     <aside
       aria-label="Section navigation"
-      className="tracker-enter hidden md:flex fixed bottom-8 right-6 lg:right-10 z-40 flex-col items-end pointer-events-auto select-none"
+      className="tracker-enter hidden md:flex fixed bottom-8 right-2.5 md:right-3.5 lg:right-5 z-40 flex-col items-end pointer-events-auto select-none"
     >
-      <div className="relative py-2 pr-2.5 flex flex-col items-end gap-4.5">
+      <div className="relative py-2 pr-2.5 flex flex-col items-end gap-4.5 opacity-75 hover:opacity-100 transition-opacity duration-300">
         {/* Delicate vertical spine line on the right */}
         <div
           aria-hidden="true"
-          className="absolute right-0 top-3 bottom-3 w-px bg-gradient-to-b from-transparent via-[#F2E9DC]/18 to-transparent"
+          className="absolute right-0 top-3 bottom-3 w-px bg-gradient-to-b from-transparent via-[#F2E9DC]/10 to-transparent"
         />
 
         {SECTIONS.map((section, idx) => {
@@ -80,20 +80,21 @@ export default function SectionTracker() {
               key={section.id}
               href={`#${section.id}`}
               onClick={(e) => scrollToSection(e, section.id)}
-              className="group flex items-center justify-end gap-3 cursor-pointer py-0.5 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#E8963C]/60 rounded-full transition-transform duration-300 hover:scale-[1.03]"
+              className="group flex items-center justify-end gap-3 cursor-pointer py-0.5 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#E8963C]/40 rounded-full transition-transform duration-300 hover:scale-[1.02]"
             >
               {/* Section label to the left of the spine */}
               <div className="transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]">
                 {isActive ? (
-                  <span className="inline-block px-2.5 py-1 rounded-full bg-[#211d28]/55 text-[#F2E9DC]/90 border border-[#F2E9DC]/15 backdrop-blur-xl font-display font-medium text-[11px] tracking-wide shadow-[0_4px_16px_rgba(232,150,60,0.18)]">
+                  <span className="inline-block px-2.5 py-1 rounded-full bg-[#1e1a24]/55 text-[#F2E9DC]/80 border border-[#F2E9DC]/10 backdrop-blur-xl font-display font-medium text-[11px] tracking-wide shadow-[0_2px_8px_rgba(232,150,60,0.08)]">
                     {section.label}
                   </span>
                 ) : (
                   <span
-                    className={`text-[11px] font-mono tracking-tight transition-all duration-200 ${isPassed
-                        ? "text-[#B8A996]/70 group-hover:text-[#F2E9DC]"
-                        : "text-[#B8A996]/35 group-hover:text-[#B8A996]"
-                      }`}
+                    className={`text-[11px] font-mono tracking-tight transition-all duration-200 ${
+                      isPassed
+                        ? "text-[#B8A996]/45 group-hover:text-[#F2E9DC]/80"
+                        : "text-[#B8A996]/20 group-hover:text-[#B8A996]/60"
+                    }`}
                   >
                     {section.label}
                   </span>
@@ -103,12 +104,13 @@ export default function SectionTracker() {
               {/* Soft marker on the vertical track line */}
               <div className="relative z-10 -mr-[3.5px] flex items-center justify-center">
                 <span
-                  className={`transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] block ${isActive
-                      ? "w-2.5 h-2.5 rounded-full bg-[#E8963C] shadow-[0_0_12px_rgba(232,150,60,0.7)] scale-110"
+                  className={`transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] block ${
+                    isActive
+                      ? "w-2 h-2 rounded-full bg-[#E8963C]/85 shadow-[0_0_8px_rgba(232,150,60,0.35)] scale-105"
                       : isPassed
-                        ? "w-1.5 h-1.5 rounded-full bg-[#B8A996]/50 group-hover:bg-[#E8963C]/80 group-hover:scale-125"
-                        : "w-1.5 h-1.5 rounded-full bg-[#F2E9DC]/20 group-hover:bg-[#B8A996]/60 group-hover:scale-125"
-                    }`}
+                      ? "w-1.5 h-1.5 rounded-full bg-[#B8A996]/30 group-hover:bg-[#E8963C]/60 group-hover:scale-125"
+                      : "w-1.5 h-1.5 rounded-full bg-[#F2E9DC]/12 group-hover:bg-[#B8A996]/40 group-hover:scale-125"
+                  }`}
                 />
               </div>
             </a>
