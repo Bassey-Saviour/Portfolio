@@ -8,9 +8,21 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [mounted, setMounted] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setMounted(true);
+
+    const checkModal = () => {
+      setIsModalOpen(document.body.classList.contains("modal-open"));
+    };
+
+    // Check initially
+    checkModal();
+
+    const observer = new MutationObserver(checkModal);
+    observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
@@ -31,7 +43,10 @@ export default function Navbar() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+    };
   }, []);
 
   const navLinks = [
@@ -43,8 +58,10 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-        mounted ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        mounted && !isModalOpen
+          ? "translate-y-0 opacity-100"
+          : "-translate-y-full opacity-0 pointer-events-none"
       } ${
         isScrolled
           ? "bg-[#100f14]/80 backdrop-blur-xl border-b border-[#F2E9DC]/10 py-3.5 shadow-lg shadow-black/30"

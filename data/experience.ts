@@ -85,7 +85,7 @@ export const experienceData: ExperienceItem[] = [
     id: "imprint",
     company: "Imprint Global",
     title: "Graphics Designer",
-    dateRange: "2026",
+    dateRange: "May-Jul 2026",
     summary:
       "Graphic designer for the ministry, including program flyers, youtube tumbnails, birthday flyers and institution branding",
     highlights: [
