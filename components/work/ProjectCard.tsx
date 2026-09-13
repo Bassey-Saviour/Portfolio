@@ -257,7 +257,7 @@ export default function ProjectCard({
   onOpenShowcase,
   onOpenToast,
 }: ProjectCardProps) {
-  const isPending = item.linkStatus === "pending";
+  const isPending = Boolean(item.isPending || item.links?.primary?.status === "pending");
 
   return (
     <article

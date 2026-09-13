@@ -20,15 +20,10 @@ export interface WorkItem {
   description: string;
   roleTag?: string;
   tags: string[];
-  link?: string;
-  linkStatus?: "live" | "pending";
-  pendingToast?: string;
-  github?: string;
   image: string;
-  images?: string[];
   imageAlt: string;
-  category?: "engineering" | "design";
-  links?: {
+  isPending?: boolean;
+  links: {
     primary: WorkLink;
     secondary: WorkLink;
   };
@@ -43,16 +38,12 @@ export const workData: WorkItem[] = [
       "Bayesian portfolio recommendation system that replaces static robo-advisor questionnaires with continuous, adaptive predictions.",
     roleTag: "Product & Documentation",
     tags: ["PyMC3", "scikit-learn", "Flutter"],
-    link: "https://github.com/Bassey-Saviour",
-    linkStatus: "live",
-    github: "https://github.com/Bassey-Saviour",
-    image: "/projects/bayesvest copy.jpg",
+    image: "/projects/bayesvest.webp",
     imageAlt: "BayesVest continuous Bayesian portfolio recommendation dashboard",
-    category: "engineering",
     links: {
       primary: {
         label: "Source Code",
-        url: "https://github.com/Bassey-Saviour",
+        url: "https://github.com/Bayes-vest",
         type: "github",
       },
       secondary: {
@@ -69,18 +60,13 @@ export const workData: WorkItem[] = [
       "A recognition platform run by GDG on Campus Babcock that identifies and publicly documents 100 students shaping the university each year, through a structured five-criteria nomination and review process.",
     roleTag: "Full UI/UX Design",
     tags: ["Figma", "Product Design"],
-    link: "https://babcock100.com/",
-    linkStatus: "live",
-    image: "/projects/babcock100.png",
+    image: "/projects/babcock100.webp",
     imageAlt: "Babcock 100 student recognition platform interface",
-    category: "design",
     links: {
       primary: {
         label: "Figma Design",
-        url: "#",
+        url: "https://www.figma.com/design/TK25mTiFbs2G9QxRqj78FZ/Babcock-100?node-id=0-1&t=Am7WdYnjBju3mZyk-1",
         type: "figma",
-        status: "live",
-        pendingToast: "Babcock 100 Figma Design File: Available on request",
       },
       secondary: {
         label: "Live Site",
@@ -96,23 +82,8 @@ export const workData: WorkItem[] = [
       "A 3-day industry summit by GDG on Campus Babcock built around \"Closing the Distance\" — connecting students with the tech industry through company field trips, unscripted industry conversations, and a closing career fair with recruiters.",
     roleTag: "Design Team Lead",
     tags: ["Event Branding", "Figma", "Visual Identity"],
-    link: "https://orbit.gdgbabcock.com/",
-    linkStatus: "live",
     image: "/projects/orbit/orbit-1.webp",
-    images: [
-      "/projects/orbit/orbit-1.webp",
-      "/projects/orbit/orbit-2.webp",
-      "/projects/orbit/orbit-3.webp",
-      "/projects/orbit/orbit-4.webp",
-      "/projects/orbit/orbit-5.webp",
-      "/projects/orbit/orbit-6.webp",
-      "/projects/orbit/orbit-7.webp",
-      "/projects/orbit/orbit-8.webp",
-      "/projects/orbit/orbit-9.webp",
-      "/projects/orbit/orbit-10.webp",
-    ],
     imageAlt: "Orbit tech summit branding, keynote posters, and promotional campaign",
-    category: "design",
     links: {
       primary: {
         label: "View Summit Branding",
@@ -214,25 +185,8 @@ export const workData: WorkItem[] = [
       "One of 50 core committee students coordinating Babcock's 600+ attendee innovation summit (featuring 20+ speakers and a Federal Minister). Drove technical operations — speaker deck collation, AV projection, and outfitting 6 breakout lab venues (mics, displays, logistics) — alongside designing all official accreditation passes (attendee, volunteer, VIP, and Principal Officers including the Vice-Chancellor).",
     roleTag: "Core Committee · Technical Operations & Design",
     tags: ["Tech Operations", "Accreditation Design", "AV Logistics", "Event Branding"],
-    link: "https://www.babcockinnovation.com/summit",
-    linkStatus: "live",
     image: "/projects/ai_biv/biv-1.webp",
-    images: [
-      "/projects/ai_biv/biv-1.webp",
-      "/projects/ai_biv/biv-2.webp",
-      "/projects/ai_biv/biv-3.webp",
-      "/projects/ai_biv/biv-4.webp",
-      "/projects/ai_biv/biv-5.webp",
-      "/projects/ai_biv/biv-6.webp",
-      "/projects/ai_biv/biv-7.webp",
-      "/projects/ai_biv/biv-8.webp",
-      "/projects/ai_biv/biv-9.webp",
-      "/projects/ai_biv/biv-10.webp",
-      "/projects/ai_biv/biv-11.webp",
-      "/projects/ai_biv/biv-12.webp",
-    ],
     imageAlt: "Babcock Innovation & Ventures Summit 2026 platform, accreditation passes, and keynote posters",
-    category: "design",
     links: {
       primary: {
         label: "View Passes & Keynotes",
@@ -350,20 +304,8 @@ export const workData: WorkItem[] = [
       "Graphic design for the ministry across digital and print touchpoints — producing promotional program flyers, high-CTR YouTube thumbnails, event announcement graphics, and brand merchandise mockups.",
     roleTag: "Graphics Design & Brand Collateral",
     tags: ["Figma", "Canva", "Program Flyers", "Visual Systems"],
-    link: "https://www.instagram.com/imprintchurch_/",
-    linkStatus: "live",
     image: "/projects/imprint-global/colossians-commentary.webp",
-    images: [
-      "/projects/imprint-global/colossians-commentary.webp",
-      "/projects/imprint-global/thanksgiving-service.webp",
-      "/projects/imprint-global/concerning-spirituals.webp",
-      "/projects/imprint-global/fellowship-launch-yaba.webp",
-      "/projects/imprint-global/welcome-to-july.webp",
-      "/projects/imprint-global/birthday-feature.webp",
-      "/projects/imprint-global/broadcast-giving-banner.webp",
-    ],
     imageAlt: "Imprint Global promotional event flyers and brand collateral",
-    category: "design",
     links: {
       primary: {
         label: "View Flyers",
