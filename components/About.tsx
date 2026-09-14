@@ -18,11 +18,11 @@ export default function About() {
       <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
         <div className="reveal-on-scroll flex flex-col justify-between gap-8">
           <div>
-            <span className="section-kicker">01 / Profile</span>
+            <span className="section-kicker">About Me</span>
             <h2 className="mt-3 font-display text-4xl font-bold tracking-tight text-[#F2E9DC] sm:text-5xl">
-              Built for the
+              Meet
               <br />
-              <span className="text-[#E8963C]">useful.</span>
+              <span className="text-[#E8963C]">Saviour.</span>
             </h2>
           </div>
           <div className="rounded-2xl border border-[#F2E9DC]/10 bg-[#F2E9DC]/[0.045] p-5 transition-colors duration-300 hover:border-[#F2E9DC]/20">

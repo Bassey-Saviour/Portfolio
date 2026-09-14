@@ -43,7 +43,7 @@ export default function Skills() {
     <section id="skills" className="py-20 md:py-24">
       <div className="reveal-on-scroll flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
         <div>
-          <span className="section-kicker">02 / What I bring</span>
+          <span className="section-kicker">What I bring</span>
           <h2 className="mt-3 font-display text-4xl font-bold tracking-tight text-[#F2E9DC] sm:text-5xl">
             A versatile <span className="text-[#E8963C]">build kit.</span>
           </h2>

@@ -58,7 +58,7 @@ export default function Experience() {
     <section id="experience" className="py-24 md:py-32 border-t section-rule">
       <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
         <div className="reveal-on-scroll">
-          <span className="section-kicker">04 / Work Experience</span>
+          <span className="section-kicker">Work Experience</span>
           <h2 className="mt-3 font-display text-4xl font-bold tracking-tight text-[#F2E9DC] sm:text-5xl">
             Experience,<br /><span className="text-[#4F7CAC]">distilled.</span>
           </h2>
@@ -103,11 +103,10 @@ export default function Experience() {
                     </span>
                     <div
                       id={`exp-teaser-${item.id}`}
-                      className={`grid transition-[grid-template-rows,opacity] duration-300 ${
-                        isOpen
+                      className={`grid transition-[grid-template-rows,opacity] duration-300 ${isOpen
                           ? "grid-rows-[0fr] opacity-0 pointer-events-none"
                           : "grid-rows-[1fr] opacity-100 mt-3"
-                      }`}
+                        }`}
                     >
                       <span
                         id={`exp-teaser-inner-${item.id}`}
