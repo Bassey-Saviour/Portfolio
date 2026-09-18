@@ -63,7 +63,7 @@ export default function Footer() {
         }
       >
         {/* The Giant Watermark Typography Layers */}
-        <div className="relative font-display text-[20vw] sm:text-[17vw] font-black leading-[0.76] tracking-[-0.055em] text-center whitespace-nowrap">
+        <div className="relative font-display text-[3.8rem] sm:text-[7rem] md:text-[9.5rem] lg:text-[12rem] font-black leading-[0.76] tracking-[-0.055em] text-center whitespace-nowrap">
           {/* Layer 1: Hollow architectural base stroke with tactile letter-by-letter spring physics */}
           <div className="watermark-text-base relative z-10 flex justify-center">
             {WATERMARK_LETTERS.map((letter, i) => (
