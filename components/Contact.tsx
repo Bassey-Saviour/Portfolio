@@ -16,26 +16,26 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 md:py-32 border-t section-rule">
+    <section id="contact" className="py-16 sm:py-20 md:py-28 lg:py-32 border-t section-rule">
       <div
         onMouseMove={handleMouseMove}
-        className="reveal-on-scroll spotlight-card relative overflow-hidden rounded-[2rem] border border-[#F2E9DC]/10 bg-[#17141d]/65 px-6 py-8 shadow-[0_30px_100px_rgba(0,0,0,.24)] backdrop-blur-2xl sm:px-10 sm:py-12 lg:px-14 lg:py-16"
+        className="reveal-on-scroll spotlight-card relative overflow-hidden rounded-[2rem] border border-[#F2E9DC]/10 bg-[#17141d]/65 px-4 py-6 min-[380px]:px-6 min-[380px]:py-8 shadow-[0_30px_100px_rgba(0,0,0,.24)] backdrop-blur-2xl sm:px-10 sm:py-12 lg:px-14 lg:py-16"
       >
         <div aria-hidden="true" className="aura-pulse absolute -left-32 top-8 h-72 w-72 rounded-full bg-[#4F7CAC]/15 blur-3xl pointer-events-none" />
         <div aria-hidden="true" className="aura-pulse absolute -right-24 -bottom-28 h-80 w-80 rounded-full bg-[#E8963C]/15 blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
-          <div className="flex flex-col justify-between gap-10">
+        <div className="relative z-10 grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
+          <div className="flex flex-col justify-between gap-8 sm:gap-10">
             <div>
               <div className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.18em] text-[#F3B866]">
                 <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(74,222,128,.7)] aura-pulse" />
                 Open to conversations
               </div>
-              <h2 className="mt-5 max-w-md font-display text-4xl font-bold leading-[0.98] tracking-[-0.045em] text-[#F2E9DC] sm:text-5xl">
+              <h2 className="mt-4 sm:mt-5 max-w-md font-display text-3xl min-[360px]:text-4xl font-bold leading-[1] tracking-[-0.045em] text-[#F2E9DC] sm:text-5xl">
                 Have a good problem?
                 <span className="block text-[#E8963C]">Let&apos;s make it clear.</span>
               </h2>
-              <p className="mt-6 max-w-sm text-sm leading-relaxed text-[#B8A996] sm:text-base">
+              <p className="mt-4 sm:mt-6 max-w-sm text-xs min-[380px]:text-sm leading-relaxed text-[#B8A996] sm:text-base">
                 I&apos;m looking for the kind of work where thoughtful systems and careful execution genuinely matter.
               </p>
             </div>
@@ -50,10 +50,10 @@ export default function Contact() {
             <p className="section-kicker">The direct line</p>
             <a
               href={`mailto:${personalData.contact.email}?subject=Opportunity%20Inquiry%20%E2%80%94%20Saviour%20Bassey`}
-              className="group mt-4 inline-flex w-fit max-w-full items-center gap-2 font-display text-[clamp(1rem,4vw,3rem)] font-bold leading-[1] tracking-[-0.045em] text-[#F2E9DC] transition-colors duration-300 hover:text-[#F3B866]"
+              className="group mt-3 sm:mt-4 inline-flex w-fit max-w-full items-center gap-2 font-display text-base min-[360px]:text-lg min-[420px]:text-xl sm:text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-[#F2E9DC] transition-colors duration-300 hover:text-[#F3B866]"
             >
-              <span className="whitespace-nowrap">{personalData.contact.email}</span>
-              <IconArrowUpRight className="h-7 w-7 shrink-0 self-start text-[#E8963C] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5 group-hover:-translate-y-1.5 sm:h-9 sm:w-9" />
+              <span className="break-all sm:break-normal">{personalData.contact.email}</span>
+              <IconArrowUpRight className="h-5 w-5 sm:h-7 sm:w-7 lg:h-8 lg:w-8 shrink-0 self-center sm:self-start text-[#E8963C] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1 group-hover:-translate-y-1" />
             </a>
 
             <div className="mt-9 grid gap-3 border-t border-[#F2E9DC]/10 pt-5 sm:grid-cols-3">

@@ -39,10 +39,28 @@ export default function DesignShowcaseModal({
   );
   const [isZoomed, setIsZoomed] = useState(false);
   const thumbnailsRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
 
   const activeSlide = slides[activeIndex] || slides[0];
   const canGoPrev = activeIndex > 0;
   const canGoNext = activeIndex < slides.length - 1;
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(deltaX) > 45) {
+      if (deltaX < 0 && canGoNext) {
+        handleNext();
+      } else if (deltaX > 0 && canGoPrev) {
+        handlePrev();
+      }
+    }
+    touchStartX.current = null;
+  };
 
   // Mount & modal-open lifecycle for body & navbar coordination
   useEffect(() => {
@@ -174,7 +192,11 @@ export default function DesignShowcaseModal({
           {/* Modal Body */}
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-5 no-scrollbar">
             {/* Artwork Stage with Ambient Glow & Floating Navigation */}
-            <div className="relative aspect-[4/3] sm:aspect-[16/10] md:h-[46vh] max-h-[500px] w-full rounded-2xl overflow-hidden bg-[#0d0b12] border border-white/[0.08] flex items-center justify-center group/viewer select-none shadow-[inset_0_2px_24px_rgba(0,0,0,0.7)]">
+            <div
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              className="relative aspect-[4/3] sm:aspect-[16/10] md:h-[46vh] max-h-[500px] w-full rounded-2xl overflow-hidden bg-[#0d0b12] border border-white/[0.08] flex items-center justify-center group/viewer select-none shadow-[inset_0_2px_24px_rgba(0,0,0,0.7)]"
+            >
               {/* Dynamic ambient color glow from flyer itself */}
               <Image
                 src={activeSlide.image}
@@ -418,10 +440,10 @@ export default function DesignShowcaseModal({
             </div>
 
             {/* Floating Top Controls */}
-            <div className="absolute top-5 sm:top-7 left-5 sm:left-7 right-5 sm:right-7 flex items-center justify-between z-30 pointer-events-none">
-              <div className="rounded-full bg-black/80 backdrop-blur-md border border-white/15 px-4 py-1.5 text-xs font-mono text-[#F2E9DC] pointer-events-auto shadow-xl">
-                {activeSlide.title}{" "}
-                <span className="text-[#E8963C]">
+            <div className="absolute top-4 sm:top-7 left-4 sm:left-7 right-4 sm:right-7 flex items-center justify-between z-30 pointer-events-none gap-3">
+              <div className="rounded-full bg-black/85 backdrop-blur-md border border-white/15 px-3.5 py-1.5 text-xs font-mono text-[#F2E9DC] pointer-events-auto shadow-xl max-w-[calc(100%-3.5rem)] truncate">
+                <span className="truncate">{activeSlide.title}</span>{" "}
+                <span className="text-[#E8963C] shrink-0">
                   ({formatIdx(activeIndex + 1)}/{formatIdx(slides.length)})
                 </span>
               </div>
@@ -429,7 +451,7 @@ export default function DesignShowcaseModal({
               <button
                 type="button"
                 onClick={() => setIsZoomed(false)}
-                className="h-10 w-10 sm:h-11 sm:w-11 rounded-full bg-black/80 hover:bg-black border border-white/25 hover:border-[#E8963C] text-white flex items-center justify-center text-base transition-all cursor-pointer shadow-2xl pointer-events-auto hover:scale-105 active:scale-95"
+                className="h-9 w-9 sm:h-11 sm:w-11 shrink-0 rounded-full bg-black/80 hover:bg-black border border-white/25 hover:border-[#E8963C] text-white flex items-center justify-center text-sm sm:text-base transition-all cursor-pointer shadow-2xl pointer-events-auto hover:scale-105 active:scale-95"
                 aria-label="Close zoomed view"
               >
                 ✕

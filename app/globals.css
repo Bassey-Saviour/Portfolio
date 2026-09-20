@@ -46,6 +46,7 @@
 
 @layer components {
   .site-shell {
+    overflow-x: clip;
     background:
       radial-gradient(circle at 12% 5%, rgba(232, 150, 60, 0.16), transparent 28rem),
       radial-gradient(circle at 92% 23%, rgba(79, 124, 172, 0.17), transparent 31rem),

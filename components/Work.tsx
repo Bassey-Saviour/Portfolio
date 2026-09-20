@@ -26,15 +26,15 @@ export default function Work() {
   };
 
   return (
-    <section id="work" className="py-24 md:py-32 border-t section-rule">
+    <section id="work" className="py-16 sm:py-20 md:py-28 lg:py-32 border-t section-rule">
       <div className="w-full">
         {/* Clean, quiet section header */}
-        <div className="reveal-on-scroll mb-12 md:mb-14">
+        <div className="reveal-on-scroll mb-8 sm:mb-12 md:mb-14">
           <span className="section-kicker">Projects</span>
-          <h2 className="text-4xl sm:text-5xl font-display font-bold text-[#F2E9DC] tracking-tight mt-3">
+          <h2 className="text-3xl min-[360px]:text-4xl sm:text-5xl font-display font-bold text-[#F2E9DC] tracking-tight mt-3">
             Work worth<br /><span className="text-[#E8963C]">opening up.</span>
           </h2>
-          <p className="text-[#B8A996] text-sm sm:text-base mt-2 max-w-xl leading-relaxed">
+          <p className="text-[#B8A996] text-xs min-[380px]:text-sm sm:text-base mt-2 max-w-xl leading-relaxed">
             Systems, computational modeling, and product interfaces designed for clarity and operational reliability.
           </p>
         </div>

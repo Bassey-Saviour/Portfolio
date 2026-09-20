@@ -53,7 +53,7 @@ export default function Footer() {
         ref={watermarkRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="group/wm relative flex flex-col items-center justify-center select-none py-4 overflow-visible"
+        className="group/wm relative flex flex-col items-center justify-center select-none py-3 sm:py-4 overflow-hidden w-full max-w-full"
         style={
           {
             "--wm-x": "50%",
@@ -63,7 +63,7 @@ export default function Footer() {
         }
       >
         {/* The Giant Watermark Typography Layers */}
-        <div className="relative font-display text-[3.8rem] sm:text-[7rem] md:text-[9.5rem] lg:text-[12rem] font-black leading-[0.76] tracking-[-0.055em] text-center whitespace-nowrap">
+        <div className="relative font-display text-[clamp(2.3rem,11.8vw,12rem)] font-black leading-[0.78] tracking-[-0.055em] text-center whitespace-nowrap max-w-full">
           {/* Layer 1: Hollow architectural base stroke with tactile letter-by-letter spring physics */}
           <div className="watermark-text-base relative z-10 flex justify-center">
             {WATERMARK_LETTERS.map((letter, i) => (

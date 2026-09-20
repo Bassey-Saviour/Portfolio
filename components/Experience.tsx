@@ -55,15 +55,15 @@ export default function Experience() {
   };
 
   return (
-    <section id="experience" className="py-24 md:py-32 border-t section-rule">
+    <section id="experience" className="py-16 sm:py-20 md:py-28 lg:py-32 border-t section-rule">
       <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
         <div className="reveal-on-scroll">
           <span className="section-kicker">Work Experience</span>
-          <h2 className="mt-3 font-display text-4xl font-bold tracking-tight text-[#F2E9DC] sm:text-5xl">
+          <h2 className="mt-3 font-display text-3xl min-[360px]:text-4xl sm:text-5xl font-bold tracking-tight text-[#F2E9DC]">
             Experience,<br /><span className="text-[#4F7CAC]">distilled.</span>
           </h2>
-          <p className="mt-5 max-w-xs text-sm leading-relaxed text-[#B8A996]">
-            My professional journey working in teams and institiutions, coupled with my imapact.
+          <p className="mt-4 sm:mt-5 max-w-xs text-xs min-[380px]:text-sm leading-relaxed text-[#B8A996]">
+            My professional journey working in teams and institutions, coupled with my impact.
           </p>
         </div>
 
@@ -84,28 +84,28 @@ export default function Experience() {
                   type="button"
                   onClick={() => handleToggle(item.id)}
                   aria-expanded={isOpen}
-                  className="group flex w-full items-start gap-4 p-5 text-left sm:p-6 cursor-pointer focus:outline-none"
+                  className="group flex w-full items-start gap-3 min-[380px]:gap-4 p-4 min-[380px]:p-5 sm:p-6 text-left cursor-pointer focus:outline-none"
                 >
                   <span className="mt-0.5 font-mono text-[11px] text-[#E8963C] transition-transform duration-300 group-hover:scale-110">
                     0{index + 1}
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-                      <span className="font-display text-xl font-semibold tracking-tight text-[#F2E9DC] sm:text-2xl transition-colors duration-300 group-hover:text-[#F2E9DC]">
+                      <span className="font-display text-lg min-[380px]:text-xl font-semibold tracking-tight text-[#F2E9DC] sm:text-2xl transition-colors duration-300 group-hover:text-[#F2E9DC]">
                         {item.company}
                       </span>
                       <span className="font-mono text-[11px] text-[#B8A996]">
                         {item.dateRange}
                       </span>
                     </span>
-                    <span className="mt-1 block text-sm text-[#F3B866]">
+                    <span className="mt-1 block text-xs min-[380px]:text-sm text-[#F3B866]">
                       {item.title}
                     </span>
                     <div
                       id={`exp-teaser-${item.id}`}
                       className={`grid transition-[grid-template-rows,opacity] duration-300 ${isOpen
                           ? "grid-rows-[0fr] opacity-0 pointer-events-none"
-                          : "grid-rows-[1fr] opacity-100 mt-3"
+                          : "grid-rows-[1fr] opacity-100 mt-2.5 sm:mt-3"
                         }`}
                     >
                       <span
@@ -133,8 +133,8 @@ export default function Experience() {
                   data-open={isOpen ? "true" : "false"}
                 >
                   <div id={`exp-inner-${item.id}`} className="accordion-inner">
-                    <div className="border-t border-[#F2E9DC]/[0.08] px-5 pb-6 pt-5 sm:px-6">
-                      <p className="max-w-2xl text-sm leading-relaxed text-[#B8A996]">
+                    <div className="border-t border-[#F2E9DC]/[0.08] px-4 pb-5 pt-4 min-[380px]:px-5 min-[380px]:pb-6 sm:px-6">
+                      <p className="max-w-2xl text-xs sm:text-sm leading-relaxed text-[#B8A996]">
                         {item.summary}
                       </p>
                       <div className="mt-5 grid gap-2 sm:grid-cols-3">

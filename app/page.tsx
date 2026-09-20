@@ -46,7 +46,7 @@ export default function Home() {
       <SectionTracker />
 
       {/* Main Content Spine */}
-      <main className="relative z-10 max-w-5xl lg:max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
+      <main className="relative z-10 max-w-5xl lg:max-w-6xl mx-auto px-4 min-[380px]:px-6 sm:px-8 lg:px-12">
         <Hero />
         <About />
         <Skills />

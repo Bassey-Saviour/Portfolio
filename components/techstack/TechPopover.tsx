@@ -5,18 +5,20 @@ import BrandMark from "./BrandMark";
 interface TechPopoverProps {
   tool: TechTool;
   index: number;
+  onClose?: () => void;
 }
 
-export default function TechPopover({ tool, index }: TechPopoverProps) {
+export default function TechPopover({ tool, index, onClose }: TechPopoverProps) {
   const pos = getPopoverPosition(index);
 
   return (
     <div
+      onClick={(e) => e.stopPropagation()}
       className={`popover-enter absolute bottom-[calc(100%+14px)] ${pos.popover} pointer-events-auto z-50`}
       role="tooltip"
     >
       <div
-        className="relative w-[275px] sm:w-[295px] rounded-2xl border bg-[#15121b]/96 p-4.5 shadow-[0_24px_60px_rgba(0,0,0,0.65)] backdrop-blur-2xl transition-all duration-300"
+        className="relative w-[calc(100vw-2.5rem)] max-w-[285px] rounded-2xl border bg-[#15121b]/96 p-3.5 sm:p-4.5 shadow-[0_24px_60px_rgba(0,0,0,0.65)] backdrop-blur-2xl transition-all duration-300"
         style={{
           borderColor: `${tool.color}44`,
           boxShadow: `0 24px 60px rgba(0,0,0,0.65), 0 0 32px ${tool.color}20, inset 0 1px 0 rgba(255,255,255,0.08)`,
@@ -48,16 +50,31 @@ export default function TechPopover({ tool, index }: TechPopoverProps) {
             </div>
           </div>
 
-          <span
-            className="shrink-0 rounded-full border px-2 py-0.5 font-mono text-[9.5px] font-medium"
-            style={{
-              borderColor: `${tool.color}35`,
-              backgroundColor: `${tool.color}12`,
-              color: tool.color,
-            }}
-          >
-            {tool.level}
-          </span>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span
+              className="rounded-full border px-2 py-0.5 font-mono text-[9.5px] font-medium"
+              style={{
+                borderColor: `${tool.color}35`,
+                backgroundColor: `${tool.color}12`,
+                color: tool.color,
+              }}
+            >
+              {tool.level}
+            </span>
+            {onClose && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClose();
+                }}
+                aria-label="Dismiss inspector"
+                className="h-5 w-5 rounded-full flex items-center justify-center text-[#B8A996] hover:text-[#F2E9DC] hover:bg-white/10 transition-colors text-xs cursor-pointer active:scale-95"
+              >
+                ✕
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Proficiency Slider Bar */}

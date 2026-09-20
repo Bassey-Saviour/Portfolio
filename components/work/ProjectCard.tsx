@@ -274,7 +274,7 @@ export default function ProjectCard({
       />
 
       {/* Minimal Text Block: Title, Role, One-sentence description, 2-3 tags */}
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
+      <div className="flex flex-1 flex-col p-4 min-[380px]:p-5 sm:p-6">
         {/* Title */}
         <div className="flex items-center justify-between gap-3">
           <h3 className="font-display font-semibold text-lg sm:text-xl text-[#F2E9DC] transition-colors duration-300">
@@ -295,7 +295,7 @@ export default function ProjectCard({
         </p>
 
         {/* 2-3 Tags Max */}
-        <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-6">
+        <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-5 sm:pt-6">
           {item.tags.slice(0, 4).map((tag) => (
             <span
               key={tag}
@@ -308,7 +308,7 @@ export default function ProjectCard({
 
         {/* Flexible Action Links: Custom Primary & Secondary links */}
         {item.links && (
-          <div className="mt-6 flex items-center justify-between gap-4 border-t border-[#F2E9DC]/[0.08] pt-4">
+          <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-[#F2E9DC]/[0.08] pt-4">
             <ActionLink
               link={item.links.primary}
               item={item}
