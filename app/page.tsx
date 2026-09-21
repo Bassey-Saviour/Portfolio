@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import SectionTracker from "@/components/SectionTracker";
 import ScrollReveal from "@/components/ScrollReveal";
+import CommandPalette from "@/components/command/CommandPalette";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Skills from "@/components/Skills";
@@ -38,6 +39,9 @@ export default function Home() {
 
       {/* Top Fixed Navigation */}
       <Navbar />
+
+      {/* Global Interactive Command Palette (Cmd + K / Ctrl + K) */}
+      <CommandPalette />
 
       {/* Global Scroll Reveal Observer */}
       <ScrollReveal />
