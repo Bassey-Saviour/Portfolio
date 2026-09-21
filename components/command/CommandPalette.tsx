@@ -70,10 +70,6 @@ export default function CommandPalette() {
       document.body.style.overflow = "hidden";
       setQuery("");
       setActiveId(null);
-
-      requestAnimationFrame(() => {
-        inputRef.current?.focus();
-      });
     } else {
       document.body.classList.remove("modal-open");
       document.body.style.overflow = "unset";

@@ -62,8 +62,8 @@ export default function Navbar() {
     <header
       ref={navRef}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${mounted && !isModalOpen
-          ? "translate-y-0 opacity-100"
-          : "-translate-y-full opacity-0 pointer-events-none"
+        ? "translate-y-0 opacity-100"
+        : "-translate-y-full opacity-0 pointer-events-none"
         } ${isScrolled
           ? "bg-[#100f14]/85 backdrop-blur-xl border-b border-[#F2E9DC]/10 py-3 sm:py-2.5 shadow-sm shadow-black/30"
           : "bg-transparent py-4 sm:py-5 border-b border-transparent"
@@ -92,8 +92,8 @@ export default function Navbar() {
                 key={link.id}
                 href={link.href}
                 className={`relative px-3.5 py-1 text-xs font-medium rounded-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
-                    ? "bg-[#E8963C] text-[#1C1712] font-semibold shadow-[0_2px_12px_rgba(232,150,60,0.3)] scale-[1.03]"
-                    : "text-[#B8A996] hover:text-[#F2E9DC] hover:bg-[#F2E9DC]/[0.06] hover:scale-[1.02]"
+                  ? "bg-[#E8963C] text-[#1C1712] font-semibold shadow-[0_2px_12px_rgba(232,150,60,0.3)] scale-[1.03]"
+                  : "text-[#B8A996] hover:text-[#F2E9DC] hover:bg-[#F2E9DC]/[0.06] hover:scale-[1.02]"
                   }`}
               >
                 {link.label}
@@ -107,7 +107,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={openCommandPalette}
-            className="flex items-center justify-center px-3 py-1.5 rounded-full bg-[#211d28]/70 hover:bg-[#2a2434] border border-[#F2E9DC]/12 hover:border-[#E8963C]/40 text-[#B8A996] hover:text-[#F2E9DC] text-[11px] font-mono transition-all duration-200 cursor-pointer active:scale-95 shadow-sm"
+            className="flex items-center justify-center px-3 py-1.5 rounded-full bg-[#211d28]/70 hover:bg-[#2a2434] border border-[#F2E9DC]/12 hover:border-[#E8963C]/40 text-[#B8A996] hover:text-[#F2E9DC] text-[13px] font-mono transition-all duration-200 cursor-pointer active:scale-95 shadow-sm"
             aria-label="Open command palette (Cmd+K)"
             title="Command Palette (Cmd+K)"
           >
