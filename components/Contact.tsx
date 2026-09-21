@@ -7,12 +7,32 @@ import { useCardSpotlight } from "@/hooks/useCardSpotlight";
 
 export default function Contact() {
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [copiedDraft, setCopiedDraft] = useState(false);
   const { handleMouseMove } = useCardSpotlight();
 
   const copyEmail = async () => {
     await navigator.clipboard.writeText(personalData.contact.email);
     setCopiedEmail(true);
     window.setTimeout(() => setCopiedEmail(false), 2200);
+  };
+
+  const handleSendEmail = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const subject = `Opportunity / Inquiry from ${name.trim() || "Portfolio Visitor"}`;
+    const bodyContent = `${message.trim() || "Hi Saviour, I'd like to connect regarding an opportunity."}\n\n—\nFrom: ${name.trim() || "Visitor"}${email.trim() ? ` (${email.trim()})` : ""}`;
+
+    const mailtoUrl = `mailto:${personalData.contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyContent)}`;
+    window.location.href = mailtoUrl;
+  };
+
+  const copyDraft = async () => {
+    const textToCopy = `${message.trim() || "Hi Saviour, I'd like to connect."}\n\n—\n${name.trim() || "Visitor"}${email.trim() ? ` (${email.trim()})` : ""}`;
+    await navigator.clipboard.writeText(textToCopy);
+    setCopiedDraft(true);
+    window.setTimeout(() => setCopiedDraft(false), 2000);
   };
 
   return (
@@ -40,10 +60,10 @@ export default function Contact() {
               </p>
             </div>
 
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[#F2E9DC]/10 bg-[#F2E9DC]/[0.045] px-3 py-2 text-[11px] font-mono text-[#B8A996] transition-all duration-300 hover:border-[#F2E9DC]/25 hover:scale-[1.02]">
+            {/* <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[#F2E9DC]/10 bg-[#F2E9DC]/[0.045] px-3 py-2 text-[11px] font-mono text-[#B8A996] transition-all duration-300 hover:border-[#F2E9DC]/25 hover:scale-[1.02]">
               <span className="rounded-full bg-[#E8963C]/15 px-2 py-0.5 text-[#F3B866]">Based</span>
               {personalData.contact.location}
-            </div>
+            </div> */}
           </div>
 
           <div className="flex flex-col justify-end">
@@ -56,7 +76,84 @@ export default function Contact() {
               <IconArrowUpRight className="h-5 w-5 sm:h-7 sm:w-7 lg:h-8 lg:w-8 shrink-0 self-center sm:self-start text-[#E8963C] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1 group-hover:-translate-y-1" />
             </a>
 
-            <div className="mt-9 grid gap-3 border-t border-[#F2E9DC]/10 pt-5 sm:grid-cols-3">
+            {/* Minimal Underlined Contact Form */}
+            <form onSubmit={handleSendEmail} className="mt-8 space-y-6 sm:space-y-7">
+              <div>
+                <label htmlFor="inquiry-name" className="block text-[10.5px] font-mono uppercase tracking-widest text-[#B8A996]/60">
+                  NAME
+                </label>
+                <input
+                  id="inquiry-name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Your name"
+                  style={{ outline: "none", boxShadow: "none" }}
+                  className="w-full bg-transparent border-b border-[#F2E9DC]/15 focus:border-[#F2E9DC]/60 py-2.5 text-sm text-[#F2E9DC] placeholder-[#B8A996]/30 transition-colors focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="inquiry-email" className="block text-[10.5px] font-mono uppercase tracking-widest text-[#B8A996]/60">
+                  EMAIL
+                </label>
+                <input
+                  id="inquiry-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@company.com"
+                  style={{ outline: "none", boxShadow: "none" }}
+                  className="w-full bg-transparent border-b border-[#F2E9DC]/15 focus:border-[#F2E9DC]/60 py-2.5 text-sm text-[#F2E9DC] placeholder-[#B8A996]/30 transition-colors focus:outline-none"
+                />
+              </div>
+
+              <div className="mb-1">
+                <label htmlFor="inquiry-message" className="block text-[10.5px] font-mono uppercase tracking-widest text-[#B8A996]/60">
+                  WHAT ARE YOU BUILDING?
+                </label>
+                <textarea
+                  id="inquiry-message"
+                  rows={3}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="A short note about the project, timeline, and budget."
+                  style={{ outline: "none", boxShadow: "none" }}
+                  className="w-full bg-transparent border-b border-[#F2E9DC]/15 focus:border-[#F2E9DC]/60 py-2.5 text-sm text-[#F2E9DC] placeholder-[#B8A996]/30 transition-colors focus:outline-none resize-none leading-relaxed"
+                />
+              </div>
+
+              {/* Action Bar */}
+              <div className="pt-2 flex items-center justify-between gap-4">
+                <button
+                  type="submit"
+                  className="btn-tactile inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#F2E9DC] text-[#121017] font-medium text-xs sm:text-sm hover:bg-white transition-all duration-200 cursor-pointer active:scale-95 shadow-md"
+                >
+                  <span>Send message</span>
+                  <IconArrowUpRight className="w-3.5 h-3.5 text-[#121017]" />
+                </button>
+
+                {message.trim() && (
+                  <button
+                    type="button"
+                    onClick={copyDraft}
+                    className="text-[11px] font-mono text-[#B8A996]/70 hover:text-[#F2E9DC] transition-colors cursor-pointer flex items-center gap-1.5"
+                  >
+                    {copiedDraft ? (
+                      <>
+                        <IconCheck className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>Copied!</span>
+                      </>
+                    ) : (
+                      <span>Copy note</span>
+                    )}
+                  </button>
+                )}
+              </div>
+            </form>
+
+            {/* Quick Actions (Copy, View CV, Elsewhere) */}
+            <div className="mt-5 grid gap-3 border-t border-[#F2E9DC]/10 pt-5 sm:grid-cols-3">
               {/* Copy Email Button */}
               <button
                 type="button"

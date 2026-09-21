@@ -84,16 +84,16 @@ export default function Navbar() {
         </a>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-1 px-3 py-1.5">
+        <nav className="hidden md:flex items-center gap-8 px-3 py-1.5">
           {navLinks.map((link) => {
             const isActive = activeSection === link.id;
             return (
               <a
                 key={link.id}
                 href={link.href}
-                className={`relative px-3.5 py-1 text-xs font-medium rounded-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
-                  ? "bg-[#E8963C] text-[#1C1712] font-semibold shadow-[0_2px_12px_rgba(232,150,60,0.3)] scale-[1.03]"
-                  : "text-[#B8A996] hover:text-[#F2E9DC] hover:bg-[#F2E9DC]/[0.06] hover:scale-[1.02]"
+                className={`relative py-1 text-xs font-medium rounded-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
+                  ? "bg-[#E8963C] text-[#1C1712] font-semibold shadow-[0_2px_12px_rgba(232,150,60,0.3)] scale-[1.03] px-3.5"
+                  : "text-[#B8A996] hover:text-[#F2E9DC] hover:scale-[1.02] animated-underline"
                   }`}
               >
                 {link.label}
@@ -107,7 +107,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={openCommandPalette}
-            className="flex items-center justify-center px-3 py-1.5 rounded-full bg-[#211d28]/70 hover:bg-[#2a2434] border border-[#F2E9DC]/12 hover:border-[#E8963C]/40 text-[#B8A996] hover:text-[#F2E9DC] text-[13px] font-mono transition-all duration-200 cursor-pointer active:scale-95 shadow-sm"
+            className="flex items-center justify-center px-3 py-1.5 rounded-full bg-[#211d28]/70 btn-tactile btn-shimmer hover:bg-[#2a2434] border border-[#F2E9DC]/12 hover:border-[#E8963C]/40 text-[#B8A996] hover:text-[#F2E9DC] lg:text-[11px] sm:text-[13px] font-mono transition-all duration-200 cursor-pointer active:scale-95 shadow-sm"
             aria-label="Open command palette (Cmd+K)"
             title="Command Palette (Cmd+K)"
           >
@@ -116,7 +116,7 @@ export default function Navbar() {
 
           <a
             href="#contact"
-            className="hidden sm:flex btn-shimmer btn-tactile group items-center gap-1.5 text-xs font-mono font-medium text-[#F2E9DC] bg-[#211d28]/75 hover:bg-[#352D24] hover:border-[#E8963C]/50 shadow-md hover:shadow-[0_4px_20px_rgba(232,150,60,0.15)] px-4 py-2 sm:px-5 rounded-full transition-all duration-300 border border-[#F2E9DC]/15 backdrop-blur-xl"
+            className="hidden sm:flex btn-shimmer btn-tactile group items-center gap-1.5 text-xs font-mono font-medium text-[#F2E9DC] bg-[#211d28]/75 hover:bg-[#352D24] hover:border-[#E8963C]/50 hover:shadow-[0_4px_20px_rgba(232,150,60,0.15)] px-4 py-2 sm:px-5 rounded-full transition-all duration-300 border border-[#F2E9DC]/15 backdrop-blur-xl"
           >
             <IconDownload className="w-3.5 h-3.5 text-[#E8963C] transition-transform duration-300 group-hover:translate-y-0.5" />
             <span>CV / Contact</span>
