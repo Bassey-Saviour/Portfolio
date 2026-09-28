@@ -4,6 +4,21 @@ export interface SocialLink {
   icon: string;
   isExternal?: boolean;
 }
+export interface CurrentlyItem {
+  id: string;
+  category: "Listening" | "Reading" | "Building" | "Exploring";
+  title: string;
+  subtitle: string;
+  badge?: string;
+  url?: string;
+  details?: string;
+}
+
+export interface CurrentlyConfig {
+  lastUpdated: string;
+  items: CurrentlyItem[];
+}
+
 export interface PersonalInfo {
   name: string;
   initials: string;
@@ -31,6 +46,7 @@ export interface PersonalInfo {
     downloadUrl: string;
     lastUpdated: string;
   };
+  currently?: CurrentlyConfig;
 }
 export const personalData: PersonalInfo = {
   name: "Saviour Bassey",
@@ -77,5 +93,43 @@ export const personalData: PersonalInfo = {
     fileName: "Saviour_Bassey_CV.pdf",
     downloadUrl: "#contact", // [TODO: upload real PDF to /public/Saviour_Bassey_CV.pdf]
     lastUpdated: "2025",
+  },
+  currently: {
+    lastUpdated: "Sept 2026",
+    items: [
+      {
+        id: "listening",
+        category: "Listening",
+        title: "Higher",
+        subtitle: "Burna Boy — I Told Them...",
+        badge: "Heavy Rotation",
+        url: "https://open.spotify.com",
+        details: "Afrobeats with crisp brass arrangements and driving rhythmic clarity",
+      },
+      {
+        id: "reading",
+        category: "Reading",
+        title: "Designing Data-Intensive Applications",
+        subtitle: "Martin Kleppmann",
+        badge: "Chapter 7: Transactions",
+        details: "Reliability, partition tolerance, and maintainability in distributed systems",
+      },
+      {
+        id: "building",
+        category: "Building",
+        title: "Trace Lines & System Ergonomics",
+        subtitle: "Custom network diagram topology & Next.js 16 architectures",
+        badge: "In Active Dev",
+        details: "Bridging physical data room diagnostics to clean browser interfaces",
+      },
+      {
+        id: "exploring",
+        category: "Exploring",
+        title: "Wireshark & Packet Tracing",
+        subtitle: "Low-level protocol analysis & BGP routing mechanics",
+        badge: "Deep Dive",
+        details: "Hands-on analysis from Cisco switches to remote core gateways",
+      },
+    ],
   },
 };

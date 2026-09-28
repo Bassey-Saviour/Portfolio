@@ -402,6 +402,30 @@
   border-radius: 999px;
 }
 
+/* Music Equalizer Bar Animation */
+@keyframes musicBar {
+  0% {
+    height: 3px;
+  }
+  100% {
+    height: 14px;
+  }
+}
+
+/* Soft flowing content crossfade */
+@keyframes softFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
 /* Command Palette dialog animation */
 @keyframes commandEnter {
   from {

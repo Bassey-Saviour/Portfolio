@@ -26,7 +26,7 @@ function ProjectCardMedia({
           onOpenShowcase(0);
         }
       }}
-      className={`relative aspect-[16/10] w-full overflow-hidden bg-[#16131b] group/media select-none ${
+      className={`relative aspect-16/10 w-full overflow-hidden bg-[#16131b] group/media select-none ${
         hasShowcase ? "cursor-pointer" : ""
       }`}
     >
@@ -40,7 +40,7 @@ function ProjectCardMedia({
       />
 
       {/* Subtle hover wash */}
-      <div className="absolute inset-0 bg-[#1C1712]/0 group-hover:bg-[#1C1712]/15 transition-colors duration-300 pointer-events-none z-[1]" />
+      <div className="absolute inset-0 bg-[#1C1712]/0 group-hover:bg-[#1C1712]/15 transition-colors duration-300 pointer-events-none z-1" />
 
       {/* Project Index: subtle, refined architectural numbering */}
       <div className="absolute left-3.5 top-3.5 z-10 pointer-events-none flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#100f14]/70 backdrop-blur-md border border-white/[0.08] transition-colors duration-300 group-hover:border-[#E8963C]/35">
@@ -53,7 +53,7 @@ function ProjectCardMedia({
       {/* Gallery Stack Indicator directly on image */}
       {hasShowcase && !isPending && (
         <div
-          className="absolute right-4 top-4 z-10 pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] text-[#F2E9DC]/85 group-hover:text-[#F2E9DC] group-hover:scale-110 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)] group-hover:drop-shadow-[0_0_10px_rgba(232,150,60,0.55)]"
+          className="absolute right-4 top-4 z-10 pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] text-[#F2E9DC]/85 group-hover:text-[#F2E9DC] group-hover:scale-110 drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)] group-hover:drop-shadow-[0_0_10px_rgba(232,150,60,0.55)]"
           aria-hidden="true"
         >
           <svg

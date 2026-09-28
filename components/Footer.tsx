@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { personalData } from "@/data/personal";
+import CurrentlyWidget from "./CurrentlyWidget";
 
 const footerLinks = [
   { label: "About", href: "#about" },
@@ -47,7 +48,10 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative overflow-hidden pb-8 pt-8 md:pt-12">
+    <footer className="relative overflow-hidden pb-8 pt-8 md:pt-12 border-t section-rule">
+      {/* Personality & Vibe Widget Deck */}
+      <CurrentlyWidget />
+
       {/* Interactive Cinematic Watermark Stage */}
       <div
         ref={watermarkRef}
