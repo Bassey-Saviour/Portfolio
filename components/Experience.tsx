@@ -56,8 +56,8 @@ export default function Experience() {
 
   return (
     <section id="experience" className="py-16 sm:py-20 md:py-28 lg:py-32 border-t section-rule">
-      <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
-        <div className="reveal-on-scroll">
+      <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16 items-start">
+        <div className="reveal-on-scroll lg:sticky lg:top-28 lg:self-start">
           <span className="section-kicker">Work Experience</span>
           <h2 className="mt-3 font-display text-3xl min-[360px]:text-4xl sm:text-5xl font-bold tracking-tight text-[#F2E9DC]">
             Experience,<br /><span className="text-[#4F7CAC]">distilled.</span>
@@ -65,6 +65,38 @@ export default function Experience() {
           <p className="mt-4 sm:mt-5 max-w-xs text-xs min-[380px]:text-sm leading-relaxed text-[#B8A996]">
             My professional journey working in teams and institutions, coupled with my impact.
           </p>
+
+          {/* Interactive Quick-Jump Positions Rail (Desktop) */}
+          {/* <div className="hidden lg:flex flex-col gap-2 pt-6 border-t border-[#F2E9DC]/10 mt-8">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#B8A996]/50">
+              Positions held
+            </span>
+            <div className="space-y-2 font-mono text-xs">
+              {experienceData.map((item, idx) => {
+                const isActive = openId === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => handleToggle(item.id)}
+                    className={`group flex items-center gap-2.5 text-left transition-colors duration-200 cursor-pointer ${
+                      isActive
+                        ? "text-[#E8963C] font-medium"
+                        : "text-[#B8A996]/60 hover:text-[#F2E9DC]"
+                    }`}
+                  >
+                    <span className="text-[10px] opacity-70">0{idx + 1}</span>
+                    <span className="transition-transform duration-200 group-hover:translate-x-0.5">
+                      {item.company}
+                    </span>
+                    {isActive && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#E8963C] shadow-[0_0_6px_rgba(232,150,60,0.6)]" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div> */}
         </div>
 
         <div className="reveal-on-scroll reveal-delay-200 space-y-3">

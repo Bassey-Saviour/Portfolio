@@ -15,8 +15,8 @@ export default function About() {
 
   return (
     <section id="about" className="py-16 sm:py-20 md:py-28 lg:py-32 border-t section-rule">
-      <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
-        <div className="reveal-on-scroll flex flex-col justify-between gap-8">
+      <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16 items-start">
+        <div className="reveal-on-scroll lg:sticky lg:top-28 lg:self-start flex flex-col gap-6">
           <div>
             <span className="section-kicker">About Me</span>
             <h2 className="mt-3 font-display text-3xl min-[360px]:text-4xl font-bold tracking-tight text-[#F2E9DC] sm:text-5xl">
@@ -25,20 +25,22 @@ export default function About() {
               <span className="text-[#E8963C]">Saviour.</span>
             </h2>
           </div>
-          <div className="rounded-2xl border border-[#F2E9DC]/10 bg-[#F2E9DC]/[0.045] p-4 min-[380px]:p-5 transition-colors duration-300 hover:border-[#F2E9DC]/20">
-            <p className="text-[10px] font-mono uppercase tracking-[0.18em] text-[#F3B866]">
+
+          {/* Grounded Operating Principles on the Sticky Rail */}
+          <div className="pt-6 border-t border-[#F2E9DC]/10">
+            <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#E8963C]">
               Operating principles
             </p>
-            <div className="mt-4 space-y-3">
+            <div className="mt-4 space-y-2.5">
               {principles.map((principle, index) => (
                 <div
                   key={principle}
-                  className="group/principle flex items-center gap-3 p-1.5 -mx-1.5 rounded-lg transition-all duration-300 hover:bg-[#F2E9DC]/[0.04]"
+                  className="group/principle flex items-center gap-3 py-1 transition-colors duration-200"
                 >
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#E8963C]/12 text-[10px] font-mono text-[#F3B866] transition-transform duration-300 group-hover/principle:scale-110 group-hover/principle:bg-[#E8963C]/20">
+                  <span className="font-mono text-xs text-[#E8963C]/70">
                     0{index + 1}
                   </span>
-                  <span className="font-display text-base min-[380px]:text-lg font-medium tracking-tight text-[#F2E9DC] transition-colors duration-300 group-hover/principle:text-[#f3b866]">
+                  <span className="font-display text-sm sm:text-base font-medium text-[#F2E9DC] transition-colors duration-200 group-hover/principle:text-[#E8963C]">
                     {principle}
                   </span>
                 </div>

@@ -28,7 +28,7 @@ export default function Home() {
           holdTime={350}
           fadeDuration={700}
           lineWidth={0.5}
-          maxOpacity={0.55}
+          maxOpacity={0.25}
           fillOpacity={0}
           gridOpacity={0}
           cellRadius={0}
