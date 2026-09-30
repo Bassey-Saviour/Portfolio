@@ -5,9 +5,9 @@ import { IconDownload } from "./Icons";
 import { useCardSpotlight } from "@/hooks/useCardSpotlight";
 
 const principles = [
-  "Clarity before complexity",
-  "Systems before surfaces",
-  "Execution with intent",
+  "Abstractions into reality",
+  "Collect skills relentlessly",
+  "Particular about invisible details",
 ];
 
 export default function About() {
@@ -141,36 +141,45 @@ export default function About() {
         </div>
 
         <div>
-          <p className="reveal-on-scroll font-display text-[clamp(1.75rem,3.8vw,3.6rem)] font-bold leading-[1.1] tracking-[-0.045em] text-[#F2E9DC]">
-            Bassey Saviour is a First-Class CS graduate with real{" "}
-            <span className="text-[#E8963C]">infrastructure experience</span> and a habit of
-            turning technical work into something people can actually use.
-          </p>
-          <p className="reveal-on-scroll reveal-delay-100 mt-5 sm:mt-7 max-w-3xl text-sm leading-relaxed text-[#B8A996] sm:text-base">
-            I work where infrastructure, product thinking, and visual clarity meet — from configuring enterprise networks at TotalEnergies, to shaping BayesVest&apos;s investment model, to leading design across GDG Babcock&apos;s flagship initiatives. The through-line is simple: make the complex legible and the important durable.
+          {/* Natural, grounded lead without designer title */}
+          <p className="reveal-on-scroll font-display text-[clamp(1.65rem,3.2vw,2.75rem)] font-bold leading-[1.2] tracking-[-0.035em] text-[#F2E9DC]">
+            I build interfaces, manage{" "}
+            <span className="text-[#E8963C]">network infrastructure</span>, and collect skills along the way. Most of all, I turn people&apos;s abstractions into things that work.
           </p>
 
-          <div className="reveal-on-scroll reveal-delay-200 mt-8 sm:mt-10 grid gap-4 sm:grid-cols-2">
+          {/* Real, human narrative with zero AI buzzwords */}
+          <div className="reveal-on-scroll reveal-delay-150 mt-5 sm:mt-6 max-w-2xl text-sm sm:text-[0.95rem] leading-relaxed text-[#B8A996]">
+            <p>
+              Computer Science graduate with a habit of picking up whatever skills a project demands. Whether that&apos;s configuring enterprise networks at TotalEnergies, building out web interfaces, or getting the visual details right, I care about things that feel solid and actually work.
+            </p>
+          </div>
+
+          {/* Staggered Dual Cards: Arrive noticeably later than the text above */}
+          <div className="mt-8 sm:mt-10 grid gap-4 sm:grid-cols-2">
+            {/* Card 1: Academic Record (enters at 350ms) */}
             <article
               onMouseMove={handleMouseMove}
-              className="glass-panel glass-panel-hover spotlight-card rounded-2xl p-4 min-[380px]:p-5 sm:p-6 cursor-default"
+              className="reveal-on-scroll reveal-delay-350 glass-panel glass-panel-hover spotlight-card rounded-2xl p-5 sm:p-6 cursor-default border border-[#F2E9DC]/10 hover:border-[#E8963C]/35 transition-all duration-300 flex flex-col justify-between"
             >
-              <div className="flex items-start justify-between gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-widest text-[#F3B866]">
-                  Academic record
-                </span>
-                <span className="rounded-full bg-[#E8963C]/12 px-2.5 py-1 text-[10px] font-mono text-[#F3B866] transition-all duration-300 hover:scale-105 hover:bg-[#E8963C]/25">
-                  4.87 CGPA
-                </span>
+              <div>
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#F3B866]">
+                    Academic Record
+                  </span>
+                  <span className="rounded-full bg-[#E8963C]/12 border border-[#E8963C]/25 px-2.5 py-0.5 text-[10px] font-mono text-[#F3B866]">
+                    4.87 CGPA
+                  </span>
+                </div>
+                <h3 className="mt-4 font-display text-xl sm:text-2xl font-semibold leading-tight text-[#F2E9DC]">
+                  First-Class Honours
+                </h3>
+                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[#B8A996]">
+                  Best Graduating Student in Computer Science. Strong foundation in networking, algorithms, and systems.
+                </p>
               </div>
-              <h3 className="mt-7 font-display text-2xl font-semibold leading-tight tracking-tight text-[#F2E9DC]">
-                Best Graduating Student
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[#B8A996]">
-                A strong grounding in computer science, systems thinking, and the discipline to carry work through.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-2">
-                {["Algorithms", "Systems", "Software Engineering"].map((item) => (
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                {["Computer Science", "Networking", "Systems"].map((item) => (
                   <span
                     key={item}
                     className="soft-chip px-2.5 py-1 text-[10px] font-mono text-[#B8A996]"
@@ -181,26 +190,30 @@ export default function About() {
               </div>
             </article>
 
+            {/* Card 2: Skill Collector / Idea to Reality (enters at 500ms) */}
             <article
               onMouseMove={handleMouseMove}
-              className="glass-panel glass-panel-hover spotlight-card rounded-2xl p-4 min-[380px]:p-5 sm:p-6 cursor-default"
+              className="reveal-on-scroll reveal-delay-500 glass-panel glass-panel-hover spotlight-card rounded-2xl p-5 sm:p-6 cursor-default border border-[#F2E9DC]/10 hover:border-[#4F7CAC]/40 transition-all duration-300 flex flex-col justify-between"
             >
-              <div className="flex items-start justify-between gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-widest text-[#7fa9d7]">
-                  Leadership
-                </span>
-                <span className="rounded-full bg-[#4F7CAC]/15 px-2.5 py-1 text-[10px] font-mono text-[#7fa9d7] transition-all duration-300 hover:scale-105 hover:bg-[#4F7CAC]/25">
-                  Co-Founder & COO
-                </span>
+              <div>
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#7fa9d7]">
+                    Mindset
+                  </span>
+                  <span className="rounded-full bg-[#4F7CAC]/15 border border-[#4F7CAC]/25 px-2.5 py-0.5 text-[10px] font-mono text-[#7fa9d7]">
+                    Skill Collector
+                  </span>
+                </div>
+                <h3 className="mt-4 font-display text-xl sm:text-2xl font-semibold leading-tight text-[#F2E9DC]">
+                  Abstractions → Reality
+                </h3>
+                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[#B8A996]">
+                  Taking rough ideas and building the whole thing out, from the frontend interface down to the network routing underneath.
+                </p>
               </div>
-              <h3 className="mt-7 font-display text-2xl font-semibold leading-tight tracking-tight text-[#F2E9DC]">
-                EventNav
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[#B8A996]">
-                Owning product decisions, operations, and momentum when resources are limited and choices count.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-2">
-                {["Product", "Operations", "Design direction"].map((item) => (
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                {["Interfaces", "Network Ops", "Prototyping"].map((item) => (
                   <span
                     key={item}
                     className="soft-chip px-2.5 py-1 text-[10px] font-mono text-[#B8A996]"
@@ -212,10 +225,10 @@ export default function About() {
             </article>
           </div>
 
-          <div className="reveal-on-scroll reveal-delay-300 mt-7">
+          <div className="reveal-on-scroll reveal-delay-500 mt-7">
             <a
               href="#contact"
-              className="btn-shimmer btn-tactile group inline-flex items-center gap-2 rounded-full bg-[#E8963C] px-5 py-3 text-xs font-display font-semibold text-[#1C1712] shadow-[0_2px_12px_rgba(232,150,60,0.25)] hover:shadow-[0_4px_24px_rgba(232,150,60,0.45)]"
+              className="btn-shimmer btn-tactile group inline-flex items-center gap-2 rounded-full bg-[#E8963C] px-5 py-2.5 text-xs font-display font-semibold text-[#1C1712] shadow-[0_2px_12px_rgba(232,150,60,0.25)] hover:shadow-[0_4px_24px_rgba(232,150,60,0.45)]"
             >
               <IconDownload className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-y-0.5" />
               View CV / Get in touch
