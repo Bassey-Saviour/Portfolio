@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { WorkItem, WorkLink } from "@/data/work";
 import { IconArrowUpRight, IconGithub } from "../Icons";
@@ -182,7 +182,7 @@ function ActionLink({
       <button
         type="button"
         onClick={() => onOpenShowcase(item, 0)}
-        className={`group/link inline-flex items-center gap-1.5 text-xs font-mono transition-colors duration-200 cursor-pointer ${
+        className={`group/link inline-flex items-center gap-1.5 py-1 min-h-[36px] text-xs font-mono transition-colors duration-200 cursor-pointer ${
           isPrimary
             ? "text-[#B8A996] hover:text-[#E8963C]"
             : "text-[#F2E9DC] hover:text-[#E8963C]"
@@ -205,7 +205,7 @@ function ActionLink({
             `${item.title} — ${link.label}: Available on request / archiving`
           )
         }
-        className={`group/link inline-flex items-center gap-1.5 text-xs font-mono transition-colors duration-200 cursor-pointer ${
+        className={`group/link inline-flex items-center gap-1.5 py-1 min-h-[36px] text-xs font-mono transition-colors duration-200 cursor-pointer ${
           isPrimary
             ? "text-[#B8A996] hover:text-[#E8963C]"
             : "text-[#F2E9DC] hover:text-[#E8963C]"
@@ -229,7 +229,7 @@ function ActionLink({
       href={link.url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group/link inline-flex items-center gap-1.5 text-xs font-mono transition-colors duration-200 ${
+      className={`group/link inline-flex items-center gap-1.5 py-1 min-h-[36px] text-xs font-mono transition-colors duration-200 ${
         isPrimary
           ? "text-[#B8A996] hover:text-[#E8963C]"
           : "text-[#F2E9DC] hover:text-[#E8963C]"
@@ -245,6 +245,7 @@ function ActionLink({
 interface ProjectCardProps {
   item: WorkItem;
   index: number;
+  totalItems?: number;
   handleMouseMove: (e: React.MouseEvent<HTMLElement>) => void;
   onOpenShowcase: (slideIndex?: number) => void;
   onOpenToast: (msg: string) => void;
@@ -253,79 +254,205 @@ interface ProjectCardProps {
 export default function ProjectCard({
   item,
   index,
+  totalItems,
   handleMouseMove,
   onOpenShowcase,
   onOpenToast,
 }: ProjectCardProps) {
   const isPending = Boolean(item.isPending || item.links?.primary?.status === "pending");
+  const hasShowcase = Boolean(item.showcaseItems && item.showcaseItems.length > 0);
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const innerRef = useRef<HTMLElement | null>(null);
+
+  // Silky scroll-driven scale entrance and deck-stacking exit animation per project card
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (cardRef.current && innerRef.current) {
+            const rect = cardRef.current.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const isMobile = window.innerWidth < 640;
+            const baseTop = isMobile ? 56 : 72;
+            const step = isMobile ? 12 : 20;
+            const stickyTop = baseTop + index * step;
+
+            if (rect.top >= windowHeight) {
+              // Below viewport: waiting to enter
+              innerRef.current.style.transform = `scale(0.92) translate3d(0, ${isMobile ? 20 : 32}px, 0)`;
+              innerRef.current.style.opacity = "0.25";
+            } else if (rect.top > stickyTop) {
+              // Rising up into viewport: silky smooth scale entrance from 0.92 to 1.00
+              const startEntry = windowHeight * 0.96;
+              const endEntry = stickyTop + 24;
+              const entryProgress = Math.min(
+                Math.max((startEntry - rect.top) / (startEntry - endEntry), 0),
+                1
+              );
+              const eased = Math.pow(entryProgress, 1.25);
+              const scale = 0.92 + eased * 0.08;
+              const translateY = (1 - eased) * (isMobile ? 20 : 32);
+              const opacity = 0.25 + eased * 0.75;
+
+              innerRef.current.style.transform = `scale(${scale.toFixed(4)}) translate3d(0, ${translateY.toFixed(1)}px, 0)`;
+              innerRef.current.style.opacity = `${opacity.toFixed(3)}`;
+            } else {
+              // Locked in sticky position: check if the next card is arriving to cover it
+              const nextCard = cardRef.current.nextElementSibling as HTMLElement | null;
+              if (nextCard) {
+                const nextRect = nextCard.getBoundingClientRect();
+                const nextStickyTop = baseTop + (index + 1) * step;
+                const startCover = windowHeight * (isMobile ? 0.75 : 0.70);
+                const endCover = nextStickyTop + (isMobile ? 12 : 20);
+
+                if (nextRect.top < startCover && nextRect.top > endCover) {
+                  const coverProgress = Math.min(
+                    Math.max((startCover - nextRect.top) / (startCover - endCover), 0),
+                    1
+                  );
+                  const coverEased = Math.pow(coverProgress, 1.2);
+                  const exitScale = 1.00 - coverEased * 0.05;
+                  const exitOpacity = 1.00 - coverEased * 0.25;
+
+                  innerRef.current.style.transform = `scale(${exitScale.toFixed(4)}) translate3d(0, 0, 0)`;
+                  innerRef.current.style.opacity = `${exitOpacity.toFixed(3)}`;
+                } else if (nextRect.top <= endCover) {
+                  // Fully covered by next card: resting deck layer
+                  innerRef.current.style.transform = "scale(0.95) translate3d(0, 0, 0)";
+                  innerRef.current.style.opacity = "0.75";
+                } else {
+                  // Next card hasn't reached cover zone yet
+                  innerRef.current.style.transform = "scale(1.00) translate3d(0, 0, 0)";
+                  innerRef.current.style.opacity = "1";
+                }
+              } else {
+                // Final project card in the stack
+                innerRef.current.style.transform = "scale(1.00) translate3d(0, 0, 0)";
+                innerRef.current.style.opacity = "1";
+              }
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [index]);
 
   return (
-    <article
-      onMouseMove={handleMouseMove}
-      style={{ transitionDelay: `${(index % 2) * 180}ms` }}
-      className="reveal-on-scroll spotlight-card group flex flex-col overflow-hidden rounded-[1.4rem] border border-[#F2E9DC]/[0.09] bg-[#17141d]/55 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-2 hover:border-[#E8963C]/40 hover:shadow-[0_28px_70px_rgba(0,0,0,0.3)]"
+    <div
+      ref={cardRef}
+      className="sticky w-full mb-10 sm:mb-18 md:mb-28 last:mb-0 [--card-top:3.5rem] sm:[--card-top:4.5rem] [--card-step:0.75rem] sm:[--card-step:1.25rem]"
+      style={{
+        top: `calc(var(--card-top) + ${index} * var(--card-step))`,
+        zIndex: index + 1,
+      }}
     >
-      {/* Project Screenshot Container */}
-      <ProjectCardMedia
-        item={item}
-        index={index}
-        isPending={isPending}
-        onOpenShowcase={onOpenShowcase}
-      />
+      <article
+        ref={innerRef}
+        onMouseMove={handleMouseMove}
+        style={{
+          transformOrigin: "top center",
+          willChange: "transform, opacity",
+        }}
+        className="spotlight-card group relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-[#F2E9DC]/[0.08] bg-[#13111a] backdrop-blur-md p-4 min-[380px]:p-5 sm:p-7 lg:p-8 shadow-[0_-12px_44px_rgba(0,0,0,0.6)] transition-colors duration-300 hover:border-[#E8963C]/35"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_1.15fr] lg:grid-cols-[0.9fr_1.1fr] gap-4 sm:gap-6 lg:gap-8 items-center">
+          {/* Left Column: Text & Meta */}
+          <div className="order-2 md:order-1 flex flex-col justify-between h-full min-h-[140px] sm:min-h-[200px]">
+            <div>
+              {/* Project Index & Role */}
+              <div className="flex items-center gap-2.5 sm:gap-3">
+                <span className="font-mono text-xs sm:text-sm text-[#E8963C]/90 font-medium">
+                  0{index + 1}
+                </span>
+                <span className="w-1 h-1 rounded-full bg-[#B8A996]/30" />
+                <span className="text-[10px] min-[360px]:text-[11px] font-mono uppercase tracking-widest text-[#B8A996]/75">
+                  {item.roleTag}
+                </span>
+              </div>
 
-      {/* Minimal Text Block: Title, Role, One-sentence description, 2-3 tags */}
-      <div className="flex flex-1 flex-col p-4 min-[380px]:p-5 sm:p-6">
-        {/* Title */}
-        <div className="flex items-center justify-between gap-3">
-          <h3 className="font-display font-semibold text-lg sm:text-xl text-[#F2E9DC] transition-colors duration-300">
-            {item.title}
-          </h3>
-        </div>
+              {/* Title */}
+              <h3 className="font-display font-bold text-xl min-[380px]:text-2xl sm:text-3xl text-[#F2E9DC] tracking-tight mt-2 sm:mt-3">
+                {item.title}
+              </h3>
 
-        {/* Role Tag */}
-        {item.roleTag && (
-          <p className="text-[11px] font-mono uppercase tracking-widest text-[#7fa9d7] mt-2">
-            {item.roleTag}
-          </p>
-        )}
+              {/* Description */}
+              <p className="text-xs sm:text-sm text-[#B8A996] leading-relaxed mt-2 sm:mt-2.5 max-w-md">
+                {item.description}
+              </p>
+            </div>
 
-        {/* One-Sentence Description */}
-        <p className="text-xs sm:text-sm text-[#B8A996] leading-relaxed mt-3 transition-colors duration-300 group-hover:text-[#F2E9DC]/90">
-          {item.description}
-        </p>
+            {/* Bottom Meta & Links */}
+            <div className="pt-4 sm:pt-6 flex flex-col gap-3 sm:gap-4">
+              {/* Minimal Tags */}
+              <div className="flex flex-wrap gap-1.5">
+                {item.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="soft-chip px-2 sm:px-2.5 py-0.5 text-[9.5px] sm:text-[10px] font-mono text-[#B8A996]/80"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
 
-        {/* 2-3 Tags Max */}
-        <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-5 sm:pt-6">
-          {item.tags.slice(0, 4).map((tag) => (
-            <span
-              key={tag}
-              className="soft-chip text-[11px] font-mono text-[#B8A996]/75 px-2.5 py-1"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        {/* Flexible Action Links: Custom Primary & Secondary links */}
-        {item.links && (
-          <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-[#F2E9DC]/[0.08] pt-4">
-            <ActionLink
-              link={item.links.primary}
-              item={item}
-              isPrimary={true}
-              onOpenToast={onOpenToast}
-              onOpenShowcase={() => onOpenShowcase(0)}
-            />
-            <ActionLink
-              link={item.links.secondary}
-              item={item}
-              isPrimary={false}
-              onOpenToast={onOpenToast}
-              onOpenShowcase={() => onOpenShowcase(0)}
-            />
+              {/* Action Links */}
+              {item.links && (
+                <div className="flex items-center gap-3.5 sm:gap-4 pt-2.5 sm:pt-3 border-t border-[#F2E9DC]/[0.06]">
+                  <ActionLink
+                    link={item.links.primary}
+                    item={item}
+                    isPrimary={true}
+                    onOpenToast={onOpenToast}
+                    onOpenShowcase={() => onOpenShowcase(0)}
+                  />
+                  <ActionLink
+                    link={item.links.secondary}
+                    item={item}
+                    isPrimary={false}
+                    onOpenToast={onOpenToast}
+                    onOpenShowcase={() => onOpenShowcase(0)}
+                  />
+                </div>
+              )}
+            </div>
           </div>
-        )}
-      </div>
-    </article>
+
+          {/* Right Column: Media Frame */}
+          <div
+            onClick={() => {
+              if (hasShowcase) onOpenShowcase(0);
+            }}
+            className={`order-1 md:order-2 relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-[#181520] border border-white/[0.06] group/media ${
+              hasShowcase ? "cursor-pointer" : ""
+            }`}
+          >
+            <Image
+              src={item.image}
+              alt={item.imageAlt}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 55vw, 650px"
+              className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/media:scale-[1.03]"
+            />
+            <div className="absolute inset-0 bg-black/0 group-hover/media:bg-black/15 transition-colors duration-300 pointer-events-none" />
+
+            {/* Gallery badge if item has showcase */}
+            {hasShowcase && (
+              <div className="absolute right-3 top-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#100f14]/80 backdrop-blur-md border border-white/[0.08] text-[10.5px] font-mono text-[#F2E9DC] transition-colors group-hover/media:border-[#E8963C]/40">
+                <span>Gallery ({item.showcaseItems?.length})</span>
+                <IconArrowUpRight className="w-3 h-3 text-[#E8963C]" />
+              </div>
+            )}
+          </div>
+        </div>
+      </article>
+    </div>
   );
 }

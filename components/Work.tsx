@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { workData, WorkItem } from "@/data/work";
 import { useCardSpotlight } from "@/hooks/useCardSpotlight";
 import ProjectCard from "./work/ProjectCard";
@@ -11,6 +11,8 @@ export default function Work() {
   const [showcaseItem, setShowcaseItem] = useState<WorkItem | null>(null);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const { handleMouseMove } = useCardSpotlight();
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const watermarkRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!toast) return;
@@ -20,32 +22,172 @@ export default function Work() {
     return () => clearTimeout(timer);
   }, [toast]);
 
+  // Silky scroll-driven scale entrance & exit animation
+  // 1. Entrance Zone: scales up smoothly from 0.93 to 1.00 as section enters the viewport
+  // 2. Active Zone: transform is set to "none" so native CSS position: sticky works 100% reliably
+  // 3. Exit Zone: scales down smoothly from 1.00 to 0.90 as the section finishes and moves away
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (sectionRef.current) {
+            const rect = sectionRef.current.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+
+            const startEntryY = windowHeight * 0.90;
+            const endEntryY = windowHeight * 0.50;
+            const startExitY = windowHeight * 0.85;
+            const endExitY = windowHeight * 0.10;
+
+            if (rect.top >= startEntryY) {
+              sectionRef.current.style.transform = "scale(0.93) translate3d(0, 28px, 0)";
+              sectionRef.current.style.opacity = "0.2";
+            } else if (rect.top > endEntryY) {
+              const entryProgress = Math.min(
+                Math.max((startEntryY - rect.top) / (startEntryY - endEntryY), 0),
+                1
+              );
+              const eased = Math.pow(entryProgress, 1.2);
+              const scale = 0.93 + eased * 0.07;
+              const translateY = (1 - eased) * 28;
+              const opacity = 0.2 + eased * 0.8;
+
+              sectionRef.current.style.transform = `scale(${scale}) translate3d(0, ${translateY}px, 0)`;
+              sectionRef.current.style.opacity = `${opacity}`;
+            } else if (rect.bottom < startExitY) {
+              const exitProgress = Math.min(
+                Math.max((startExitY - rect.bottom) / (startExitY - endExitY), 0),
+                1
+              );
+              const exitScale = 1.00 - exitProgress * 0.10;
+              const exitTranslateY = -exitProgress * 32;
+              const exitOpacity = Math.max(1.00 - exitProgress * 0.85, 0.15);
+
+              sectionRef.current.style.transform = `scale(${exitScale}) translate3d(0, ${exitTranslateY}px, 0)`;
+              sectionRef.current.style.opacity = `${exitOpacity}`;
+            } else {
+              // Active Zone: transform cleared to 'none' for 100% native sticky card stacking
+              sectionRef.current.style.transform = "none";
+              sectionRef.current.style.opacity = "1";
+            }
+          }
+
+          // Grounded "PROJECTS" Watermark Scroll Animation:
+          // Centered with inset-x-0 text-center (strictly X = 0, zero left shift), scales smoothly in place
+          if (watermarkRef.current && sectionRef.current) {
+            const rect = sectionRef.current.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+
+            const startEntry = windowHeight * 0.95;
+            const endEntry = windowHeight * 0.35;
+
+            if (rect.top >= startEntry) {
+              watermarkRef.current.style.opacity = "0.005";
+              watermarkRef.current.style.transform = "translate3d(0, 16px, 0) scale(0.94)";
+            } else if (rect.top > endEntry) {
+              const progress = Math.min(
+                Math.max((startEntry - rect.top) / (startEntry - endEntry), 0),
+                1
+              );
+              const eased = Math.pow(progress, 1.25);
+              const scale = 0.94 + eased * 0.06; // 0.94 -> 1.00
+              const translateY = (1 - eased) * 16;
+              const opacity = 0.005 + eased * 0.033; // 0.005 -> 0.038
+
+              watermarkRef.current.style.opacity = `${opacity.toFixed(4)}`;
+              watermarkRef.current.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0) scale(${scale.toFixed(4)})`;
+            } else {
+              // Settled in center with gentle subtle vertical parallax (ONLY Y-axis, zero horizontal shift)
+              const parallaxY = Math.max((rect.top - endEntry) * 0.04, -16);
+              watermarkRef.current.style.opacity = "0.038";
+              watermarkRef.current.style.transform = `translate3d(0, ${parallaxY.toFixed(1)}px, 0) scale(1.00)`;
+            }
+          }
+
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const openShowcase = (item: WorkItem, slideIdx: number = 0) => {
     setShowcaseItem(item);
     setActiveSlideIndex(slideIdx);
   };
 
   return (
-    <section id="work" className="py-16 sm:py-20 md:py-28 lg:py-32 border-t section-rule">
-      <div className="w-full">
-        {/* Clean, quiet section header */}
-        <div className="reveal-on-scroll mb-8 sm:mb-12 md:mb-14">
-          <span className="section-kicker">Projects</span>
-          <h2 className="text-3xl min-[360px]:text-4xl sm:text-5xl font-display font-bold text-[#F2E9DC] tracking-tight mt-3">
-            Work worth<br /><span className="text-[#E8963C]">opening up.</span>
-          </h2>
-          <p className="text-[#B8A996] text-xs min-[380px]:text-sm sm:text-base mt-2 max-w-xl leading-relaxed">
-            Systems, computational modeling, and product interfaces designed for clarity and operational reliability.
-          </p>
+    <section
+      ref={sectionRef}
+      id="work"
+      className="relative pt-16 sm:pt-24 md:pt-28 lg:pt-32 pb-14 sm:pb-20 md:pb-28 lg:pb-32 will-change-transform"
+    >
+      {/* 1. Hairline Horizon Seam: Delicate, clean gradient rule */}
+      <div
+        className="absolute top-0 left-0 right-0 w-full h-[1px] pointer-events-none z-10"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent 0%, rgba(232, 150, 60, 0.08) 20%, rgba(242, 233, 220, 0.18) 50%, rgba(232, 150, 60, 0.08) 80%, transparent 100%)",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* 2. Very subtle ambient dawn: strictly below the seam (above stays sharp dark), feathers naturally to 0% with no cut */}
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-32 pointer-events-none z-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 55% 100% at 50% 0%, rgba(232, 150, 60, 0.07) 0%, rgba(232, 150, 60, 0.018) 45%, transparent 80%)",
+        }}
+        aria-hidden="true"
+      />
+
+      <div className="relative z-10 w-full">
+        {/* Grounded section header with anchored architectural watermark */}
+        <div className="relative mb-10 sm:mb-16 md:mb-20">
+          {/* Monumental Watermark: "PROJECTS" — Left-aligned flush with header text */}
+          <div
+            ref={watermarkRef}
+            className="absolute left-0 -top-4 sm:-top-8 md:-top-12 pointer-events-none select-none -z-10 text-left will-change-transform overflow-visible"
+            style={{
+              opacity: 0.038,
+              transform: "translate3d(0, 0, 0) scale(1)",
+              transformOrigin: "left center",
+              maskImage: "linear-gradient(to bottom, black 35%, transparent 92%)",
+              WebkitMaskImage: "linear-gradient(to bottom, black 35%, transparent 92%)",
+            }}
+            aria-hidden="true"
+          >
+            <span className="font-display font-black uppercase text-[clamp(2.5rem,10.5vw,9.5rem)] leading-none tracking-[-0.03em] inline-block text-[#F2E9DC] select-none whitespace-nowrap">
+              PROJECTS
+            </span>
+          </div>
+
+          {/* Reframed header text: sits with crystal clarity in front */}
+          <div className="reveal-on-scroll relative z-10 pt-1.5 sm:pt-4">
+            <h2 className="text-2xl min-[360px]:text-3xl sm:text-5xl font-display font-bold text-[#F2E9DC] tracking-tight">
+              Work worth<br /><span className="text-[#E8963C]">opening up.</span>
+            </h2>
+            <p className="text-[#B8A996] text-xs min-[380px]:text-sm sm:text-base mt-2.5 sm:mt-3 max-w-lg leading-relaxed">
+              Systems, web interfaces, and network infrastructure.
+            </p>
+          </div>
         </div>
 
-        {/* Minimal Grid — Image paired with short, clean text block */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5">
+        {/* Full-width sticky stacked card list */}
+        <div className="flex flex-col relative w-full pt-2">
           {workData.map((item: WorkItem, index) => (
             <ProjectCard
               key={item.id}
               item={item}
               index={index}
+              totalItems={workData.length}
               handleMouseMove={handleMouseMove}
               onOpenShowcase={(slideIdx) => openShowcase(item, slideIdx ?? 0)}
               onOpenToast={(msg) => setToast(msg)}
