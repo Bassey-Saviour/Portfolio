@@ -39,6 +39,15 @@ function HeroAtmosphere() {
         }}
       />
 
+      {/* 3.5 Subtle central amber warmth to add rich depth on mobile */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[24rem] sm:w-[38rem] h-[24rem] sm:h-[38rem] rounded-full opacity-45 sm:opacity-20 blur-[110px] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(232, 150, 60, 0.15) 0%, rgba(200, 110, 30, 0.04) 50%, transparent 70%)",
+        }}
+      />
+
       {/* 4. Right side vertical fluted columns — subtle, architectural, melting away before the bottom */}
       <div
         className="absolute top-0 right-0 w-full md:w-[54%] lg:w-[45%] h-full flex justify-end opacity-35"
@@ -198,13 +207,11 @@ export default function Hero() {
           }
 
           // 2. WELCOME Watermark:
-          // Starts on the right (at progress = 0), and as we scroll down:
-          // - Centers along the X axis (offset drops from ~24vw to 0vw)
-          // - Expands in scale (from 0.85 to 1.28)
-          // - Smoothly fades out as hero leaves viewport
+          // On mobile: anchored large and centered, expanding slightly on scroll
+          // On desktop: starts on the right (at progress = 0) and centers as you scroll down
           if (watermarkRef.current) {
-            const isMobile = window.innerWidth < 640;
-            const startOffsetVw = isMobile ? 18 : 24;
+            const isMobile = window.innerWidth < 768;
+            const startOffsetVw = isMobile ? 0 : 24;
 
             // Centers progressively within the first 75% of hero scroll
             const centerProgress = Math.min(progress / 0.75, 1);
@@ -212,10 +219,11 @@ export default function Hero() {
             const eased = 1 - Math.pow(1 - centerProgress, 3);
 
             const currentOffset = (1 - eased) * startOffsetVw;
-            const currentScale = 0.85 + eased * 0.43; // grows from 0.85 to 1.28
-            const currentOpacity = Math.max((1 - progress * 1.18) * 0.026, 0);
+            const currentScale = isMobile ? (0.95 + eased * 0.18) : (0.85 + eased * 0.43);
+            const currentOpacity = Math.max((1 - progress * 1.18) * (isMobile ? 0.038 : 0.026), 0);
+            const currentY = isMobile ? (38 - eased * 6) : 36;
 
-            watermarkRef.current.style.transform = `translate3d(calc(-50% + ${currentOffset}vw), 36%, 0) scale(${currentScale})`;
+            watermarkRef.current.style.transform = `translate3d(calc(-50% + ${currentOffset}vw), ${currentY}%, 0) scale(${currentScale})`;
             watermarkRef.current.style.opacity = `${currentOpacity}`;
           }
 
@@ -252,10 +260,10 @@ export default function Hero() {
       {/* 2. Main Center Content Container with Scroll Drag */}
       <div
         ref={scrollContainerRef}
-        className="relative z-20 w-full max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 flex-1 flex flex-col justify-between items-center will-change-transform origin-center transition-opacity py-3 sm:py-5"
+        className="relative z-20 w-full max-w-[1400px] mx-auto px-4 min-[380px]:px-5 sm:px-8 lg:px-12 flex-1 flex flex-col justify-between items-center will-change-transform origin-center transition-opacity py-3 sm:py-5"
       >
-        {/* Top spacer matching bottom area height to ensure TRUE optical vertical centering for the main block */}
-        <div className="w-full h-12 sm:h-16 md:h-20 pointer-events-none" aria-hidden="true" />
+        {/* Top optical spacer */}
+        <div className="w-full h-8 sm:h-16 md:h-20 pointer-events-none" aria-hidden="true" />
 
         {/* Center Typographic Unit:
             - "I AM" positioned top-left above the name
@@ -273,13 +281,13 @@ export default function Hero() {
               transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
             }}
           >
-            <span className="font-mono text-[11px] sm:text-xs tracking-[0.20em] uppercase text-[#B8A996]/85 font-medium block select-none">
+            <span className="font-mono text-[10.5px] sm:text-xs tracking-[0.20em] uppercase text-[#B8A996]/85 font-medium block select-none">
               I AM
             </span>
           </div>
 
           {/* Center: Massive Name in Heavy Block Letters */}
-          <h1 className="font-display uppercase whitespace-nowrap leading-[0.92] select-none text-[clamp(2.4rem,7.8vw,8rem)] tracking-tight hero-name-stroke">
+          <h1 className="font-display uppercase whitespace-nowrap leading-[0.92] select-none text-[clamp(1.65rem,7.2vw,8rem)] tracking-tight hero-name-stroke">
             {allLetters.map((char, index) => {
               if (char === " ") {
                 return (
@@ -309,20 +317,20 @@ export default function Hero() {
               transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
             }}
           >
-            <span className="font-mono text-[10.5px] sm:text-xs tracking-[0.16em] uppercase text-[#B8A996]/85 font-medium block select-none">
+            <span className="font-mono text-[9px] min-[360px]:text-[10px] sm:text-xs tracking-[0.12em] sm:tracking-[0.16em] uppercase text-[#B8A996]/85 font-medium block select-none">
               SYSTEMS ENGINEER, SKILLS COLLECTOR
             </span>
           </div>
         </div>
 
         {/* Bottom Row:
-            - Left: Subtext & Action Buttons (docked at bottom-left, buttons lowered slightly)
-            - Right: Subdued "WELCOME" Watermark partly cutting at the bottom
+            - Centered and lifted up on mobile to give the watermark ample clearance
+            - Docked at bottom-left on desktop
         */}
-        <div className="w-full flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pt-6 sm:pt-8 relative overflow-visible">
-          {/* Bottom-Left: Subtext & Action Buttons */}
+        <div className="w-full flex flex-col md:flex-row items-center md:items-end justify-between gap-6 pt-4 sm:pt-8 mb-12 min-[380px]:mb-16 sm:mb-0 relative overflow-visible">
+          {/* Subtext & Action Buttons: Centered on mobile, docked left on desktop */}
           <div
-            className="flex flex-col items-start text-left z-20 max-w-md transition-all duration-700"
+            className="flex flex-col items-center md:items-start text-center md:text-left z-20 max-w-md mx-auto md:mx-0 transition-all duration-700"
             style={{
               opacity: hasEntered ? 1 : 0,
               transform: hasEntered ? "translateY(0)" : "translateY(14px)",
@@ -331,18 +339,18 @@ export default function Hero() {
             }}
           >
             {/* Tagline */}
-            <p className="font-body text-xs sm:text-sm md:text-[0.95rem] text-[#B8A996] tracking-normal leading-relaxed mb-4 sm:mb-5 font-normal">
+            <p className="font-body text-xs min-[360px]:text-sm md:text-[0.95rem] text-[#B8A996] tracking-normal leading-relaxed mb-4 sm:mb-5 font-normal">
               I build systems, then make them make sense.
             </p>
 
-            {/* Action Buttons moved slightly lower */}
-            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mt-0.5">
+            {/* Action Buttons: Centered on mobile */}
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 min-[380px]:gap-2.5 sm:gap-3 mt-0.5">
               {/* Primary View Resume Pill */}
               <a
                 href={personalData.cv?.downloadUrl || "#contact"}
                 target={personalData.cv?.downloadUrl ? "_blank" : undefined}
                 rel={personalData.cv?.downloadUrl ? "noopener noreferrer" : undefined}
-                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#E8963C] hover:bg-[#d5842d] text-[#1C1712] font-display font-semibold text-xs sm:text-sm transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-98 shadow-[0_3px_12px_rgba(232,150,60,0.3)]"
+                className="group inline-flex items-center gap-2 px-4 min-[380px]:px-5 py-2 min-[380px]:py-2.5 rounded-full bg-[#E8963C] hover:bg-[#d5842d] text-[#1C1712] font-display font-semibold text-xs sm:text-sm transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-98 shadow-[0_3px_12px_rgba(232,150,60,0.3)]"
               >
                 <IconDownload className="w-3.5 h-3.5 text-[#1C1712] transition-transform duration-300 group-hover:translate-y-0.5" />
                 <span>View Resume</span>
@@ -351,14 +359,14 @@ export default function Hero() {
               {/* Secondary Contact Me Pill */}
               <a
                 href="#contact"
-                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2A231C]/70 hover:bg-[#2A231C] border border-[#F2E9DC]/20 hover:border-[#E8963C]/70 text-[#F2E9DC] font-display font-medium text-xs sm:text-sm transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-98 backdrop-blur-md shadow-[0_3px_12px_rgba(0,0,0,0.3)]"
+                className="group inline-flex items-center gap-2 px-4 min-[380px]:px-5 py-2 min-[380px]:py-2.5 rounded-full bg-[#2A231C]/70 hover:bg-[#2A231C] border border-[#F2E9DC]/20 hover:border-[#E8963C]/70 text-[#F2E9DC] font-display font-medium text-xs sm:text-sm transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-98 backdrop-blur-md shadow-[0_3px_12px_rgba(0,0,0,0.3)]"
               >
                 <IconMail className="w-3.5 h-3.5 text-[#E8963C] transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
                 <span>Contact Me</span>
               </a>
 
               {/* Tactile Social Buttons */}
-              <div className="flex items-center gap-1.5 ml-1">
+              <div className="flex items-center gap-1.5 ml-0.5 min-[380px]:ml-1">
                 <a
                   href={
                     personalData.contact.socials.find((s) => s.icon === "github")
@@ -389,22 +397,24 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* 3. Watermark: "WELCOME" starts positioned on the right at rest:
-          - As you scroll down, it centers along the X-axis and grows bigger
-          - Smoothly fades out as the Hero transitions away
-          - Lower portion remains submerged below the bottom edge for a refined cut
+      {/* 3. Watermark: "WELCOME"
+          - On mobile: anchored monumental and centered (21vw clamp), creating an architectural foundation
+          - On desktop: starts positioned on the right and centers as you scroll down
+          - Lower portion submerged below the bottom edge with a soft feather mask
       */}
       <div
         ref={watermarkRef}
         className="absolute left-1/2 bottom-0 pointer-events-none select-none z-10 overflow-hidden leading-none w-full text-center will-change-transform"
         style={{
-          opacity: hasEntered ? 0.026 : 0,
-          transform: "translate3d(calc(-50% + 24vw), 36%, 0) scale(0.85)",
+          opacity: hasEntered ? 0.038 : 0,
+          transform: "translate3d(-50%, 38%, 0) scale(0.95)",
           transition: "opacity 900ms ease",
+          maskImage: "linear-gradient(to bottom, black 25%, transparent 92%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 25%, transparent 92%)",
         }}
         aria-hidden="true"
       >
-        <span className="font-display font-black uppercase text-[clamp(4.2rem,13vw,13.5rem)] leading-[0.74] tracking-tight inline-block text-[#F5EFE6] select-none">
+        <span className="font-display font-black uppercase text-[clamp(4.8rem,21vw,14rem)] leading-[0.74] tracking-tight inline-block text-[#F5EFE6] select-none whitespace-nowrap">
           WELCOME
         </span>
       </div>
