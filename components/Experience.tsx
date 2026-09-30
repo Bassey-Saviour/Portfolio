@@ -165,7 +165,7 @@ export default function Experience() {
                   data-open={isOpen ? "true" : "false"}
                 >
                   <div id={`exp-inner-${item.id}`} className="accordion-inner">
-                    <div className="border-t border-[#F2E9DC]/[0.08] px-4 pb-5 pt-4 min-[380px]:px-5 min-[380px]:pb-6 sm:px-6">
+                    <div className="border-t border-[#F2E9DC]/8 px-4 pb-5 pt-4 min-[380px]:px-5 min-[380px]:pb-6 sm:px-6">
                       <p className="max-w-2xl text-xs sm:text-sm leading-relaxed text-[#B8A996]">
                         {item.summary}
                       </p>
@@ -173,7 +173,7 @@ export default function Experience() {
                         {item.highlights.map((highlight) => (
                           <div
                             key={highlight}
-                            className="group/item rounded-xl bg-[#F2E9DC]/[0.045] p-3 text-xs leading-relaxed text-[#F2E9DC]/85 transition-all duration-300 hover:bg-[#F2E9DC]/[0.08] hover:-translate-y-0.5"
+                            className="group/item rounded-xl bg-[#F2E9DC]/4.5 p-3 text-xs leading-relaxed text-[#F2E9DC]/85 transition-all duration-300 hover:bg-[#F2E9DC]/8 hover:-translate-y-0.5"
                           >
                             <span className="mr-1 text-[#E8963C] inline-block transition-transform duration-300 group-hover/item:translate-x-0.5 group-hover/item:-translate-y-0.5">
                               ↗

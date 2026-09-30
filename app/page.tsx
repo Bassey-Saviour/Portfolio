@@ -27,7 +27,7 @@ export default function Home() {
           falloff="smooth"
           holdTime={350}
           fadeDuration={700}
-          lineWidth={0.5}
+          lineWidth={0.35}
           maxOpacity={0.25}
           fillOpacity={0}
           gridOpacity={0}
@@ -50,15 +50,17 @@ export default function Home() {
       <SectionTracker />
 
       {/* Main Content Spine */}
-      <main className="relative z-10 max-w-5xl lg:max-w-6xl mx-auto px-4 min-[380px]:px-6 sm:px-8 lg:px-12">
+      <main className="relative z-10 w-full overflow-x-clip">
         <Hero />
-        <About />
-        <Skills />
-        <TechStack />
-        <Work />
-        <Experience />
-        <Contact />
-        <Footer />
+        <div className="max-w-5xl lg:max-w-6xl mx-auto px-4 min-[380px]:px-6 sm:px-8 lg:px-12">
+          <About />
+          <Skills />
+          <TechStack />
+          <Work />
+          <Experience />
+          <Contact />
+          <Footer />
+        </div>
       </main>
     </div>
   );

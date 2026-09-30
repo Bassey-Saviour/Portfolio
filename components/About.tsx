@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { IconDownload } from "./Icons";
 import { useCardSpotlight } from "@/hooks/useCardSpotlight";
 
@@ -12,12 +12,103 @@ const principles = [
 
 export default function About() {
   const { handleMouseMove } = useCardSpotlight();
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  // Scroll-driven entrance wipe & scale, plus exit scale-down:
+  // 1. Entrance Zone: Triggers visibly when rect.top is between 72% and 12% of the viewport.
+  //    Sweeps across with an angled (118deg) soft gradient feather mask while scaling up from 0.90 to 1.00.
+  // 2. Reading Zone: Active zone where transform and mask are completely 'none' for native sticky scroll.
+  // 3. Exit Zone: As rect.bottom scrolls past 80% towards 8% of the viewport, scales down from 1.00 to 0.86.
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (sectionRef.current) {
+            const rect = sectionRef.current.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+
+            const startEntryY = windowHeight * 0.72;
+            const endEntryY = windowHeight * 0.12;
+            const startExitY = windowHeight * 0.80;
+            const endExitY = windowHeight * 0.08;
+
+            if (rect.top >= startEntryY) {
+              // Above entrance threshold (user is high up in Hero)
+              sectionRef.current.style.transform = "scale(0.90) translate3d(0, 36px, 0)";
+              sectionRef.current.style.opacity = "0";
+              const maskValue = "linear-gradient(118deg, #000 -45%, transparent -10%)";
+              sectionRef.current.style.maskImage = maskValue;
+              (sectionRef.current.style as any).webkitMaskImage = maskValue;
+              sectionRef.current.style.clipPath = "none";
+            } else if (rect.top > endEntryY) {
+              // Active Entrance Wipe & Scale-up
+              const entryProgress = Math.min(
+                Math.max((startEntryY - rect.top) / (startEntryY - endEntryY), 0),
+                1
+              );
+              const eased = Math.pow(entryProgress, 1.2);
+              const scale = 0.90 + eased * 0.10; // 0.90 -> 1.00
+              const translateY = (1 - eased) * 36;
+
+              // Angled 118deg luxury wipe with 35% feathered band
+              const blackStop = -45 + eased * 155;
+              const clearStop = blackStop + 35;
+              const maskValue = `linear-gradient(118deg, #000 ${blackStop}%, transparent ${clearStop}%)`;
+              const opacity = Math.min(0.2 + eased * 0.8, 1);
+
+              sectionRef.current.style.transform = `scale(${scale}) translate3d(0, ${translateY}px, 0)`;
+              sectionRef.current.style.opacity = `${opacity}`;
+              sectionRef.current.style.maskImage = maskValue;
+              (sectionRef.current.style as any).webkitMaskImage = maskValue;
+              sectionRef.current.style.clipPath = "none";
+            } else if (rect.bottom < startExitY) {
+              // Active Exit Scale-down & Drift towards next section
+              const exitProgress = Math.min(
+                Math.max((startExitY - rect.bottom) / (startExitY - endExitY), 0),
+                1
+              );
+              // Smoothly scale down from 1.00 to 0.86 and drift upward
+              const exitScale = 1.00 - exitProgress * 0.14;
+              const exitTranslateY = -exitProgress * 40;
+              const exitOpacity = Math.max(1.00 - exitProgress * 0.82, 0.15);
+
+              sectionRef.current.style.transform = `scale(${exitScale}) translate3d(0, ${exitTranslateY}px, 0)`;
+              sectionRef.current.style.opacity = `${exitOpacity}`;
+              sectionRef.current.style.maskImage = "none";
+              (sectionRef.current.style as any).webkitMaskImage = "none";
+              sectionRef.current.style.clipPath = "none";
+            } else {
+              // Active Reading Zone: transform and mask are completely cleared for 100% native sticky scroll
+              sectionRef.current.style.transform = "none";
+              sectionRef.current.style.opacity = "1";
+              sectionRef.current.style.maskImage = "none";
+              (sectionRef.current.style as any).webkitMaskImage = "none";
+              sectionRef.current.style.clipPath = "none";
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <section id="about" className="py-16 sm:py-20 md:py-28 lg:py-32 border-t section-rule">
+    <section
+      ref={sectionRef}
+      id="about"
+      className="py-16 sm:py-20 md:py-28 lg:py-32 will-change-transform origin-top transition-opacity"
+    >
       <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16 items-start">
-        <div className="reveal-on-scroll lg:sticky lg:top-28 lg:self-start flex flex-col gap-6">
-          <div>
+        {/* Sticky Operating Principles Rail */}
+        <div className="lg:sticky lg:top-28 lg:self-start flex flex-col gap-6">
+          <div className="reveal-on-scroll">
             <span className="section-kicker">About Me</span>
             <h2 className="mt-3 font-display text-3xl min-[360px]:text-4xl font-bold tracking-tight text-[#F2E9DC] sm:text-5xl">
               Meet
@@ -27,7 +118,7 @@ export default function About() {
           </div>
 
           {/* Grounded Operating Principles on the Sticky Rail */}
-          <div className="pt-6 border-t border-[#F2E9DC]/10">
+          <div className="reveal-on-scroll pt-6 border-t border-[#F2E9DC]/10">
             <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#E8963C]">
               Operating principles
             </p>

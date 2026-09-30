@@ -1,328 +1,451 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { personalData } from "@/data/personal";
 import { IconDownload, IconMail, IconGithub, IconLinkedin } from "./Icons";
 
-export default function Hero() {
-  const [imgError, setImgError] = useState(false);
-  const [mounted, setMounted] = useState(false);
+// =============================================================================
+// BACKGROUND: Seamless Site Atmosphere & Fluted Glass Columns
+// Harmonized with site-shell: #100f14 base, #E8963C amber & #4F7CAC cobalt blooms
+// =============================================================================
+function HeroAtmosphere() {
+  return (
+    <div
+      aria-hidden="true"
+      className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden z-0"
+      style={{
+        maskImage: "linear-gradient(to bottom, black 0%, black 50%, transparent 98%)",
+        WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 50%, transparent 98%)",
+      }}
+    >
+      {/* 1. Base gradient that melts seamlessly into the site-shell #100f14 canvas */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#100f14]/35 via-[#100f14]/10 to-transparent" />
 
+      {/* 2. Top-left warm amber flare (matching site primary accent #E8963C) */}
+      <div
+        className="absolute -top-32 -left-28 w-[52rem] h-[52rem] rounded-full opacity-50 blur-[140px]"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(232, 150, 60, 0.16) 0%, rgba(200, 110, 30, 0.08) 35%, rgba(100, 40, 10, 0.02) 60%, transparent 75%)",
+        }}
+      />
+
+      {/* 3. Center-right complementary cobalt bloom (matching site secondary #4F7CAC) */}
+      <div
+        className="absolute top-1/4 right-[5%] w-[42rem] h-[46rem] rounded-full opacity-40 blur-[150px]"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(79, 124, 172, 0.14) 0%, rgba(50, 80, 120, 0.05) 45%, transparent 70%)",
+        }}
+      />
+
+      {/* 4. Right side vertical fluted columns — subtle, architectural, melting away before the bottom */}
+      <div
+        className="absolute top-0 right-0 w-full md:w-[54%] lg:w-[45%] h-full flex justify-end opacity-35"
+        style={{
+          maskImage: "linear-gradient(to bottom, black 0%, black 50%, transparent 95%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 50%, transparent 95%)",
+        }}
+      >
+        {[
+          { glow: "from-[#E8963C]/[0.015] to-transparent", border: "border-[#E8963C]/[0.04]" },
+          { glow: "from-[#E8963C]/[0.025] to-transparent", border: "border-[#E8963C]/[0.05]" },
+          { glow: "from-[#E8963C]/[0.04] via-[#E8963C]/[0.015] to-transparent", border: "border-[#E8963C]/[0.06]" },
+          { glow: "from-[#E8963C]/[0.06] via-[#E8963C]/[0.02] to-transparent", border: "border-[#E8963C]/[0.08]" },
+          { glow: "from-[#E8963C]/[0.09] via-[#E8963C]/[0.03] to-transparent", border: "border-[#E8963C]/[0.10]" },
+          { glow: "from-[#E8963C]/[0.12] via-[#E8963C]/[0.04] to-transparent", border: "border-[#E8963C]/[0.12]" },
+        ].map((col, idx) => (
+          <div
+            key={`pillar-${idx}`}
+            className={`relative h-full flex-1 border-l ${col.border} bg-gradient-to-b ${col.glow}`}
+          >
+            {/* Subtle luminous vertical highlight streak */}
+            <div className="absolute top-0 left-0 w-[1px] h-1/2 bg-gradient-to-b from-[#ff9a3d]/15 via-[#E8963C]/05 to-transparent" />
+          </div>
+        ))}
+      </div>
+
+      {/* 5. Delicate noise texture overlay for high-end editorial grain */}
+      <div
+        className="absolute inset-0 opacity-[0.025] mix-blend-overlay"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)",
+          backgroundSize: "24px 24px",
+        }}
+      />
+    </div>
+  );
+}
+
+// =============================================================================
+// SCRAMBLE LETTER:
+// - On hover: cycles through random alphanumeric characters
+// - Slower pace (85ms per tick) & longer duration (~1.2s total)
+// =============================================================================
+// SCRAMBLE LETTER:
+// - Speed: 58ms per tick, ~10 iterations (~600ms total) - snappy & energetic
+// - Width-Locking: Uses a hidden ghost character of the true letter so the
+//   container width NEVER fluctuates during scramble, preventing horizontal jitter
+// - Cosmos-style entrance: masked slide-up using CSS transform & staggered delay
+// =============================================================================
+const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+function ScrambleLetter({
+  char,
+  delay,
+  hasEntered,
+}: {
+  char: string;
+  delay: number;
+  hasEntered: boolean;
+}) {
+  const [display, setDisplay] = useState(char);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const handleEnter = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
+    let iterations = 0;
+    const maxIterations = 10; // ~580ms snappy scramble
+
+    intervalRef.current = setInterval(() => {
+      iterations++;
+      if (iterations >= maxIterations) {
+        if (intervalRef.current) clearInterval(intervalRef.current);
+        setDisplay(char);
+        return;
+      }
+      setDisplay(
+        SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)]
+      );
+    }, 58); // 58ms per tick: crisp, responsive, and readable
+  }, [char]);
+
+  // Clean up on unmount
   useEffect(() => {
-    setMounted(true);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
   }, []);
+
+  return (
+    // Outer slot: overflow-visible so diagonal overhangs of A, Y, V, etc. are 100% unclipped
+    <span
+      className="relative inline-block overflow-visible align-baseline select-none cursor-default text-center"
+      onMouseEnter={handleEnter}
+    >
+      {/* 1. Ghost of the real character: locks the exact width and line height permanently */}
+      <span
+        className="invisible opacity-0 select-none pointer-events-none font-black tracking-tight"
+        aria-hidden="true"
+      >
+        {char}
+      </span>
+
+      {/* 2. Visible animated & scrambling character centered over the locked slot */}
+      <span
+        className="absolute inset-0 flex items-center justify-center transform-gpu text-[#F5EFE6] will-change-transform font-black tracking-tight"
+        style={{
+          transform: hasEntered ? "translateY(0%)" : "translateY(18px)",
+          opacity: hasEntered ? 1 : 0,
+          filter: hasEntered ? "blur(0px)" : "blur(3px)",
+          transitionProperty: "transform, opacity, filter",
+          transitionDuration: "750ms",
+          transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+          transitionDelay: `${delay}ms`,
+        }}
+      >
+        {display}
+      </span>
+    </span>
+  );
+}
+
+// =============================================================================
+// MAIN HERO COMPONENT
+// =============================================================================
+export default function Hero() {
+  const [hasEntered, setHasEntered] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const watermarkRef = useRef<HTMLDivElement | null>(null);
+
+  // Trigger entrance transition reliably on client mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHasEntered(true);
+    }, 80);
+
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const y = window.scrollY;
+          const heroHeight = window.innerHeight;
+          const progress = Math.min(Math.max(y / heroHeight, 0), 1);
+
+          // 1. Hero Content Scale:
+          // Scales down from 1.0 to ~0.52 as you scroll down.
+          // Scales back up to 1.0 as you scroll back up to the top.
+          if (scrollContainerRef.current) {
+            const scale = Math.max(1 - progress * 0.45, 0.52);
+            const translateY = y * 0.44;
+            const opacity = Math.max(1 - progress * 0.88, 0);
+
+            scrollContainerRef.current.style.transform = `translate3d(0, -${translateY}px, 0) scale(${scale})`;
+            scrollContainerRef.current.style.opacity = `${opacity}`;
+          }
+
+          // 2. WELCOME Watermark:
+          // Starts on the right (at progress = 0), and as we scroll down:
+          // - Centers along the X axis (offset drops from ~24vw to 0vw)
+          // - Expands in scale (from 0.85 to 1.28)
+          // - Smoothly fades out as hero leaves viewport
+          if (watermarkRef.current) {
+            const isMobile = window.innerWidth < 640;
+            const startOffsetVw = isMobile ? 18 : 24;
+
+            // Centers progressively within the first 75% of hero scroll
+            const centerProgress = Math.min(progress / 0.75, 1);
+            // Smooth ease-out cubic curve for natural physical momentum
+            const eased = 1 - Math.pow(1 - centerProgress, 3);
+
+            const currentOffset = (1 - eased) * startOffsetVw;
+            const currentScale = 0.85 + eased * 0.43; // grows from 0.85 to 1.28
+            const currentOpacity = Math.max((1 - progress * 1.18) * 0.026, 0);
+
+            watermarkRef.current.style.transform = `translate3d(calc(-50% + ${currentOffset}vw), 36%, 0) scale(${currentScale})`;
+            watermarkRef.current.style.opacity = `${currentOpacity}`;
+          }
+
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const firstName = "SAVIOUR";
+  const lastName = "BASSEY";
+  const allLetters = [...firstName.split(""), " ", ...lastName.split("")];
+
+  // Stagger parameters for Cosmos-style entrance
+  const LETTER_STAGGER = 55;
+  const NAME_BASE_DELAY = 350;
 
   return (
     <section
       id="hero"
-      className="relative min-h-[85vh] lg:min-h-[95vh] flex items-center justify-center pt-20 pb-12 sm:pt-24 sm:pb-16 lg:pt-28 lg:pb-24 overflow-visible"
+      className="relative w-full min-h-screen min-h-[100dvh] flex flex-col justify-between items-center pt-20 sm:pt-24 pb-8 sm:pb-12 select-none overflow-hidden"
     >
-      {/* Background Radial Glow with subtle breathing aura */}
+      {/* 1. Toned-Down Background Atmosphere */}
+      <HeroAtmosphere />
+
+      {/* 2. Main Center Content Container with Scroll Drag */}
       <div
-        aria-hidden="true"
-        className="aura-pulse absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] md:w-[700px] md:h-[700px] lg:w-[850px] lg:h-[850px] rounded-full pointer-events-none z-[1]"
-        style={{
-          background:
-            "radial-gradient(circle at 50% 40%, rgba(232, 150, 60, 0.16) 0%, rgba(232, 150, 60, 0.04) 45%, transparent 70%)",
-          filter: "blur(50px)",
-        }}
-      />
+        ref={scrollContainerRef}
+        className="relative z-20 w-full max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 flex-1 flex flex-col justify-between items-center will-change-transform origin-center transition-opacity py-3 sm:py-5"
+      >
+        {/* Top spacer matching bottom area height to ensure TRUE optical vertical centering for the main block */}
+        <div className="w-full h-12 sm:h-16 md:h-20 pointer-events-none" aria-hidden="true" />
 
-      {/* Hero Canvas Container */}
-      <div className="relative z-10 w-full">
-        {/* =========================================
-            DESKTOP VIEW (>= lg)
-           ========================================= */}
-        <div className="hidden lg:block relative w-full select-none">
-          <div className="relative h-[620px] w-full">
-            {/* Top-Right Micro-Copy */}
-            <div
-              className={`absolute right-0 top-6 text-right z-20 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                mounted ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-3"
-              }`}
-            >
-              <p className="text-xs font-mono text-[#F2E9DC] leading-snug">
-                Based in Nigeria
-                <br />
-                <span className="text-[#B8A996]">Creative technology consultant</span>
-              </p>
-            </div>
-
-            {/* Centered Cutout Portrait */}
-            <div
-              className={`absolute left-1/2 -translate-x-1/2 top-2 w-[440px] h-[550px] z-10 pointer-events-none transition-opacity duration-1000 ${
-                mounted ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              <div
-                className="float-slow relative w-full h-full"
-                style={{
-                  maskImage: "linear-gradient(to bottom, black 12%, transparent 98%)",
-                  WebkitMaskImage: "linear-gradient(to bottom, black 65%, transparent 90%)",
-                }}
-              >
-                {!imgError ? (
-                  <Image
-                    src="/saviour-portrait.png"
-                    alt="Saviour Bassey"
-                    fill
-                    priority
-                    sizes="(max-width: 1280px) 440px, 480px"
-                    className="object-cover object-top filter contrast-[1.03] brightness-[0.98] transition-transform duration-700 hover:scale-[1.02]"
-                    onError={() => setImgError(true)}
-                  />
-                ) : (
-                  /* Fallback preview if saviour-portrait.png is pending upload */
-                  <div className="relative w-full h-full flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-[#2A231C]/30 border border-[#E8963C]/20 backdrop-blur-sm shadow-[0_12px_40px_rgba(0,0,0,0.3)]">
-                    <div className="w-16 h-16 rounded-full bg-[#E8963C]/10 border border-[#E8963C]/30 flex items-center justify-center text-[#E8963C] text-xl font-display font-bold mb-3 shadow-[0_0_20px_rgba(232,150,60,0.2)]">
-                      SB
-                    </div>
-                    <p className="text-xs font-mono text-[#E8963C] mb-1">Portrait Asset</p>
-                    <p className="text-[11px] font-mono text-[#B8A996]">
-                      Place your cutout in:
-                      <br />
-                      <code className="text-[#F2E9DC] bg-[#1C1712] px-1.5 py-0.5 rounded mt-1 inline-block">
-                        public/saviour-portrait.png
-                      </code>
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Left Primary Headline: "I build systems" */}
-            <div
-              className={`absolute left-0 top-24 z-20 transition-all duration-800 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-            >
-              <h1 className="font-display font-bold text-6xl xl:text-[5.25rem] tracking-tight text-[#F2E9DC] leading-[0.96]">
-                I build
-                <br />
-                systems
-              </h1>
-            </div>
-
-            {/* Right Secondary Headline: "then make them make sense" */}
-            <div
-              className={`absolute right-0 top-60 xl:top-68 z-20 text-right transition-all duration-800 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-            >
-              <p className="font-display font-bold text-6xl xl:text-[5.25rem] tracking-tight text-[#E8963C] text-shadow-lg leading-[0.96]">
-                then make them
-                <br />
-                make sense
-              </p>
-            </div>
-
-            {/* Bottom-Left Micro-Copy */}
-            <div
-              className={`absolute left-0 bottom-30 z-20 text-left transition-all duration-800 delay-250 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-              }`}
-            >
-              <div className="text-xs font-mono text-[#F2E9DC] leading-relaxed">
-                <span className="text-[#F2E9DC]">Saviour Bassey</span>
-                <br />
-                <span className="text-[#B8A996]">Creative Engineer</span>
-                <br />
-                <span className="text-[#B8A996]">Direction - Systems Thinking</span>
-              </div>
-            </div>
+        {/* Center Typographic Unit:
+            - "I AM" positioned top-left above the name
+            - Massive centered name "SAVIOUR BASSEY"
+            - Subtitle positioned bottom-right below the name
+        */}
+        <div className="relative inline-flex flex-col items-center my-auto max-w-full">
+          {/* Top-Left Offset: "I AM" */}
+          <div
+            className="self-start pl-1 sm:pl-1.5 mb-1 sm:mb-1.5 transition-all duration-700"
+            style={{
+              opacity: hasEntered ? 1 : 0,
+              transform: hasEntered ? "translateY(0)" : "translateY(-8px)",
+              transitionDelay: "180ms",
+              transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+            }}
+          >
+            <span className="font-mono text-[11px] sm:text-xs tracking-[0.20em] uppercase text-[#B8A996]/85 font-medium block select-none">
+              I AM
+            </span>
           </div>
 
+          {/* Center: Massive Name in Heavy Block Letters */}
+          <h1 className="font-display uppercase whitespace-nowrap leading-[0.92] select-none text-[clamp(2.4rem,7.8vw,8rem)] tracking-tight hero-name-stroke">
+            {allLetters.map((char, index) => {
+              if (char === " ") {
+                return (
+                  <span key={`sp-${index}`} className="inline-block w-[0.28em]">
+                    &nbsp;
+                  </span>
+                );
+              }
+              return (
+                <ScrambleLetter
+                  key={`letter-${index}`}
+                  char={char}
+                  delay={NAME_BASE_DELAY + index * LETTER_STAGGER}
+                  hasEntered={hasEntered}
+                />
+              );
+            })}
+          </h1>
+
+          {/* Bottom-Right Offset: "SYSTEMS ENGINEER, SKILLS COLLECTOR" */}
           <div
-            className={`flex flex-col justify-center items-center mx-auto gap-6 pt-6 pb-4 transition-all duration-800 delay-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className="self-end pr-1 sm:pr-1.5 mt-1 sm:mt-1.5 transition-all duration-700"
+            style={{
+              opacity: hasEntered ? 1 : 0,
+              transform: hasEntered ? "translateY(0)" : "translateY(8px)",
+              transitionDelay: "1150ms",
+              transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+            }}
           >
-            <p className="text-base sm:text-lg font-display text-[#F2E9DC]/90 text-center max-w-xl leading-relaxed">
-              First-Class CS graduate. I build systems and make them make sense.
-            </p>
-
-            {/* Action CTAs */}
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <a
-                href="#contact"
-                className="btn-shimmer btn-tactile group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#E8963C] hover:bg-[#d5842d] text-[#1C1712] font-display font-semibold text-sm shadow-[0_2px_12px_rgba(232,150,60,0.25)] hover:shadow-[0_4px_24px_rgba(232,150,60,0.45)]"
-              >
-                <IconDownload className="w-4 h-4 text-[#1C1712] transition-transform duration-300 group-hover:translate-y-0.5" />
-                <span>View Resume</span>
-              </a>
-              <a
-                href="#contact"
-                className="btn-tactile group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#2A231C] hover:bg-[#352D24] border border-[#F2E9DC]/15 hover:border-[#E8963C]/60 text-[#F2E9DC] font-display font-medium text-sm hover:shadow-[0_4px_20px_rgba(0,0,0,0.3)]"
-              >
-                <IconMail className="w-4 h-4 text-[#E8963C] transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
-                <span>Contact Me</span>
-              </a>
-              {/* Social Links */}
-              <div className="flex items-center gap-2">
-                <a
-                  href={personalData.contact.socials.find((s) => s.icon === "github")?.url || "https://github.com"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-tactile p-2.5 rounded-full bg-[#2A231C]/60 hover:bg-[#2A231C] border border-[#F2E9DC]/10 hover:border-[#4F7CAC]/60 text-[#B8A996] hover:text-[#F2E9DC] hover:scale-110 hover:rotate-6 hover:shadow-[0_0_16px_rgba(79,124,172,0.3)]"
-                  aria-label="GitHub Profile"
-                >
-                  <IconGithub className="w-4 h-4" />
-                </a>
-                <a
-                  href={personalData.contact.socials.find((s) => s.icon === "linkedin")?.url || "https://linkedin.com"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-tactile p-2.5 rounded-full bg-[#2A231C]/60 hover:bg-[#2A231C] border border-[#F2E9DC]/10 hover:border-[#4F7CAC]/60 text-[#B8A996] hover:text-[#F2E9DC] hover:scale-110 hover:-rotate-6 hover:shadow-[0_0_16px_rgba(79,124,172,0.3)]"
-                  aria-label="LinkedIn Profile"
-                >
-                  <IconLinkedin className="w-4 h-4" />
-                </a>
-              </div>
-            </div>
-
-            {/* Stat Badges */}
-            <div className="flex flex-row justify-center items-center gap-4 sm:gap-2 pt-2">
-              <div className="group/stat cursor-default px-3 sm:px-4 transition-transform duration-300 hover:-translate-y-1">
-                <p className="font-display font-bold text-2xl sm:text-2xl text-[#E8963C] leading-[0.2] mb-1 transition-all duration-300 group-hover/stat:drop-shadow-[0_0_14px_rgba(232,150,60,0.6)]">4.87</p>
-                <span className="text-[#B8A996] font-display text-xs group-hover/stat:text-[#F2E9DC] transition-colors">CGPA</span>
-              </div>
-              <div className="group/stat cursor-default px-3 sm:px-4 border-l border-[#F2E9DC]/10 transition-transform duration-300 hover:-translate-y-1">
-                <p className="font-display font-bold text-2xl sm:text-2xl text-[#E8963C] leading-[0.2] mb-1 transition-all duration-300 group-hover/stat:drop-shadow-[0_0_14px_rgba(232,150,60,0.6)]">2+</p>
-                <span className="text-[#B8A996] font-display text-xs group-hover/stat:text-[#F2E9DC] transition-colors">Years Exp.</span>
-              </div>
-              <div className="group/stat cursor-default px-3 sm:px-4 border-l border-[#F2E9DC]/10 transition-transform duration-300 hover:-translate-y-1">
-                <p className="font-display font-bold text-2xl sm:text-2xl text-[#E8963C] leading-[0.2] mb-1 transition-all duration-300 group-hover/stat:drop-shadow-[0_0_14px_rgba(232,150,60,0.6)]">1st</p>
-                <span className="text-[#B8A996] font-display text-xs group-hover/stat:text-[#F2E9DC] transition-colors">Class Honors</span>
-              </div>
-            </div>
+            <span className="font-mono text-[10.5px] sm:text-xs tracking-[0.16em] uppercase text-[#B8A996]/85 font-medium block select-none">
+              SYSTEMS ENGINEER, SKILLS COLLECTOR
+            </span>
           </div>
         </div>
 
-        {/* =========================================
-            TABLET & MOBILE VIEW (< lg)
-           ========================================= */}
-        <div
-          className={`lg:hidden flex flex-col items-center text-center pt-2 pb-6 transition-all duration-800 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
-        >
-          {/* Top Micro-Copy */}
-          <div className="mb-5 inline-flex flex-col items-center text-xs font-mono text-[#B8A996]">
-            <span className="text-[#F2E9DC] font-medium">Based in Nigeria</span>
-            <span>Creative technology consultant</span>
-          </div>
-
-          {/* Portrait Container */}
-          <div className="relative w-48 h-60 min-[380px]:w-56 min-[380px]:h-72 sm:w-68 sm:h-84 mb-5">
-            <div
-              className="relative w-full h-full float-slow"
-              style={{
-                maskImage: "linear-gradient(to bottom, black 65%, transparent 100%)",
-                WebkitMaskImage: "linear-gradient(to bottom, black 65%, transparent 100%)",
-              }}
-            >
-              {!imgError ? (
-                <Image
-                  src="/saviour-portrait.png"
-                  alt="Saviour Bassey"
-                  fill
-                  priority
-                  sizes="(max-width: 380px) 220px, (max-width: 640px) 260px, 320px"
-                  className="object-cover object-top"
-                  onError={() => setImgError(true)}
-                />
-              ) : (
-                <div className="relative w-full h-full flex flex-col items-center justify-center text-center p-4 rounded-xl bg-[#2A231C]/40 border border-[#E8963C]/20">
-                  <div className="w-12 h-12 rounded-full bg-[#E8963C]/10 border border-[#E8963C]/30 flex items-center justify-center text-[#E8963C] font-display font-bold mb-2 shadow-[0_0_15px_rgba(232,150,60,0.2)]">
-                    SB
-                  </div>
-                  <p className="text-[11px] font-mono text-[#B8A996]">
-                    public/saviour-portrait.png
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Mobile Headlines */}
-          <div className="space-y-1.5 mb-4">
-            <h1 className="font-display font-bold text-3xl min-[360px]:text-4xl sm:text-5xl text-[#F2E9DC] tracking-tight leading-[1.08]">
-              I build systems
-            </h1>
-            <p className="font-display font-bold text-3xl min-[360px]:text-4xl sm:text-5xl text-[#E8963C] tracking-tight leading-[1.08]">
-              then make them make sense
+        {/* Bottom Row:
+            - Left: Subtext & Action Buttons (docked at bottom-left, buttons lowered slightly)
+            - Right: Subdued "WELCOME" Watermark partly cutting at the bottom
+        */}
+        <div className="w-full flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pt-6 sm:pt-8 relative overflow-visible">
+          {/* Bottom-Left: Subtext & Action Buttons */}
+          <div
+            className="flex flex-col items-start text-left z-20 max-w-md transition-all duration-700"
+            style={{
+              opacity: hasEntered ? 1 : 0,
+              transform: hasEntered ? "translateY(0)" : "translateY(14px)",
+              transitionDelay: "1350ms",
+              transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+            }}
+          >
+            {/* Tagline */}
+            <p className="font-body text-xs sm:text-sm md:text-[0.95rem] text-[#B8A996] tracking-normal leading-relaxed mb-4 sm:mb-5 font-normal">
+              I build systems, then make them make sense.
             </p>
-          </div>
 
-          {/* Lead Bio Description */}
-          <p className="text-sm min-[380px]:text-base sm:text-lg font-display text-[#F2E9DC]/90 text-center max-w-md leading-relaxed mb-6 px-2">
-            First-Class CS graduate. I build systems and make them make sense.
-          </p>
-
-          {/* Action CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-3 w-full max-w-sm">
-            <a
-              href="#contact"
-              className="btn-shimmer btn-tactile group inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-full bg-[#E8963C] hover:bg-[#d5842d] text-[#1C1712] font-display font-semibold text-xs sm:text-sm shadow-[0_2px_12px_rgba(232,150,60,0.25)] hover:shadow-[0_4px_24px_rgba(232,150,60,0.45)]"
-            >
-              <IconDownload className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1C1712] transition-transform duration-300 group-hover:translate-y-0.5" />
-              <span>View Resume</span>
-            </a>
-            <a
-              href="#contact"
-              className="btn-tactile group inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-full bg-[#2A231C] hover:bg-[#352D24] border border-[#F2E9DC]/15 hover:border-[#E8963C]/60 text-[#F2E9DC] font-display font-medium text-xs sm:text-sm hover:shadow-[0_4px_20px_rgba(0,0,0,0.3)]"
-            >
-              <IconMail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#E8963C] transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
-              <span>Contact Me</span>
-            </a>
-            {/* Social Links */}
-            <div className="flex items-center gap-2">
+            {/* Action Buttons moved slightly lower */}
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mt-0.5">
+              {/* Primary View Resume Pill */}
               <a
-                href={personalData.contact.socials.find((s) => s.icon === "github")?.url || "https://github.com"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-tactile p-2.5 rounded-full bg-[#2A231C]/60 hover:bg-[#2A231C] border border-[#F2E9DC]/10 hover:border-[#4F7CAC]/60 text-[#B8A996] hover:text-[#F2E9DC] hover:scale-110 hover:rotate-6 hover:shadow-[0_0_16px_rgba(79,124,172,0.3)]"
-                aria-label="GitHub Profile"
+                href={personalData.cv?.downloadUrl || "#contact"}
+                target={personalData.cv?.downloadUrl ? "_blank" : undefined}
+                rel={personalData.cv?.downloadUrl ? "noopener noreferrer" : undefined}
+                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#E8963C] hover:bg-[#d5842d] text-[#1C1712] font-display font-semibold text-xs sm:text-sm transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-98 shadow-[0_3px_12px_rgba(232,150,60,0.3)]"
               >
-                <IconGithub className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <IconDownload className="w-3.5 h-3.5 text-[#1C1712] transition-transform duration-300 group-hover:translate-y-0.5" />
+                <span>View Resume</span>
               </a>
+
+              {/* Secondary Contact Me Pill */}
               <a
-                href={personalData.contact.socials.find((s) => s.icon === "linkedin")?.url || "https://linkedin.com"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-tactile p-2.5 rounded-full bg-[#2A231C]/60 hover:bg-[#2A231C] border border-[#F2E9DC]/10 hover:border-[#4F7CAC]/60 text-[#B8A996] hover:text-[#F2E9DC] hover:scale-110 hover:-rotate-6 hover:shadow-[0_0_16px_rgba(79,124,172,0.3)]"
-                aria-label="LinkedIn Profile"
+                href="#contact"
+                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2A231C]/70 hover:bg-[#2A231C] border border-[#F2E9DC]/20 hover:border-[#E8963C]/70 text-[#F2E9DC] font-display font-medium text-xs sm:text-sm transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-98 backdrop-blur-md shadow-[0_3px_12px_rgba(0,0,0,0.3)]"
               >
-                <IconLinkedin className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <IconMail className="w-3.5 h-3.5 text-[#E8963C] transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
+                <span>Contact Me</span>
               </a>
-            </div>
-          </div>
 
-          {/* Stat Badges */}
-          <div className="flex flex-row justify-center items-center gap-2 min-[380px]:gap-3 sm:gap-4 pt-5">
-            <div className="group/stat cursor-default px-2.5 sm:px-4 transition-transform duration-300 hover:-translate-y-1">
-              <p className="font-display font-bold text-xl min-[380px]:text-2xl text-[#E8963C] leading-none mb-1 transition-all duration-300 group-hover/stat:drop-shadow-[0_0_14px_rgba(232,150,60,0.6)]">4.87</p>
-              <span className="text-[#B8A996] font-display text-[11px] sm:text-xs group-hover/stat:text-[#F2E9DC] transition-colors">CGPA</span>
+              {/* Tactile Social Buttons */}
+              <div className="flex items-center gap-1.5 ml-1">
+                <a
+                  href={
+                    personalData.contact.socials.find((s) => s.icon === "github")
+                      ?.url || "https://github.com"
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full bg-[#2A231C]/70 hover:bg-[#2A231C] border border-[#F2E9DC]/15 hover:border-[#E8963C]/60 text-[#B8A996] hover:text-[#F2E9DC] transition-all duration-300 hover:scale-110 hover:rotate-6 backdrop-blur-md"
+                  aria-label="GitHub Profile"
+                >
+                  <IconGithub className="w-3.5 h-3.5" />
+                </a>
+                <a
+                  href={
+                    personalData.contact.socials.find((s) => s.icon === "linkedin")
+                      ?.url || "https://linkedin.com"
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full bg-[#2A231C]/70 hover:bg-[#2A231C] border border-[#F2E9DC]/15 hover:border-[#E8963C]/60 text-[#B8A996] hover:text-[#F2E9DC] transition-all duration-300 hover:scale-110 hover:-rotate-6 backdrop-blur-md"
+                  aria-label="LinkedIn Profile"
+                >
+                  <IconLinkedin className="w-3.5 h-3.5" />
+                </a>
+              </div>
             </div>
-            <div className="group/stat cursor-default px-2.5 sm:px-4 border-l border-[#F2E9DC]/10 transition-transform duration-300 hover:-translate-y-1">
-              <p className="font-display font-bold text-xl min-[380px]:text-2xl text-[#E8963C] leading-none mb-1 transition-all duration-300 group-hover/stat:drop-shadow-[0_0_14px_rgba(232,150,60,0.6)]">2+</p>
-              <span className="text-[#B8A996] font-display text-[11px] sm:text-xs group-hover/stat:text-[#F2E9DC] transition-colors">Years Exp.</span>
-            </div>
-            <div className="group/stat cursor-default px-2.5 sm:px-4 border-l border-[#F2E9DC]/10 transition-transform duration-300 hover:-translate-y-1">
-              <p className="font-display font-bold text-xl min-[380px]:text-2xl text-[#E8963C] leading-none mb-1 transition-all duration-300 group-hover/stat:drop-shadow-[0_0_14px_rgba(232,150,60,0.6)]">1st</p>
-              <span className="text-[#B8A996] font-display text-[11px] sm:text-xs group-hover/stat:text-[#F2E9DC] transition-colors">Class Honors</span>
-            </div>
-          </div>
-
-          {/* Bottom Micro-Copy */}
-          <div className="inline-block text-xs font-mono text-[#B8A996] leading-relaxed border-t border-[#F2E9DC]/10 pt-4 mt-6 px-4">
-            <span className="text-[#F2E9DC] font-medium">Bassey Saviour</span> · Creative Engineer
-            <br />
-            <span>Direction - Systems Thinking</span>
           </div>
         </div>
       </div>
+
+      {/* 3. Watermark: "WELCOME" starts positioned on the right at rest:
+          - As you scroll down, it centers along the X-axis and grows bigger
+          - Smoothly fades out as the Hero transitions away
+          - Lower portion remains submerged below the bottom edge for a refined cut
+      */}
+      <div
+        ref={watermarkRef}
+        className="absolute left-1/2 bottom-0 pointer-events-none select-none z-10 overflow-hidden leading-none w-full text-center will-change-transform"
+        style={{
+          opacity: hasEntered ? 0.026 : 0,
+          transform: "translate3d(calc(-50% + 24vw), 36%, 0) scale(0.85)",
+          transition: "opacity 900ms ease",
+        }}
+        aria-hidden="true"
+      >
+        <span className="font-display font-black uppercase text-[clamp(4.2rem,13vw,13.5rem)] leading-[0.74] tracking-tight inline-block text-[#F5EFE6] select-none">
+          WELCOME
+        </span>
+      </div>
+
+      {/* 4. Thematic Horizon Seam: Soft, blended division rule harmonized with site amber and cream tones */}
+      <div
+        className="absolute bottom-0 left-0 right-0 w-full h-[1px] pointer-events-none z-20"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent 0%, rgba(232, 150, 60, 0.12) 12%, rgba(242, 233, 220, 0.20) 42%, rgba(232, 150, 60, 0.34) 75%, transparent 100%)",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Pronounced luminous amber ribbon hugging the seam */}
+      <div
+        className="absolute -bottom-[1px] left-0 right-0 w-full h-[2px] pointer-events-none z-10 blur-[2px]"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent 5%, rgba(232, 150, 60, 0.15) 20%, rgba(232, 150, 60, 0.42) 65%, rgba(232, 150, 60, 0.25) 85%, transparent 98%)",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Atmospheric diffused amber bloom radiating softly below the line */}
+      <div
+        className="absolute -bottom-3 right-0 w-4/5 md:w-3/5 h-8 pointer-events-none z-0 blur-lg opacity-85"
+        style={{
+          background:
+            "radial-gradient(ellipse at 65% 50%, rgba(232, 150, 60, 0.30) 0%, rgba(232, 150, 60, 0.12) 45%, transparent 75%)",
+        }}
+        aria-hidden="true"
+      />
+
+      <style jsx>{`
+        .hero-name-stroke {
+          -webkit-text-stroke: 0.6px currentColor;
+        }
+      `}</style>
     </section>
   );
 }
+
+

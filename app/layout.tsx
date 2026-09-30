@@ -1,6 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono, Syne, Caveat } from "next/font/google";
 import "./globals.css";
+
+const caveat = Caveat({
+  variable: "--font-handwritten",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+const syne = Syne({
+  variable: "--font-syne",
+  subsets: ["latin"],
+  weight: ["500", "700", "800"],
+  display: "swap",
+});
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-display",
@@ -60,7 +74,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable} scroll-smooth`}
+      className={`${caveat.variable} ${syne.variable} ${spaceGrotesk.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable} scroll-smooth`}
     >
       <body className="bg-[#1C1712] text-[#F2E9DC] font-body min-h-screen antialiased selection:bg-[#E8963C]/20 selection:text-[#E8963C]">
         {children}
