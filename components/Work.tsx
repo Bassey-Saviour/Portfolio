@@ -12,6 +12,7 @@ export default function Work() {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const { handleMouseMove } = useCardSpotlight();
   const sectionRef = useRef<HTMLElement | null>(null);
+  const headerRef = useRef<HTMLDivElement | null>(null);
   const watermarkRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -22,55 +23,38 @@ export default function Work() {
     return () => clearTimeout(timer);
   }, [toast]);
 
-  // Silky scroll-driven scale entrance & exit animation
-  // 1. Entrance Zone: scales up smoothly from 0.93 to 1.00 as section enters the viewport
-  // 2. Active Zone: transform is set to "none" so native CSS position: sticky works 100% reliably
-  // 3. Exit Zone: scales down smoothly from 1.00 to 0.90 as the section finishes and moves away
+  // Silky scroll-driven scale entrance for the header unit
   useEffect(() => {
     let ticking = false;
 
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          if (sectionRef.current) {
+          // Dynamic scale entrance for the section header unit
+          if (headerRef.current && sectionRef.current) {
             const rect = sectionRef.current.getBoundingClientRect();
             const windowHeight = window.innerHeight;
 
-            const startEntryY = windowHeight * 0.90;
-            const endEntryY = windowHeight * 0.45;
-            const startExitY = windowHeight * 0.85;
-            const endExitY = windowHeight * 0.10;
+            const startEntryY = windowHeight * 0.92;
+            const endEntryY = windowHeight * 0.40;
 
             if (rect.top >= startEntryY) {
-              sectionRef.current.style.transform = "scale(0.85) translate3d(0, 36px, 0)";
-              sectionRef.current.style.opacity = "0.15";
+              headerRef.current.style.transform = "scale(0.75)";
+              headerRef.current.style.opacity = "0.15";
             } else if (rect.top > endEntryY) {
               const entryProgress = Math.min(
                 Math.max((startEntryY - rect.top) / (startEntryY - endEntryY), 0),
                 1
               );
               const eased = Math.pow(entryProgress, 1.2);
-              const scale = 0.85 + eased * 0.15;
-              const translateY = (1 - eased) * 36;
+              const scale = 0.75 + eased * 0.25;
               const opacity = 0.15 + eased * 0.85;
 
-              sectionRef.current.style.transform = `scale(${scale.toFixed(4)}) translate3d(0, ${translateY.toFixed(1)}px, 0)`;
-              sectionRef.current.style.opacity = `${opacity.toFixed(3)}`;
-            } else if (rect.top < 50 && rect.bottom < startExitY) {
-              const exitProgress = Math.min(
-                Math.max((startExitY - rect.bottom) / (startExitY - endExitY), 0),
-                1
-              );
-              const exitScale = 1.00 - exitProgress * 0.18;
-              const exitTranslateY = -exitProgress * 40;
-              const exitOpacity = Math.max(1.00 - exitProgress * 0.85, 0.15);
-
-              sectionRef.current.style.transform = `scale(${exitScale.toFixed(4)}) translate3d(0, ${exitTranslateY.toFixed(1)}px, 0)`;
-              sectionRef.current.style.opacity = `${exitOpacity.toFixed(3)}`;
+              headerRef.current.style.transform = `scale(${scale.toFixed(4)})`;
+              headerRef.current.style.opacity = `${opacity.toFixed(3)}`;
             } else {
-              // Active Zone: transform cleared to 'none' for 100% native sticky card stacking
-              sectionRef.current.style.transform = "none";
-              sectionRef.current.style.opacity = "1";
+              headerRef.current.style.transform = "none";
+              headerRef.current.style.opacity = "1";
             }
           }
 
@@ -126,7 +110,7 @@ export default function Work() {
     <section
       ref={sectionRef}
       id="work"
-      className="relative pt-16 sm:pt-24 md:pt-28 lg:pt-32 pb-14 sm:pb-20 md:pb-28 lg:pb-32 will-change-transform"
+      className="relative pt-16 sm:pt-24 md:pt-28 lg:pt-32 pb-14 sm:pb-20 md:pb-28 lg:pb-32"
     >
       {/* 1. Hairline Horizon Seam: Delicate, clean gradient rule */}
       <div
@@ -150,7 +134,11 @@ export default function Work() {
 
       <div className="relative z-10 w-full">
         {/* Grounded section header with anchored architectural watermark */}
-        <div className="relative mb-10 sm:mb-16 md:mb-20">
+        <div
+          ref={headerRef}
+          className="relative mb-10 sm:mb-16 md:mb-20 will-change-transform"
+          style={{ transformOrigin: "left center" }}
+        >
           {/* Monumental Watermark: "PROJECTS" — Left-aligned flush with header text */}
           <div
             ref={watermarkRef}

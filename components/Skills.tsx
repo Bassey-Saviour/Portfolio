@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { useCardSpotlight } from "@/hooks/useCardSpotlight";
 import { useSectionScale } from "@/hooks/useSectionScale";
 
@@ -39,7 +39,8 @@ const proficiencies = [
 
 export default function Skills() {
   const { handleMouseMove } = useCardSpotlight();
-  const sectionRef = useSectionScale();
+  const watermarkRef = useRef<HTMLDivElement | null>(null);
+  const sectionRef = useSectionScale({ watermarkRef });
 
   return (
     <section
@@ -47,16 +48,38 @@ export default function Skills() {
       id="skills"
       className="py-16 sm:py-20 md:py-24 lg:py-28 will-change-transform"
     >
-      <div className="reveal-on-scroll flex flex-col justify-between gap-4 sm:gap-6 sm:flex-row sm:items-end">
-        <div>
-          <span className="section-kicker">What I bring</span>
-          <h2 className="mt-3 font-display text-3xl min-[360px]:text-4xl font-bold tracking-tight text-[#F2E9DC] sm:text-5xl">
-            A versatile <span className="text-[#E8963C]">build kit.</span>
-          </h2>
+      {/* Grounded section header with anchored architectural watermark */}
+      <div className="relative mb-8 sm:mb-10">
+        {/* Monumental Watermark: "SKILLS" — Left-aligned flush with header text */}
+        <div
+          ref={watermarkRef}
+          className="absolute left-0 -top-4 sm:-top-8 md:-top-14 pointer-events-none select-none -z-10 text-left will-change-transform overflow-visible"
+          style={{
+            opacity: 0.05,
+            transform: "translate3d(0, 0, 0) scale(1)",
+            transformOrigin: "left center",
+            maskImage: "linear-gradient(to bottom, black 35%, transparent 92%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 35%, transparent 92%)",
+          }}
+          aria-hidden="true"
+        >
+          <span className="font-display font-black uppercase text-[clamp(2.5rem,13.5vw,9.5rem)] leading-none tracking-[-0.03em] inline-block text-[#F2E9DC] select-none whitespace-nowrap">
+            SKILLS
+          </span>
         </div>
-        <p className="max-w-sm text-xs min-[380px]:text-sm leading-relaxed text-[#B8A996]">
-          Enough range to see the whole system. Enough depth to make the important parts real.
-        </p>
+
+        {/* Reframed header text: sits with crystal clarity in front */}
+        <div className="reveal-on-scroll relative z-10 pt-1.5 sm:pt-4 flex flex-col justify-between gap-4 sm:gap-6 sm:flex-row sm:items-end">
+          <div>
+            <span className="section-kicker">What I bring</span>
+            <h2 className="mt-3 font-display text-3xl min-[360px]:text-4xl font-bold tracking-tight text-[#F2E9DC] sm:text-5xl">
+              A versatile <span className="text-[#E8963C]">build kit.</span>
+            </h2>
+          </div>
+          <p className="max-w-sm text-xs min-[380px]:text-sm leading-relaxed text-[#B8A996]">
+            Enough range to see the whole system. Enough depth to make the important parts real.
+          </p>
+        </div>
       </div>
 
       <div className="mt-8 sm:mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">

@@ -11,7 +11,8 @@ export type { TechTool };
 export default function TechStack() {
   const [activeToolName, setActiveToolName] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useSectionScale();
+  const watermarkRef = useRef<HTMLDivElement | null>(null);
+  const sectionRef = useSectionScale({ watermarkRef });
 
   // Close popover when pressing Escape or tapping anywhere outside the grid and inspector
   useEffect(() => {
@@ -43,16 +44,38 @@ export default function TechStack() {
       id="tools"
       className="py-16 sm:py-20 md:py-24 lg:py-28 border-t section-rule relative will-change-transform"
     >
-      <div className="reveal-on-scroll flex flex-col justify-between gap-4 sm:gap-6 sm:flex-row sm:items-end">
-        <div>
-          <span className="section-kicker">Daily drivers</span>
-          <h2 className="mt-3 font-display text-3xl min-[360px]:text-4xl font-bold tracking-tight text-[#F2E9DC] sm:text-5xl">
-            Tools with <span className="text-[#E8963C]">taste.</span>
-          </h2>
+      {/* Grounded section header with anchored architectural watermark */}
+      <div className="relative mb-8 sm:mb-10">
+        {/* Monumental Watermark: "TOOLS" — Left-aligned flush with header text */}
+        <div
+          ref={watermarkRef}
+          className="absolute left-0 -top-4 sm:-top-8 md:-top-14 pointer-events-none select-none -z-10 text-left will-change-transform overflow-visible"
+          style={{
+            opacity: 0.05,
+            transform: "translate3d(0, 0, 0) scale(1)",
+            transformOrigin: "left center",
+            maskImage: "linear-gradient(to bottom, black 35%, transparent 92%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 35%, transparent 92%)",
+          }}
+          aria-hidden="true"
+        >
+          <span className="font-display font-black uppercase text-[clamp(2.5rem,13.5vw,9.5rem)] leading-none tracking-[-0.03em] inline-block text-[#F2E9DC] select-none whitespace-nowrap">
+            TOOLS
+          </span>
         </div>
-        <p className="max-w-xs text-xs min-[380px]:text-sm leading-relaxed text-[#B8A996]">
-          Hover on desktop or tap any tool to inspect proficiency, use cases, and daily application.
-        </p>
+
+        {/* Reframed header text: sits with crystal clarity in front */}
+        <div className="reveal-on-scroll relative z-10 pt-1.5 sm:pt-4 flex flex-col justify-between gap-4 sm:gap-6 sm:flex-row sm:items-end">
+          <div>
+            <span className="section-kicker">Daily drivers</span>
+            <h2 className="mt-3 font-display text-3xl min-[360px]:text-4xl font-bold tracking-tight text-[#F2E9DC] sm:text-5xl">
+              Tools with <span className="text-[#E8963C]">taste.</span>
+            </h2>
+          </div>
+          <p className="max-w-xs text-xs min-[380px]:text-sm leading-relaxed text-[#B8A996]">
+            Hover on desktop or tap any tool to inspect proficiency, use cases, and daily application.
+          </p>
+        </div>
       </div>
 
       {/* Interactive Tool Grid & Mobile Inspector Container */}

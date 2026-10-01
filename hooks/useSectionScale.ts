@@ -12,13 +12,15 @@ export interface SectionScaleOptions {
   exitStart?: number; // Viewport factor where exit starts (default: 0.85)
   exitEnd?: number; // Viewport factor where exit completes (default: 0.08)
   isTerminal?: boolean; // If true, skips exit scaling (for last section / footer)
+  watermarkRef?: React.RefObject<HTMLElement | null>; // Optional watermark ref to animate in sync
 }
 
 /**
  * Silky scroll-driven scale entrance & exit animation for portfolio sections.
- * - Entrance: Scales smoothly up from minScale (e.g. 0.85) to 1.00 with gentle vertical glide.
+ * - Entrance: Scales smoothly up from minScale (e.g. 0.75) to 1.00 with gentle vertical glide.
  * - Active Zone: Resets style.transform to "none" so native CSS position: sticky & rendering remain 100% intact.
- * - Exit Zone: As the section leaves out the top of the viewport, scales smoothly down to exitScale (e.g. 0.82).
+ * - Exit Zone: As the section leaves out the top of the viewport, scales smoothly down to exitScale (e.g. 0.72).
+ * - Watermark: Synchronously animates an architectural background watermark with subtle depth parallax.
  */
 export function useSectionScale(options: SectionScaleOptions = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -33,6 +35,7 @@ export function useSectionScale(options: SectionScaleOptions = {}) {
     exitStart = 0.85,
     exitEnd = 0.08,
     isTerminal = false,
+    watermarkRef,
   } = options;
 
   useEffect(() => {
@@ -107,6 +110,38 @@ export function useSectionScale(options: SectionScaleOptions = {}) {
               sectionRef.current.style.opacity = "1";
             }
           }
+
+          // Grounded Watermark Scroll Animation (synchronous with section motion)
+          if (watermarkRef && watermarkRef.current && sectionRef.current) {
+            const rect = sectionRef.current.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+
+            const startWm = windowHeight * 0.95;
+            const endWm = windowHeight * 0.35;
+
+            if (rect.top >= startWm) {
+              watermarkRef.current.style.opacity = "0.005";
+              watermarkRef.current.style.transform =
+                "translate3d(0, 16px, 0) scale(0.94)";
+            } else if (rect.top > endWm) {
+              const wmProgress = Math.min(
+                Math.max((startWm - rect.top) / (startWm - endWm), 0),
+                1,
+              );
+              const wmEased = Math.pow(wmProgress, 1.25);
+              const wmScale = 0.94 + wmEased * 0.06;
+              const wmTranslateY = (1 - wmEased) * 16;
+              const wmOpacity = 0.005 + wmEased * 0.045;
+
+              watermarkRef.current.style.opacity = `${wmOpacity.toFixed(4)}`;
+              watermarkRef.current.style.transform = `translate3d(0, ${wmTranslateY.toFixed(1)}px, 0) scale(${wmScale.toFixed(4)})`;
+            } else {
+              const parallaxY = Math.max((rect.top - endWm) * 0.04, -16);
+              watermarkRef.current.style.opacity = "0.05";
+              watermarkRef.current.style.transform = `translate3d(0, ${parallaxY.toFixed(1)}px, 0) scale(1.00)`;
+            }
+          }
+
           ticking = false;
         });
         ticking = true;
@@ -131,6 +166,7 @@ export function useSectionScale(options: SectionScaleOptions = {}) {
     exitStart,
     exitEnd,
     isTerminal,
+    watermarkRef,
   ]);
 
   return sectionRef;

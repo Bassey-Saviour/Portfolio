@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { experienceData } from "@/data/experience";
 import { IconArrowUpRight } from "./Icons";
 import { useSectionScale } from "@/hooks/useSectionScale";
 
 export default function Experience() {
   const [openId, setOpenId] = useState<string | null>(experienceData[0]?.id ?? null);
-  const sectionRef = useSectionScale();
+  const watermarkRef = useRef<HTMLDivElement | null>(null);
+  const sectionRef = useSectionScale({ watermarkRef });
 
   const handleToggle = (id: string) => {
     if (openId === id) {
@@ -63,14 +64,34 @@ export default function Experience() {
       className="py-16 sm:py-20 md:py-28 lg:py-32 border-t section-rule will-change-transform"
     >
       <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16 items-start">
-        <div className="reveal-on-scroll lg:sticky lg:top-28 lg:self-start">
-          <span className="section-kicker">Work Experience</span>
-          <h2 className="mt-3 font-display text-3xl min-[360px]:text-4xl sm:text-5xl font-bold tracking-tight text-[#F2E9DC]">
-            Experience,<br /><span className="text-[#4F7CAC]">distilled.</span>
-          </h2>
-          <p className="mt-4 sm:mt-5 max-w-xs text-xs min-[380px]:text-sm leading-relaxed text-[#B8A996]">
-            My professional journey working in teams and institutions, coupled with my impact.
-          </p>
+        <div className="relative reveal-on-scroll lg:sticky lg:top-28 lg:self-start">
+          {/* Monumental Watermark: "EXPERIENCE" — Left-aligned flush with header text */}
+          <div
+            ref={watermarkRef}
+            className="absolute left-0 -top-4 sm:-top-8 md:-top-14 pointer-events-none select-none -z-10 text-left will-change-transform overflow-visible"
+            style={{
+              opacity: 0.05,
+              transform: "translate3d(0, 0, 0) scale(1)",
+              transformOrigin: "left center",
+              maskImage: "linear-gradient(to bottom, black 35%, transparent 92%)",
+              WebkitMaskImage: "linear-gradient(to bottom, black 35%, transparent 92%)",
+            }}
+            aria-hidden="true"
+          >
+            <span className="font-display font-black uppercase text-[clamp(2.3rem,11.5vw,7.8rem)] leading-none tracking-[-0.03em] inline-block text-[#F2E9DC] select-none whitespace-nowrap">
+              EXPERIENCE
+            </span>
+          </div>
+
+          <div className="relative z-10 pt-1.5 sm:pt-4">
+            <span className="section-kicker">Work Experience</span>
+            <h2 className="mt-3 font-display text-3xl min-[360px]:text-4xl sm:text-5xl font-bold tracking-tight text-[#F2E9DC]">
+              Experience,<br /><span className="text-[#4F7CAC]">distilled.</span>
+            </h2>
+            <p className="mt-4 sm:mt-5 max-w-xs text-xs min-[380px]:text-sm leading-relaxed text-[#B8A996]">
+              My professional journey working in teams and institutions, coupled with my impact.
+            </p>
+          </div>
 
           {/* Interactive Quick-Jump Positions Rail (Desktop) */}
           {/* <div className="hidden lg:flex flex-col gap-2 pt-6 border-t border-[#F2E9DC]/10 mt-8">

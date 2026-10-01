@@ -36,7 +36,7 @@ export default function About() {
 
             if (rect.top >= startEntryY) {
               // Above entrance threshold (user is high up in Hero)
-              sectionRef.current.style.transform = "scale(0.85) translate3d(0, 42px, 0)";
+              sectionRef.current.style.transform = "scale(0.75) translate3d(0, 42px, 0)";
               sectionRef.current.style.opacity = "0";
               const maskValue = "linear-gradient(118deg, #000 -45%, transparent -10%)";
               sectionRef.current.style.maskImage = maskValue;
@@ -49,7 +49,7 @@ export default function About() {
                 1
               );
               const eased = Math.pow(entryProgress, 1.2);
-              const scale = 0.85 + eased * 0.15; // 0.85 -> 1.00
+              const scale = 0.75 + eased * 0.25; // 0.75 -> 1.00
               const translateY = (1 - eased) * 42;
 
               // Angled 118deg luxury wipe with 35% feathered band
@@ -69,8 +69,8 @@ export default function About() {
                 Math.max((startExitY - rect.bottom) / (startExitY - endExitY), 0),
                 1
               );
-              // Smoothly scale down from 1.00 to 0.82 and drift upward
-              const exitScale = 1.00 - exitProgress * 0.18;
+              // Smoothly scale down from 1.00 to 0.72 and drift upward
+              const exitScale = 1.00 - exitProgress * 0.28;
               const exitTranslateY = -exitProgress * 44;
               const exitOpacity = Math.max(1.00 - exitProgress * 0.85, 0.15);
 

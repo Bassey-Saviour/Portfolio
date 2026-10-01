@@ -281,10 +281,10 @@ export default function ProjectCard({
 
             if (rect.top >= windowHeight) {
               // Below viewport: waiting to enter
-              innerRef.current.style.transform = `scale(0.88) translate3d(0, ${isMobile ? 24 : 36}px, 0)`;
+              innerRef.current.style.transform = "scale(0.92)";
               innerRef.current.style.opacity = "0.20";
             } else if (rect.top > stickyTop) {
-              // Rising up into viewport: silky smooth scale entrance from 0.88 to 1.00
+              // Rising up into viewport: pure smooth scale entrance from 0.92 to 1.00
               const startEntry = windowHeight * 0.96;
               const endEntry = stickyTop + 24;
               const entryProgress = Math.min(
@@ -292,11 +292,10 @@ export default function ProjectCard({
                 1
               );
               const eased = Math.pow(entryProgress, 1.25);
-              const scale = 0.88 + eased * 0.12;
-              const translateY = (1 - eased) * (isMobile ? 24 : 36);
+              const scale = 0.92 + eased * 0.08;
               const opacity = 0.20 + eased * 0.80;
 
-              innerRef.current.style.transform = `scale(${scale.toFixed(4)}) translate3d(0, ${translateY.toFixed(1)}px, 0)`;
+              innerRef.current.style.transform = `scale(${scale.toFixed(4)})`;
               innerRef.current.style.opacity = `${opacity.toFixed(3)}`;
             } else {
               // Locked in sticky position: check if the next card is arriving to cover it
@@ -316,20 +315,20 @@ export default function ProjectCard({
                   const exitScale = 1.00 - coverEased * 0.05;
                   const exitOpacity = 1.00 - coverEased * 0.25;
 
-                  innerRef.current.style.transform = `scale(${exitScale.toFixed(4)}) translate3d(0, 0, 0)`;
+                  innerRef.current.style.transform = `scale(${exitScale.toFixed(4)})`;
                   innerRef.current.style.opacity = `${exitOpacity.toFixed(3)}`;
                 } else if (nextRect.top <= endCover) {
                   // Fully covered by next card: resting deck layer
-                  innerRef.current.style.transform = "scale(0.95) translate3d(0, 0, 0)";
+                  innerRef.current.style.transform = "scale(0.95)";
                   innerRef.current.style.opacity = "0.75";
                 } else {
                   // Next card hasn't reached cover zone yet
-                  innerRef.current.style.transform = "scale(1.00) translate3d(0, 0, 0)";
+                  innerRef.current.style.transform = "scale(1.00)";
                   innerRef.current.style.opacity = "1";
                 }
               } else {
                 // Final project card in the stack
-                innerRef.current.style.transform = "scale(1.00) translate3d(0, 0, 0)";
+                innerRef.current.style.transform = "scale(1.00)";
                 innerRef.current.style.opacity = "1";
               }
             }
