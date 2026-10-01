@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { personalData } from "@/data/personal";
 import { IconDownload, IconMail, IconGithub, IconLinkedin } from "./Icons";
+import InteractiveAsterisk from "./hero/InteractiveAsterisk";
 
 // =============================================================================
 // BACKGROUND: Seamless Site Atmosphere & Fluted Glass Columns
@@ -257,10 +258,13 @@ export default function Hero() {
       {/* 1. Toned-Down Background Atmosphere */}
       <HeroAtmosphere />
 
+      {/* 1.5 Interactive Kinetic 6-Point Asterisk */}
+      <InteractiveAsterisk />
+
       {/* 2. Main Center Content Container with Scroll Drag */}
       <div
         ref={scrollContainerRef}
-        className="relative z-20 w-full max-w-[1400px] mx-auto px-4 min-[380px]:px-5 sm:px-8 lg:px-12 flex-1 flex flex-col justify-between items-center will-change-transform origin-center transition-opacity py-3 sm:py-5"
+        className="relative z-20 w-full max-w-[1400px] mx-auto px-4 min-[380px]:px-5 sm:px-8 lg:px-12 flex-1 flex flex-col justify-between items-center will-change-transform origin-center transition-opacity py-3 sm:py-5 pointer-events-none"
       >
         {/* Top optical spacer */}
         <div className="w-full h-8 sm:h-16 md:h-20 pointer-events-none" aria-hidden="true" />
@@ -270,7 +274,7 @@ export default function Hero() {
             - Massive centered name "SAVIOUR BASSEY"
             - Subtitle positioned bottom-right below the name
         */}
-        <div className="relative inline-flex flex-col items-center my-auto max-w-full">
+        <div className="relative inline-flex flex-col items-center my-auto max-w-full pointer-events-auto">
           {/* Top-Left Offset: "I AM" */}
           <div
             className="self-start pl-1 sm:pl-1.5 mb-1 sm:mb-1.5 transition-all duration-700"
@@ -327,7 +331,7 @@ export default function Hero() {
             - Centered and lifted up on mobile to give the watermark ample clearance
             - Docked at bottom-left on desktop
         */}
-        <div className="w-full flex flex-col md:flex-row items-center md:items-end justify-between gap-6 pt-4 sm:pt-8 mb-12 min-[380px]:mb-16 sm:mb-0 relative overflow-visible">
+        <div className="w-full flex flex-col md:flex-row items-center md:items-end justify-between gap-6 pt-4 sm:pt-8 mb-12 min-[380px]:mb-16 sm:mb-0 relative overflow-visible pointer-events-auto">
           {/* Subtext & Action Buttons: Centered on mobile, docked left on desktop */}
           <div
             className="flex flex-col items-center md:items-start text-center md:text-left z-20 max-w-md mx-auto md:mx-0 transition-all duration-700"

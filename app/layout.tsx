@@ -76,6 +76,21 @@ export default function RootLayout({
       lang="en"
       className={`${caveat.variable} ${syne.variable} ${spaceGrotesk.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable} scroll-smooth`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  if (sessionStorage.getItem('portfolio_intro_seen')) {
+                    document.documentElement.classList.add('intro-done');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="bg-[#1C1712] text-[#F2E9DC] font-body min-h-screen antialiased selection:bg-[#E8963C]/20 selection:text-[#E8963C]">
         {children}
       </body>

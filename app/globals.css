@@ -59,6 +59,10 @@
     opacity: 0.7;
   }
 
+  html.intro-done #intro-curtain {
+    display: none !important;
+  }
+
   .glass-panel {
     background: linear-gradient(135deg, rgba(42, 35, 28, 0.78), rgba(26, 23, 34, 0.56));
     border: 1px solid rgba(255, 248, 240, 0.13);
