@@ -48,7 +48,7 @@
   .site-shell {
     overflow-x: clip;
     background:
-      radial-gradient(circle at 12% 5%, rgba(232, 150, 60, 0.16), transparent 28rem),
+      radial-gradient(circle at 12% 5%, rgba(232, 150, 60, 0.04), transparent 28rem),
       radial-gradient(circle at 92% 23%, rgba(79, 124, 172, 0.17), transparent 31rem),
       radial-gradient(circle at 52% 78%, rgba(173, 105, 205, 0.09), transparent 34rem),
       #100f14;

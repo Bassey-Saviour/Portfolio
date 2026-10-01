@@ -22,30 +22,21 @@ function HeroAtmosphere() {
       {/* 1. Base gradient that melts seamlessly into the site-shell #100f14 canvas */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#100f14]/35 via-[#100f14]/10 to-transparent" />
 
-      {/* 2. Top-left warm amber flare (matching site primary accent #E8963C) */}
+      {/* 2. Top-left warm amber flare (subtly toned down for clean editorial background) */}
       <div
-        className="absolute -top-32 -left-28 w-[52rem] h-[52rem] rounded-full opacity-50 blur-[140px]"
+        className="absolute -top-32 -left-28 w-[52rem] h-[52rem] rounded-full opacity-20 blur-[160px] pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, rgba(232, 150, 60, 0.16) 0%, rgba(200, 110, 30, 0.08) 35%, rgba(100, 40, 10, 0.02) 60%, transparent 75%)",
+            "radial-gradient(circle, rgba(232, 150, 60, 0.08) 0%, rgba(200, 110, 30, 0.03) 40%, transparent 70%)",
         }}
       />
 
-      {/* 3. Center-right complementary cobalt bloom (matching site secondary #4F7CAC) */}
+      {/* 3. Center-right complementary cobalt bloom (subtly softened) */}
       <div
-        className="absolute top-1/4 right-[5%] w-[42rem] h-[46rem] rounded-full opacity-40 blur-[150px]"
+        className="absolute top-1/4 right-[5%] w-[42rem] h-[46rem] rounded-full opacity-15 blur-[160px] pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(79, 124, 172, 0.14) 0%, rgba(50, 80, 120, 0.05) 45%, transparent 70%)",
-        }}
-      />
-
-      {/* 3.5 Subtle central amber warmth to add rich depth on mobile */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[24rem] sm:w-[38rem] h-[24rem] sm:h-[38rem] rounded-full opacity-45 sm:opacity-20 blur-[110px] pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(232, 150, 60, 0.15) 0%, rgba(200, 110, 30, 0.04) 50%, transparent 70%)",
+            "radial-gradient(ellipse at center, rgba(79, 124, 172, 0.06) 0%, rgba(50, 80, 120, 0.02) 45%, transparent 70%)",
         }}
       />
 
