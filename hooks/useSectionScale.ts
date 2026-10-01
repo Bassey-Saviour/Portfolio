@@ -115,12 +115,17 @@ export function useSectionScale(options: SectionScaleOptions = {}) {
           if (watermarkRef && watermarkRef.current && sectionRef.current) {
             const rect = sectionRef.current.getBoundingClientRect();
             const windowHeight = window.innerHeight;
+            const isMobile = window.innerWidth < 768;
 
             const startWm = windowHeight * 0.95;
             const endWm = windowHeight * 0.35;
 
+            // On mobile, watermarks need higher opacity to overcome small screens and glare
+            const maxWmOpacity = isMobile ? 0.11 : 0.055;
+            const minWmOpacity = isMobile ? 0.025 : 0.005;
+
             if (rect.top >= startWm) {
-              watermarkRef.current.style.opacity = "0.005";
+              watermarkRef.current.style.opacity = `${minWmOpacity}`;
               watermarkRef.current.style.transform =
                 "translate3d(0, 16px, 0) scale(0.94)";
             } else if (rect.top > endWm) {
@@ -131,13 +136,13 @@ export function useSectionScale(options: SectionScaleOptions = {}) {
               const wmEased = Math.pow(wmProgress, 1.25);
               const wmScale = 0.94 + wmEased * 0.06;
               const wmTranslateY = (1 - wmEased) * 16;
-              const wmOpacity = 0.005 + wmEased * 0.045;
+              const wmOpacity = minWmOpacity + wmEased * (maxWmOpacity - minWmOpacity);
 
               watermarkRef.current.style.opacity = `${wmOpacity.toFixed(4)}`;
               watermarkRef.current.style.transform = `translate3d(0, ${wmTranslateY.toFixed(1)}px, 0) scale(${wmScale.toFixed(4)})`;
             } else {
               const parallaxY = Math.max((rect.top - endWm) * 0.04, -16);
-              watermarkRef.current.style.opacity = "0.05";
+              watermarkRef.current.style.opacity = `${maxWmOpacity}`;
               watermarkRef.current.style.transform = `translate3d(0, ${parallaxY.toFixed(1)}px, 0) scale(1.00)`;
             }
           }

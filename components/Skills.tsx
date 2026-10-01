@@ -55,15 +55,15 @@ export default function Skills() {
           ref={watermarkRef}
           className="absolute left-0 -top-4 sm:-top-8 md:-top-14 pointer-events-none select-none -z-10 text-left will-change-transform overflow-visible"
           style={{
-            opacity: 0.05,
+            opacity: 0.09,
             transform: "translate3d(0, 0, 0) scale(1)",
             transformOrigin: "left center",
-            maskImage: "linear-gradient(to bottom, black 35%, transparent 92%)",
-            WebkitMaskImage: "linear-gradient(to bottom, black 35%, transparent 92%)",
+            maskImage: "linear-gradient(to bottom, black 45%, transparent 95%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 45%, transparent 95%)",
           }}
           aria-hidden="true"
         >
-          <span className="font-display font-black uppercase text-[clamp(2.5rem,13.5vw,9.5rem)] leading-none tracking-[-0.03em] inline-block text-[#F2E9DC] select-none whitespace-nowrap">
+          <span className="font-display font-black uppercase text-[clamp(3.8rem,18.5vw,9.5rem)] leading-none tracking-[-0.03em] inline-block text-[#F2E9DC] select-none whitespace-nowrap">
             SKILLS
           </span>
         </div>

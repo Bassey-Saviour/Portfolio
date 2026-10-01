@@ -21,8 +21,17 @@ export default function InteractiveAsterisk() {
 
   const { phase } = useIntro();
   const [mounted, setMounted] = useState(false);
+  const [isMobileScreen, setIsMobileScreen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isDraggingState, setIsDraggingState] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const checkMobile = () => setIsMobileScreen(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Transition trajectory tracking
   const transitionStartTimeRef = useRef<number | null>(null);
@@ -49,10 +58,6 @@ export default function InteractiveAsterisk() {
     dragDistance: 0,
     lastScrollY: 0,
   });
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     let animId: number;
@@ -93,12 +98,12 @@ export default function InteractiveAsterisk() {
           // 1. More active spin during loading phase
           p.baseRotationSpeed = 0.35;
 
-          // 2. Organic alive floating hover in top-left
-          const baseStartX = isMobile ? window.innerWidth * 0.38 : window.innerWidth * 0.20;
-          const baseStartY = isMobile ? window.innerHeight * 0.28 : window.innerHeight * 0.26;
+          // 2. Organic alive floating hover in top half (centered on mobile)
+          const baseStartX = isMobile ? window.innerWidth * 0.50 : window.innerWidth * 0.20;
+          const baseStartY = isMobile ? window.innerHeight * 0.35 : window.innerHeight * 0.26;
 
-          const floatX = Math.cos(currentTime * 0.0022) * 6;
-          const floatY = Math.sin(currentTime * 0.0028) * 9;
+          const floatX = Math.cos(currentTime * 0.0022) * (isMobile ? 3 : 6);
+          const floatY = Math.sin(currentTime * 0.0028) * (isMobile ? 5 : 9);
 
           const curX = baseStartX + floatX;
           const curY = baseStartY + floatY;
@@ -303,7 +308,7 @@ export default function InteractiveAsterisk() {
   };
 
   const ARM_LENGTH = 180; // half-bar length from center to tip
-  const BAR_THICKNESS = 36; // balanced thickness (thinner than original 64px, sturdier than 22px)
+  const BAR_THICKNESS = isMobileScreen ? 64 : 36; // chunky brutalist on mobile, original slender on desktop
 
   const isIntroActive = phase !== "complete";
   const isTransitioning = phase === "transitioning";
@@ -312,7 +317,7 @@ export default function InteractiveAsterisk() {
   const AsteriskGraphic = (
     <svg
       ref={asteriskRef}
-      viewBox="-210 -210 420 420"
+      viewBox="-215 -215 430 430"
       className={`w-full h-full touch-none select-none transition-opacity duration-300 ${
         isIntroActive
           ? "pointer-events-none"
@@ -342,17 +347,23 @@ export default function InteractiveAsterisk() {
         }
       }}
     >
-      {/* Clean, Flat Graphic 6-Point Asterisk */}
+      {/* Clean, Flat Graphic 6-Point Asterisk: Solid white on mobile, original subtle cream on desktop */}
       <g
-        fill={phase === "loading" ? "#100f14" : "#F2E9DC"}
+        fill={
+          phase === "loading"
+            ? "#100f14"
+            : isMobileScreen
+            ? "#FFFFFF"
+            : "#F2E9DC"
+        }
         opacity={
           phase === "loading"
-            ? 0.88
+            ? 0.92
             : phase === "transitioning"
-            ? 0.10
+            ? isMobileScreen ? 0.95 : 0.10
             : isHovered || isDraggingState
-            ? 0.18
-            : 0.10
+            ? isMobileScreen ? 1.0 : 0.18
+            : isMobileScreen ? 1.0 : 0.10
         }
         style={{
           transition: isTransitioning
@@ -374,6 +385,11 @@ export default function InteractiveAsterisk() {
     </svg>
   );
 
+  // Responsive dimension: prominent on mobile, original elegant clamp on desktop
+  const asteriskDimension = isMobileScreen
+    ? "clamp(230px, 64vw, 290px)"
+    : "clamp(220px, 34vw, 440px)";
+
   // During loading and transition phases, render via Portal above the white curtain (z-[90])
   if (mounted && isIntroActive) {
     return (
@@ -381,10 +397,10 @@ export default function InteractiveAsterisk() {
         {/* Invisible layout anchor in #hero to measure destination coordinates */}
         <div
           ref={anchorRef}
-          className="absolute top-[34%] sm:top-[38%] lg:top-[42%] right-[0%] min-[420px]:right-[4%] sm:right-[10%] lg:right-[15%] -translate-y-1/2 z-10 pointer-events-none select-none overflow-visible will-change-transform"
+          className="relative md:absolute md:top-[38%] md:lg:top-[42%] md:right-[10%] md:lg:right-[15%] md:-translate-y-1/2 z-10 pointer-events-none select-none overflow-visible will-change-transform flex items-center justify-center shrink-0 mb-2 min-[380px]:mb-3 md:mb-0"
           style={{
-            width: "clamp(220px, 34vw, 440px)",
-            height: "clamp(220px, 34vw, 440px)",
+            width: asteriskDimension,
+            height: asteriskDimension,
           }}
           aria-hidden="true"
         />
@@ -395,8 +411,8 @@ export default function InteractiveAsterisk() {
             ref={portalContainerRef}
             className="fixed top-0 left-0 z-90 pointer-events-none select-none overflow-visible will-change-transform"
             style={{
-              width: "clamp(220px, 34vw, 440px)",
-              height: "clamp(220px, 34vw, 440px)",
+              width: asteriskDimension,
+              height: asteriskDimension,
             }}
             aria-label="Kinetic Asterisk Symbol"
           >
@@ -412,10 +428,10 @@ export default function InteractiveAsterisk() {
   return (
     <div
       ref={anchorRef}
-      className="absolute top-[34%] sm:top-[38%] lg:top-[42%] right-[0%] min-[420px]:right-[4%] sm:right-[10%] lg:right-[15%] -translate-y-1/2 z-10 pointer-events-auto select-none overflow-visible will-change-transform"
+      className="relative md:absolute md:top-[38%] md:lg:top-[42%] md:right-[10%] md:lg:right-[15%] md:-translate-y-1/2 z-10 pointer-events-auto select-none overflow-visible will-change-transform flex items-center justify-center shrink-0 mb-2 min-[380px]:mb-3 md:mb-0"
       style={{
-        width: "clamp(220px, 34vw, 440px)",
-        height: "clamp(220px, 34vw, 440px)",
+        width: asteriskDimension,
+        height: asteriskDimension,
       }}
       aria-label="Minimal Kinetic Asterisk"
       role="button"
