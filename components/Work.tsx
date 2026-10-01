@@ -63,12 +63,17 @@ export default function Work() {
           if (watermarkRef.current && sectionRef.current) {
             const rect = sectionRef.current.getBoundingClientRect();
             const windowHeight = window.innerHeight;
+            const isMob = window.innerWidth < 768;
 
             const startEntry = windowHeight * 0.95;
             const endEntry = windowHeight * 0.35;
 
+            // On mobile, watermarks need higher opacity (0.11) to overcome small screens and glare
+            const maxWmOpacity = isMob ? 0.11 : 0.055;
+            const minWmOpacity = isMob ? 0.025 : 0.005;
+
             if (rect.top >= startEntry) {
-              watermarkRef.current.style.opacity = "0.005";
+              watermarkRef.current.style.opacity = `${minWmOpacity}`;
               watermarkRef.current.style.transform = "translate3d(0, 16px, 0) scale(0.94)";
             } else if (rect.top > endEntry) {
               const progress = Math.min(
@@ -78,14 +83,14 @@ export default function Work() {
               const eased = Math.pow(progress, 1.25);
               const scale = 0.94 + eased * 0.06; // 0.94 -> 1.00
               const translateY = (1 - eased) * 16;
-              const opacity = 0.005 + eased * 0.033; // 0.005 -> 0.038
+              const opacity = minWmOpacity + eased * (maxWmOpacity - minWmOpacity);
 
               watermarkRef.current.style.opacity = `${opacity.toFixed(4)}`;
               watermarkRef.current.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0) scale(${scale.toFixed(4)})`;
             } else {
               // Settled in center with gentle subtle vertical parallax (ONLY Y-axis, zero horizontal shift)
               const parallaxY = Math.max((rect.top - endEntry) * 0.04, -16);
-              watermarkRef.current.style.opacity = "0.038";
+              watermarkRef.current.style.opacity = `${maxWmOpacity}`;
               watermarkRef.current.style.transform = `translate3d(0, ${parallaxY.toFixed(1)}px, 0) scale(1.00)`;
             }
           }
@@ -97,8 +102,12 @@ export default function Work() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, []);
 
   const openShowcase = (item: WorkItem, slideIdx: number = 0) => {
@@ -144,7 +153,7 @@ export default function Work() {
             ref={watermarkRef}
             className="absolute left-0 -top-4 sm:-top-8 md:-top-14 pointer-events-none select-none -z-10 text-left will-change-transform overflow-visible"
             style={{
-              opacity: 0.095,
+              opacity: 0.11,
               transform: "translate3d(0, 0, 0) scale(1)",
               transformOrigin: "left center",
               maskImage: "linear-gradient(to bottom, black 45%, transparent 95%)",
@@ -152,7 +161,7 @@ export default function Work() {
             }}
             aria-hidden="true"
           >
-            <span className="font-display font-black uppercase text-[clamp(3.6rem,17.5vw,9.5rem)] leading-none tracking-[-0.03em] inline-block text-[#F2E9DC] select-none whitespace-nowrap">
+            <span className="font-display font-black uppercase text-[clamp(3.8rem,18.5vw,9.5rem)] leading-none tracking-[-0.03em] inline-block text-[#F2E9DC] select-none whitespace-nowrap">
               PROJECTS
             </span>
           </div>

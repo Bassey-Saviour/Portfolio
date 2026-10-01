@@ -322,8 +322,8 @@ export default function InteractiveAsterisk() {
         isIntroActive
           ? "pointer-events-none"
           : isDraggingState
-          ? "cursor-grabbing"
-          : "cursor-grab"
+          ? "cursor-grabbing pointer-events-auto"
+          : "cursor-grab pointer-events-auto"
       }`}
       style={{
         transformOrigin: "center center",
@@ -428,7 +428,7 @@ export default function InteractiveAsterisk() {
   return (
     <div
       ref={anchorRef}
-      className="relative md:absolute md:top-[38%] md:lg:top-[42%] md:right-[10%] md:lg:right-[15%] md:-translate-y-1/2 z-10 pointer-events-auto select-none overflow-visible will-change-transform flex items-center justify-center shrink-0 mb-2 min-[380px]:mb-3 md:mb-0"
+      className="relative md:absolute md:top-[38%] md:lg:top-[42%] md:right-[10%] md:lg:right-[15%] md:-translate-y-1/2 z-10 pointer-events-none select-none overflow-visible will-change-transform flex items-center justify-center shrink-0 mb-2 min-[380px]:mb-3 md:mb-0"
       style={{
         width: asteriskDimension,
         height: asteriskDimension,

@@ -283,7 +283,7 @@ export default function Hero() {
           <InteractiveAsterisk />
 
           {/* 2. Center Typographic Unit: "I AM" + Name + Subtitle */}
-          <div className="relative inline-flex flex-col items-center max-w-full pointer-events-auto mt-1 sm:mt-0">
+          <div className="relative z-30 inline-flex flex-col items-center max-w-full pointer-events-auto mt-1 sm:mt-0">
             {/* Top-Left Offset: "I AM" */}
             <div
               className="self-start pl-1 sm:pl-1.5 mb-1 sm:mb-1.5 transition-all duration-700"
@@ -338,7 +338,7 @@ export default function Hero() {
 
           {/* 3. Mobile Action Buttons & Tagline (Rendered directly under the Name Block in the centered cluster) */}
           <div
-            className="md:hidden flex flex-col items-center text-center z-20 max-w-md mx-auto mt-4 min-[380px]:mt-5 transition-all duration-700 pointer-events-auto"
+            className="md:hidden flex flex-col items-center text-center max-w-md mx-auto mt-4 min-[380px]:mt-5 transition-all duration-700 pointer-events-auto"
             style={{
               opacity: hasEntered ? 1 : 0,
               transform: hasEntered ? "translateY(0)" : "translateY(14px)",
