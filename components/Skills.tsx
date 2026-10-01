@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useCardSpotlight } from "@/hooks/useCardSpotlight";
+import { useSectionScale } from "@/hooks/useSectionScale";
 
 const proficiencies = [
   {
@@ -38,9 +39,14 @@ const proficiencies = [
 
 export default function Skills() {
   const { handleMouseMove } = useCardSpotlight();
+  const sectionRef = useSectionScale();
 
   return (
-    <section id="skills" className="py-16 sm:py-20 md:py-24 lg:py-28">
+    <section
+      ref={sectionRef}
+      id="skills"
+      className="py-16 sm:py-20 md:py-24 lg:py-28 will-change-transform"
+    >
       <div className="reveal-on-scroll flex flex-col justify-between gap-4 sm:gap-6 sm:flex-row sm:items-end">
         <div>
           <span className="section-kicker">What I bring</span>

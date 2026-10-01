@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { personalData } from "@/data/personal";
 import CurrentlyWidget from "./CurrentlyWidget";
+import { useSectionScale } from "@/hooks/useSectionScale";
 
 const footerLinks = [
   { label: "About", href: "#about" },
@@ -16,6 +17,13 @@ const WATERMARK_LETTERS = ["S", "A", "V", "I", "O", "U", "R"];
 export default function Footer() {
   const [lagosTime, setLagosTime] = useState("");
   const watermarkRef = useRef<HTMLDivElement>(null);
+  const footerRef = useSectionScale({
+    isTerminal: true,
+    minScale: 0.88,
+    entryStart: 0.98,
+    entryEnd: 0.70,
+    translateY: 28,
+  });
 
   useEffect(() => {
     const updateTime = () =>
@@ -48,7 +56,10 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative overflow-hidden pb-8 pt-8 md:pt-12 border-t section-rule">
+    <footer
+      ref={footerRef}
+      className="relative overflow-hidden pb-8 pt-8 md:pt-12 border-t section-rule will-change-transform"
+    >
       {/* Personality & Vibe Widget Deck */}
       <CurrentlyWidget />
 

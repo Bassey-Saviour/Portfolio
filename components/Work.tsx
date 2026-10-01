@@ -37,36 +37,36 @@ export default function Work() {
             const windowHeight = window.innerHeight;
 
             const startEntryY = windowHeight * 0.90;
-            const endEntryY = windowHeight * 0.50;
+            const endEntryY = windowHeight * 0.45;
             const startExitY = windowHeight * 0.85;
             const endExitY = windowHeight * 0.10;
 
             if (rect.top >= startEntryY) {
-              sectionRef.current.style.transform = "scale(0.93) translate3d(0, 28px, 0)";
-              sectionRef.current.style.opacity = "0.2";
+              sectionRef.current.style.transform = "scale(0.85) translate3d(0, 36px, 0)";
+              sectionRef.current.style.opacity = "0.15";
             } else if (rect.top > endEntryY) {
               const entryProgress = Math.min(
                 Math.max((startEntryY - rect.top) / (startEntryY - endEntryY), 0),
                 1
               );
               const eased = Math.pow(entryProgress, 1.2);
-              const scale = 0.93 + eased * 0.07;
-              const translateY = (1 - eased) * 28;
-              const opacity = 0.2 + eased * 0.8;
+              const scale = 0.85 + eased * 0.15;
+              const translateY = (1 - eased) * 36;
+              const opacity = 0.15 + eased * 0.85;
 
-              sectionRef.current.style.transform = `scale(${scale}) translate3d(0, ${translateY}px, 0)`;
-              sectionRef.current.style.opacity = `${opacity}`;
-            } else if (rect.bottom < startExitY) {
+              sectionRef.current.style.transform = `scale(${scale.toFixed(4)}) translate3d(0, ${translateY.toFixed(1)}px, 0)`;
+              sectionRef.current.style.opacity = `${opacity.toFixed(3)}`;
+            } else if (rect.top < 50 && rect.bottom < startExitY) {
               const exitProgress = Math.min(
                 Math.max((startExitY - rect.bottom) / (startExitY - endExitY), 0),
                 1
               );
-              const exitScale = 1.00 - exitProgress * 0.10;
-              const exitTranslateY = -exitProgress * 32;
+              const exitScale = 1.00 - exitProgress * 0.18;
+              const exitTranslateY = -exitProgress * 40;
               const exitOpacity = Math.max(1.00 - exitProgress * 0.85, 0.15);
 
-              sectionRef.current.style.transform = `scale(${exitScale}) translate3d(0, ${exitTranslateY}px, 0)`;
-              sectionRef.current.style.opacity = `${exitOpacity}`;
+              sectionRef.current.style.transform = `scale(${exitScale.toFixed(4)}) translate3d(0, ${exitTranslateY.toFixed(1)}px, 0)`;
+              sectionRef.current.style.opacity = `${exitOpacity.toFixed(3)}`;
             } else {
               // Active Zone: transform cleared to 'none' for 100% native sticky card stacking
               sectionRef.current.style.transform = "none";
@@ -154,9 +154,9 @@ export default function Work() {
           {/* Monumental Watermark: "PROJECTS" — Left-aligned flush with header text */}
           <div
             ref={watermarkRef}
-            className="absolute left-0 -top-4 sm:-top-8 md:-top-12 pointer-events-none select-none -z-10 text-left will-change-transform overflow-visible"
+            className="absolute left-0 -top-4 sm:-top-8 md:-top-14 pointer-events-none select-none -z-10 text-left will-change-transform overflow-visible"
             style={{
-              opacity: 0.038,
+              opacity: 0.058,
               transform: "translate3d(0, 0, 0) scale(1)",
               transformOrigin: "left center",
               maskImage: "linear-gradient(to bottom, black 35%, transparent 92%)",
@@ -164,7 +164,7 @@ export default function Work() {
             }}
             aria-hidden="true"
           >
-            <span className="font-display font-black uppercase text-[clamp(2.5rem,10.5vw,9.5rem)] leading-none tracking-[-0.03em] inline-block text-[#F2E9DC] select-none whitespace-nowrap">
+            <span className="font-display font-black uppercase text-[clamp(2.5rem,13.5vw,9.5rem)] leading-none tracking-[-0.03em] inline-block text-[#F2E9DC] select-none whitespace-nowrap">
               PROJECTS
             </span>
           </div>

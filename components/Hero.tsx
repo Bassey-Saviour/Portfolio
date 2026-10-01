@@ -220,7 +220,7 @@ export default function Hero() {
 
             const currentOffset = (1 - eased) * startOffsetVw;
             const currentScale = isMobile ? (0.95 + eased * 0.18) : (0.85 + eased * 0.43);
-            const currentOpacity = Math.max((1 - progress * 1.18) * (isMobile ? 0.038 : 0.026), 0);
+            const currentOpacity = Math.max((1 + progress * 1.18) * (isMobile ? 0.038 : 0.026), 0);
             const currentY = isMobile ? (38 - eased * 6) : 36;
 
             watermarkRef.current.style.transform = `translate3d(calc(-50% + ${currentOffset}vw), ${currentY}%, 0) scale(${currentScale})`;

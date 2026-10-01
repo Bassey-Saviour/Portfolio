@@ -281,10 +281,10 @@ export default function ProjectCard({
 
             if (rect.top >= windowHeight) {
               // Below viewport: waiting to enter
-              innerRef.current.style.transform = `scale(0.92) translate3d(0, ${isMobile ? 20 : 32}px, 0)`;
-              innerRef.current.style.opacity = "0.25";
+              innerRef.current.style.transform = `scale(0.88) translate3d(0, ${isMobile ? 24 : 36}px, 0)`;
+              innerRef.current.style.opacity = "0.20";
             } else if (rect.top > stickyTop) {
-              // Rising up into viewport: silky smooth scale entrance from 0.92 to 1.00
+              // Rising up into viewport: silky smooth scale entrance from 0.88 to 1.00
               const startEntry = windowHeight * 0.96;
               const endEntry = stickyTop + 24;
               const entryProgress = Math.min(
@@ -292,9 +292,9 @@ export default function ProjectCard({
                 1
               );
               const eased = Math.pow(entryProgress, 1.25);
-              const scale = 0.92 + eased * 0.08;
-              const translateY = (1 - eased) * (isMobile ? 20 : 32);
-              const opacity = 0.25 + eased * 0.75;
+              const scale = 0.88 + eased * 0.12;
+              const translateY = (1 - eased) * (isMobile ? 24 : 36);
+              const opacity = 0.20 + eased * 0.80;
 
               innerRef.current.style.transform = `scale(${scale.toFixed(4)}) translate3d(0, ${translateY.toFixed(1)}px, 0)`;
               innerRef.current.style.opacity = `${opacity.toFixed(3)}`;

@@ -3,9 +3,11 @@
 import React, { useState } from "react";
 import { experienceData } from "@/data/experience";
 import { IconArrowUpRight } from "./Icons";
+import { useSectionScale } from "@/hooks/useSectionScale";
 
 export default function Experience() {
   const [openId, setOpenId] = useState<string | null>(experienceData[0]?.id ?? null);
+  const sectionRef = useSectionScale();
 
   const handleToggle = (id: string) => {
     if (openId === id) {
@@ -55,7 +57,11 @@ export default function Experience() {
   };
 
   return (
-    <section id="experience" className="py-16 sm:py-20 md:py-28 lg:py-32 border-t section-rule">
+    <section
+      ref={sectionRef}
+      id="experience"
+      className="py-16 sm:py-20 md:py-28 lg:py-32 border-t section-rule will-change-transform"
+    >
       <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16 items-start">
         <div className="reveal-on-scroll lg:sticky lg:top-28 lg:self-start">
           <span className="section-kicker">Work Experience</span>

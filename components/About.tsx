@@ -36,7 +36,7 @@ export default function About() {
 
             if (rect.top >= startEntryY) {
               // Above entrance threshold (user is high up in Hero)
-              sectionRef.current.style.transform = "scale(0.90) translate3d(0, 36px, 0)";
+              sectionRef.current.style.transform = "scale(0.85) translate3d(0, 42px, 0)";
               sectionRef.current.style.opacity = "0";
               const maskValue = "linear-gradient(118deg, #000 -45%, transparent -10%)";
               sectionRef.current.style.maskImage = maskValue;
@@ -49,33 +49,33 @@ export default function About() {
                 1
               );
               const eased = Math.pow(entryProgress, 1.2);
-              const scale = 0.90 + eased * 0.10; // 0.90 -> 1.00
-              const translateY = (1 - eased) * 36;
+              const scale = 0.85 + eased * 0.15; // 0.85 -> 1.00
+              const translateY = (1 - eased) * 42;
 
               // Angled 118deg luxury wipe with 35% feathered band
               const blackStop = -45 + eased * 155;
               const clearStop = blackStop + 35;
               const maskValue = `linear-gradient(118deg, #000 ${blackStop}%, transparent ${clearStop}%)`;
-              const opacity = Math.min(0.2 + eased * 0.8, 1);
+              const opacity = Math.min(0.15 + eased * 0.85, 1);
 
-              sectionRef.current.style.transform = `scale(${scale}) translate3d(0, ${translateY}px, 0)`;
+              sectionRef.current.style.transform = `scale(${scale.toFixed(4)}) translate3d(0, ${translateY.toFixed(1)}px, 0)`;
               sectionRef.current.style.opacity = `${opacity}`;
               sectionRef.current.style.maskImage = maskValue;
               (sectionRef.current.style as any).webkitMaskImage = maskValue;
               sectionRef.current.style.clipPath = "none";
-            } else if (rect.bottom < startExitY) {
+            } else if (rect.top < 50 && rect.bottom < startExitY) {
               // Active Exit Scale-down & Drift towards next section
               const exitProgress = Math.min(
                 Math.max((startExitY - rect.bottom) / (startExitY - endExitY), 0),
                 1
               );
-              // Smoothly scale down from 1.00 to 0.86 and drift upward
-              const exitScale = 1.00 - exitProgress * 0.14;
-              const exitTranslateY = -exitProgress * 40;
-              const exitOpacity = Math.max(1.00 - exitProgress * 0.82, 0.15);
+              // Smoothly scale down from 1.00 to 0.82 and drift upward
+              const exitScale = 1.00 - exitProgress * 0.18;
+              const exitTranslateY = -exitProgress * 44;
+              const exitOpacity = Math.max(1.00 - exitProgress * 0.85, 0.15);
 
-              sectionRef.current.style.transform = `scale(${exitScale}) translate3d(0, ${exitTranslateY}px, 0)`;
-              sectionRef.current.style.opacity = `${exitOpacity}`;
+              sectionRef.current.style.transform = `scale(${exitScale.toFixed(4)}) translate3d(0, ${exitTranslateY.toFixed(1)}px, 0)`;
+              sectionRef.current.style.opacity = `${exitOpacity.toFixed(3)}`;
               sectionRef.current.style.maskImage = "none";
               (sectionRef.current.style as any).webkitMaskImage = "none";
               sectionRef.current.style.clipPath = "none";

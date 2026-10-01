@@ -4,12 +4,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { techStackData, type TechTool } from "@/data/techstack";
 import TechCard from "./techstack/TechCard";
 import BrandMark from "./techstack/BrandMark";
+import { useSectionScale } from "@/hooks/useSectionScale";
 
 export type { TechTool };
 
 export default function TechStack() {
   const [activeToolName, setActiveToolName] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useSectionScale();
 
   // Close popover when pressing Escape or tapping anywhere outside the grid and inspector
   useEffect(() => {
@@ -36,7 +38,11 @@ export default function TechStack() {
   const activeTool = techStackData.find((t) => t.name === activeToolName);
 
   return (
-    <section id="tools" className="py-16 sm:py-20 md:py-24 lg:py-28 border-t section-rule relative">
+    <section
+      ref={sectionRef}
+      id="tools"
+      className="py-16 sm:py-20 md:py-24 lg:py-28 border-t section-rule relative will-change-transform"
+    >
       <div className="reveal-on-scroll flex flex-col justify-between gap-4 sm:gap-6 sm:flex-row sm:items-end">
         <div>
           <span className="section-kicker">Daily drivers</span>

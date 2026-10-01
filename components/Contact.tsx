@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { personalData } from "@/data/personal";
 import { IconArrowUpRight, IconCheck, IconCopy, IconDownload, IconGithub, IconLinkedin, IconMail } from "./Icons";
 import { useCardSpotlight } from "@/hooks/useCardSpotlight";
+import { useSectionScale } from "@/hooks/useSectionScale";
 
 export default function Contact() {
   const [copiedEmail, setCopiedEmail] = useState(false);
@@ -12,6 +13,7 @@ export default function Contact() {
   const [message, setMessage] = useState("");
   const [copiedDraft, setCopiedDraft] = useState(false);
   const { handleMouseMove } = useCardSpotlight();
+  const sectionRef = useSectionScale();
 
   const copyEmail = async () => {
     await navigator.clipboard.writeText(personalData.contact.email);
@@ -36,7 +38,11 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-16 sm:py-20 md:py-28 lg:py-32 border-t section-rule">
+    <section
+      ref={sectionRef}
+      id="contact"
+      className="py-16 sm:py-20 md:py-28 lg:py-32 border-t section-rule will-change-transform"
+    >
       <div
         onMouseMove={handleMouseMove}
         className="reveal-on-scroll spotlight-card relative overflow-hidden rounded-[2rem] border border-[#F2E9DC]/10 bg-[#17141d]/65 px-4 py-6 min-[380px]:px-6 min-[380px]:py-8 shadow-[0_30px_100px_rgba(0,0,0,.24)] backdrop-blur-2xl sm:px-10 sm:py-12 lg:px-14 lg:py-16"
