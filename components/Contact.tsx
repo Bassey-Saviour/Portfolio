@@ -41,8 +41,27 @@ export default function Contact() {
     <section
       ref={sectionRef}
       id="contact"
-      className="py-16 sm:py-20 md:py-28 lg:py-32 border-t section-rule will-change-transform"
+      className="relative py-16 sm:py-20 md:py-28 lg:py-32 will-change-transform"
     >
+      {/* 1. Hairline Horizon Seam: Delicate, clean gradient rule */}
+      <div
+        className="absolute top-0 left-0 right-0 w-full h-[1px] pointer-events-none z-10"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent 0%, rgba(232, 150, 60, 0.08) 20%, rgba(242, 233, 220, 0.18) 50%, rgba(232, 150, 60, 0.08) 80%, transparent 100%)",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* 2. Very subtle ambient dawn: strictly below the seam, feathers naturally */}
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-32 pointer-events-none z-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 55% 100% at 50% 0%, rgba(232, 150, 60, 0.07) 0%, rgba(232, 150, 60, 0.018) 45%, transparent 80%)",
+        }}
+        aria-hidden="true"
+      />
       <div
         onMouseMove={handleMouseMove}
         className="reveal-on-scroll spotlight-card relative overflow-hidden rounded-[2rem] border border-[#F2E9DC]/10 bg-[#17141d]/65 px-4 py-6 min-[380px]:px-6 min-[380px]:py-8 shadow-[0_30px_100px_rgba(0,0,0,.24)] backdrop-blur-2xl sm:px-10 sm:py-12 lg:px-14 lg:py-16"

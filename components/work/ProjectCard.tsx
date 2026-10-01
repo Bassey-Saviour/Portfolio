@@ -371,7 +371,7 @@ export default function ProjectCard({
                 <span className="font-mono text-xs sm:text-sm text-[#E8963C]/90 font-medium">
                   0{index + 1}
                 </span>
-                <span className="w-1 h-1 rounded-full bg-[#B8A996]/30" />
+                {/* <span className="w-1 h-1 rounded-full bg-[#B8A996]/30" /> */}
                 <span className="text-[10px] min-[360px]:text-[11px] font-mono uppercase tracking-widest text-[#B8A996]/75">
                   {item.roleTag}
                 </span>

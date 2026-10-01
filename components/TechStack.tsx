@@ -42,10 +42,10 @@ export default function TechStack() {
     <section
       ref={sectionRef}
       id="tools"
-      className="py-16 sm:py-20 md:py-24 lg:py-28 border-t section-rule relative will-change-transform"
+      className="py-16 sm:py-20 md:py-24 lg:py-28 section-rule relative will-change-transform"
     >
       {/* Grounded section header with anchored architectural watermark */}
-      <div className="relative mb-8 sm:mb-10">
+      <div className="relative mb-8 sm:mb-10 z-10">
         {/* Monumental Watermark: "TOOLS" — Left-aligned flush with header text */}
         <div
           ref={watermarkRef}
@@ -78,8 +78,8 @@ export default function TechStack() {
         </div>
       </div>
 
-      {/* Interactive Tool Grid & Mobile Inspector Container */}
-      <div ref={containerRef} className="relative">
+      {/* Interactive Tool Grid & Mobile Inspector Container (Elevated z-index so popovers render cleanly above header) */}
+      <div ref={containerRef} className={`relative ${activeToolName ? "z-30" : "z-20"}`}>
         <div className="reveal-on-scroll reveal-delay-200 mt-8 sm:mt-10 grid grid-cols-3 gap-2 sm:grid-cols-5 lg:grid-cols-9">
           {techStackData.map((tool, index) => (
             <TechCard

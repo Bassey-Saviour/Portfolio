@@ -393,7 +393,7 @@ export default function InteractiveAsterisk() {
         {createPortal(
           <div
             ref={portalContainerRef}
-            className="fixed top-0 left-0 z-[90] pointer-events-none select-none overflow-visible will-change-transform"
+            className="fixed top-0 left-0 z-90 pointer-events-none select-none overflow-visible will-change-transform"
             style={{
               width: "clamp(220px, 34vw, 440px)",
               height: "clamp(220px, 34vw, 440px)",

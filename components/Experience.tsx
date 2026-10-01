@@ -61,8 +61,27 @@ export default function Experience() {
     <section
       ref={sectionRef}
       id="experience"
-      className="py-16 sm:py-20 md:py-28 lg:py-32 border-t section-rule will-change-transform"
+      className="relative py-16 sm:py-20 md:py-28 lg:py-32 will-change-transform"
     >
+      {/* 1. Hairline Horizon Seam: Delicate, clean gradient rule */}
+      <div
+        className="absolute top-0 left-0 right-0 w-full h-[1px] pointer-events-none z-10"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent 0%, rgba(232, 150, 60, 0.08) 20%, rgba(242, 233, 220, 0.18) 50%, rgba(232, 150, 60, 0.08) 80%, transparent 100%)",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* 2. Very subtle ambient dawn: strictly below the seam, feathers naturally */}
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-32 pointer-events-none z-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 55% 100% at 50% 0%, rgba(232, 150, 60, 0.07) 0%, rgba(232, 150, 60, 0.018) 45%, transparent 80%)",
+        }}
+        aria-hidden="true"
+      />
       <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16 items-start">
         <div className="relative reveal-on-scroll lg:sticky lg:top-28 lg:self-start">
           {/* Monumental Watermark: "EXPERIENCE" — Left-aligned flush with header text */}

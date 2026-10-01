@@ -82,35 +82,48 @@ export default function SectionTracker() {
               onClick={(e) => scrollToSection(e, section.id)}
               className="group flex items-center justify-end gap-3 cursor-pointer py-0.5 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#E8963C]/40 rounded-full transition-transform duration-300 hover:scale-[1.02]"
             >
-              {/* Section label to the left of the spine */}
-              <div className="transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]">
-                {isActive ? (
-                  <span className="inline-block px-2.5 py-1 rounded-full bg-[#1e1a24]/55 text-[#F2E9DC]/80 border border-[#F2E9DC]/10 backdrop-blur-xl font-display font-medium text-[11px] tracking-wide shadow-[0_2px_8px_rgba(232,150,60,0.08)]">
-                    {section.label}
-                  </span>
-                ) : (
-                  <span
-                    className={`text-[11px] font-mono tracking-tight transition-all duration-200 ${
-                      isPassed
-                        ? "text-[#B8A996]/45 group-hover:text-[#F2E9DC]/80"
-                        : "text-[#B8A996]/20 group-hover:text-[#B8A996]/60"
-                    }`}
-                  >
-                    {section.label}
-                  </span>
-                )}
+              {/* Section label with persistent padding and chill spring pill entrance */}
+              <div className="relative flex items-center justify-end">
+                {/* Independent Active Pill Layer — never collapses padding */}
+                <div
+                  className={`absolute inset-0 rounded-full transition-all duration-300 pointer-events-none ${
+                    isActive
+                      ? "bg-[#211d28]/75 border border-[#F2E9DC]/14 backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.35)] opacity-100 scale-100"
+                      : "bg-transparent border border-transparent opacity-0 scale-90"
+                  }`}
+                  style={{
+                    transitionTimingFunction: "cubic-bezier(0.34, 1.38, 0.64, 1)",
+                  }}
+                  aria-hidden="true"
+                />
+
+                {/* Permanent text slot preserving exact width and padding */}
+                <span
+                  className={`relative z-10 inline-block px-2.5 py-1 text-[11px] font-display transition-colors duration-250 select-none ${
+                    isActive
+                      ? "text-[#F2E9DC] font-medium tracking-wide"
+                      : isPassed
+                      ? "text-[#B8A996]/45 font-normal tracking-normal group-hover:text-[#F2E9DC]/80"
+                      : "text-[#B8A996]/20 font-normal tracking-normal group-hover:text-[#B8A996]/60"
+                  }`}
+                >
+                  {section.label}
+                </span>
               </div>
 
               {/* Soft marker on the vertical track line */}
               <div className="relative z-10 -mr-[3.5px] flex items-center justify-center">
                 <span
-                  className={`transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] block ${
+                  className={`transition-all duration-350 block ${
                     isActive
-                      ? "w-2 h-2 rounded-full bg-[#E8963C]/85 shadow-[0_0_8px_rgba(232,150,60,0.35)] scale-105"
+                      ? "w-2 h-2 rounded-full bg-[#E8963C] shadow-[0_0_8px_rgba(232,150,60,0.4)] scale-110"
                       : isPassed
                       ? "w-1.5 h-1.5 rounded-full bg-[#B8A996]/30 group-hover:bg-[#E8963C]/60 group-hover:scale-125"
                       : "w-1.5 h-1.5 rounded-full bg-[#F2E9DC]/12 group-hover:bg-[#B8A996]/40 group-hover:scale-125"
                   }`}
+                  style={{
+                    transitionTimingFunction: "cubic-bezier(0.34, 1.38, 0.64, 1)",
+                  }}
                 />
               </div>
             </a>
