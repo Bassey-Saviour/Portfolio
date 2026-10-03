@@ -142,90 +142,68 @@ export default function About() {
 
         <div>
           {/* Natural, grounded lead without designer title */}
-          <p className="reveal-on-scroll font-display text-[clamp(1.4rem,3.2vw,2.75rem)] font-bold leading-[1.25] sm:leading-[1.2] tracking-[-0.03em] text-[#F2E9DC]">
+          <p className="reveal-on-scroll font-display text-[clamp(1.25rem,2.4vw,2.15rem)] font-bold leading-[1.3] tracking-tight text-[#F2E9DC]">
             I build interfaces, manage{" "}
             <span className="text-[#E8963C]">network infrastructure</span>, and collect skills along the way. Most of all, I turn people&apos;s abstractions into things that work.
           </p>
 
           {/* Real, human narrative with zero AI buzzwords */}
-          <div className="reveal-on-scroll reveal-delay-150 mt-4 sm:mt-6 max-w-2xl text-xs min-[360px]:text-sm sm:text-[0.95rem] leading-relaxed text-[#B8A996]">
+          <div className="reveal-on-scroll reveal-delay-150 mt-3.5 sm:mt-5 max-w-xl text-xs sm:text-[13.5px] leading-relaxed text-[#B8A996]/90">
             <p>
               Computer Science graduate with a habit of picking up whatever skills a project demands. Whether that&apos;s configuring enterprise networks at TotalEnergies, building out web interfaces, or getting the visual details right, I care about things that feel solid and actually work.
             </p>
           </div>
 
-          {/* Staggered Dual Cards: Arrive noticeably later than the text above */}
-          <div className="mt-6 sm:mt-10 grid gap-3.5 sm:gap-4 sm:grid-cols-2">
+          {/* Staggered Dual Compact Cards: Clean, pill-free metadata plates */}
+          <div className="mt-6 sm:mt-8 grid gap-3 sm:gap-3.5 sm:grid-cols-2">
             {/* Card 1: Academic Record (enters at 350ms) */}
             <article
               onMouseMove={handleMouseMove}
-              className="reveal-on-scroll reveal-delay-350 glass-panel glass-panel-hover spotlight-card rounded-2xl p-4 min-[380px]:p-5 sm:p-6 cursor-default border border-[#F2E9DC]/10 hover:border-[#E8963C]/35 transition-all duration-300 flex flex-col justify-between"
+              className="reveal-on-scroll reveal-delay-350 rounded-xl sm:rounded-2xl p-3.5 sm:p-4 bg-[#14121a]/70 hover:bg-[#181522] border border-[#F2E9DC]/[0.08] transition-all duration-300 flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#F3B866]">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#E8963C]/90 font-medium">
                     Academic Record
                   </span>
-                  <span className="rounded-full bg-[#E8963C]/12 border border-[#E8963C]/25 px-2.5 py-0.5 text-[10px] font-mono text-[#F3B866]">
+                  <span className="text-[11px] font-mono text-[#F2E9DC]/80 font-semibold">
                     4.87 CGPA
                   </span>
                 </div>
-                <h3 className="mt-4 font-display text-xl sm:text-2xl font-semibold leading-tight text-[#F2E9DC]">
+                <h3 className="mt-2 font-display text-base sm:text-lg font-semibold tracking-tight text-[#F2E9DC]">
                   First-Class Honours
                 </h3>
-                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[#B8A996]">
+                <p className="mt-1 text-xs text-[#B8A996] leading-relaxed">
                   Best Graduating Student in Computer Science. Strong foundation in networking, algorithms, and systems.
                 </p>
               </div>
-
-              <div className="mt-5 flex flex-wrap gap-2">
-                {["Computer Science", "Networking", "Systems"].map((item) => (
-                  <span
-                    key={item}
-                    className="soft-chip px-2.5 py-1 text-[10px] font-mono text-[#B8A996]"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
             </article>
 
-            {/* Card 2: Skill Collector / Idea to Reality (enters at 500ms) */}
+            {/* Card 2: Approach / Skill Collector (enters at 500ms) */}
             <article
               onMouseMove={handleMouseMove}
-              className="reveal-on-scroll reveal-delay-500 glass-panel glass-panel-hover spotlight-card rounded-2xl p-4 min-[380px]:p-5 sm:p-6 cursor-default border border-[#F2E9DC]/10 hover:border-[#4F7CAC]/40 transition-all duration-300 flex flex-col justify-between"
+              className="reveal-on-scroll reveal-delay-500 rounded-xl sm:rounded-2xl p-3.5 sm:p-4 bg-[#14121a]/70 hover:bg-[#181522] border border-[#F2E9DC]/[0.08] transition-all duration-300 flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#7fa9d7]">
-                    Mindset
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#4F7CAC] font-medium">
+                    Approach
                   </span>
-                  <span className="rounded-full bg-[#4F7CAC]/15 border border-[#4F7CAC]/25 px-2.5 py-0.5 text-[10px] font-mono text-[#7fa9d7]">
+                  <span className="text-[11px] font-mono text-[#F2E9DC]/80 font-semibold">
                     Skill Collector
                   </span>
                 </div>
-                <h3 className="mt-4 font-display text-xl sm:text-2xl font-semibold leading-tight text-[#F2E9DC]">
+                <h3 className="mt-2 font-display text-base sm:text-lg font-semibold tracking-tight text-[#F2E9DC]">
                   Abstractions → Reality
                 </h3>
-                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[#B8A996]">
+                <p className="mt-1 text-xs text-[#B8A996] leading-relaxed">
                   Taking rough ideas and building the whole thing out, from the frontend interface down to the network routing underneath.
                 </p>
-              </div>
-
-              <div className="mt-5 flex flex-wrap gap-2">
-                {["Interfaces", "Network Ops", "Prototyping"].map((item) => (
-                  <span
-                    key={item}
-                    className="soft-chip px-2.5 py-1 text-[10px] font-mono text-[#B8A996]"
-                  >
-                    {item}
-                  </span>
-                ))}
               </div>
             </article>
           </div>
 
-          <div className="reveal-on-scroll reveal-delay-500 mt-7">
+          <div className="reveal-on-scroll reveal-delay-500 mt-6 sm:mt-8">
             <a
               href="#contact"
               className="btn-shimmer btn-tactile group inline-flex items-center gap-2 rounded-full bg-[#E8963C] px-5 py-2.5 text-xs font-display font-semibold text-[#1C1712] shadow-[0_2px_12px_rgba(232,150,60,0.25)] hover:shadow-[0_4px_24px_rgba(232,150,60,0.45)]"
