@@ -8,6 +8,24 @@ import {
   SiMysql,
   SiFigma,
   SiCisco,
+  SiTypescript,
+  SiJavascript,
+  SiHtml5,
+  SiCss,
+  SiShadcnui,
+  SiTanstack,
+  SiRedux,
+  SiFramer,
+  SiNodedotjs,
+  SiExpress,
+  SiPostgresql,
+  SiRedis,
+  SiPrisma,
+  SiDocker,
+  SiGraphql,
+  SiGithub,
+  SiPostman,
+  SiVercel,
 } from "react-icons/si";
 
 // Authentic Canva vector icon (excluded from react-icons due to Canva trademark policy)
@@ -28,80 +46,72 @@ function CanvaIcon({ className, style }: { className?: string; style?: React.CSS
 interface BrandMarkProps {
   type: string;
   color: string;
+  className?: string;
 }
 
-export default function BrandMark({ type, color }: BrandMarkProps) {
-  if (type === "react") {
-    return (
-      <SiReact
-        className="h-6 w-6 transition-transform duration-500 group-hover:rotate-180"
-        style={{ color }}
-      />
-    );
+export default function BrandMark({
+  type,
+  color,
+  className = "h-5 w-5 sm:h-6 sm:w-6 transition-transform duration-300 group-hover:scale-110",
+}: BrandMarkProps) {
+  const iconProps = { className, style: { color } };
+
+  switch (type) {
+    case "next":
+      return <SiNextdotjs {...iconProps} />;
+    case "react":
+      return <SiReact {...iconProps} />;
+    case "typescript":
+      return <SiTypescript {...iconProps} />;
+    case "javascript":
+      return <SiJavascript {...iconProps} />;
+    case "tailwind":
+      return <SiTailwindcss {...iconProps} />;
+    case "shadcn":
+      return <SiShadcnui {...iconProps} />;
+    case "html5":
+      return <SiHtml5 {...iconProps} />;
+    case "css":
+      return <SiCss {...iconProps} />;
+    case "tanstack":
+      return <SiTanstack {...iconProps} />;
+    case "redux":
+      return <SiRedux {...iconProps} />;
+    case "framer":
+      return <SiFramer {...iconProps} />;
+    case "node":
+      return <SiNodedotjs {...iconProps} />;
+    case "express":
+      return <SiExpress {...iconProps} />;
+    case "python":
+      return <SiPython {...iconProps} />;
+    case "postgresql":
+      return <SiPostgresql {...iconProps} />;
+    case "mysql":
+      return <SiMysql {...iconProps} />;
+    case "redis":
+      return <SiRedis {...iconProps} />;
+    case "prisma":
+      return <SiPrisma {...iconProps} />;
+    case "docker":
+      return <SiDocker {...iconProps} />;
+    case "graphql":
+      return <SiGraphql {...iconProps} />;
+    case "figma":
+      return <SiFigma {...iconProps} />;
+    case "canva":
+      return <CanvaIcon {...iconProps} />;
+    case "git":
+      return <SiGit {...iconProps} />;
+    case "github":
+      return <SiGithub {...iconProps} />;
+    case "cisco":
+      return <SiCisco {...iconProps} />;
+    case "postman":
+      return <SiPostman {...iconProps} />;
+    case "vercel":
+      return <SiVercel {...iconProps} />;
+    default:
+      return null;
   }
-  if (type === "next") {
-    return (
-      <SiNextdotjs
-        className="h-6 w-6 transition-transform duration-300 group-hover:scale-110"
-        style={{ color }}
-      />
-    );
-  }
-  if (type === "tailwind") {
-    return (
-      <SiTailwindcss
-        className="h-6 w-6 transition-transform duration-300 group-hover:scale-110"
-        style={{ color }}
-      />
-    );
-  }
-  if (type === "python") {
-    return (
-      <SiPython
-        className="h-6 w-6 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
-        style={{ color }}
-      />
-    );
-  }
-  if (type === "git") {
-    return (
-      <SiGit
-        className="h-6 w-6 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
-        style={{ color }}
-      />
-    );
-  }
-  if (type === "mysql") {
-    return (
-      <SiMysql
-        className="h-7 w-7 transition-transform duration-300 group-hover:scale-110"
-        style={{ color }}
-      />
-    );
-  }
-  if (type === "figma") {
-    return (
-      <SiFigma
-        className="h-6 w-6 transition-transform duration-300 group-hover:scale-110"
-        style={{ color }}
-      />
-    );
-  }
-  if (type === "canva") {
-    return (
-      <CanvaIcon
-        className="h-6 w-6 transition-transform duration-300 group-hover:scale-110"
-        style={{ color }}
-      />
-    );
-  }
-  if (type === "cisco") {
-    return (
-      <SiCisco
-        className="h-6 w-6 transition-transform duration-300 group-hover:scale-110"
-        style={{ color }}
-      />
-    );
-  }
-  return null;
 }

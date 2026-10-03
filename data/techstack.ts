@@ -4,155 +4,296 @@ export interface TechTool {
   color: string;
   bg: string;
   type: string;
-  proficiency: number; // 0-100 percentage (editable)
-  level: string; // e.g. "Advanced", "Expert", "Proficient", "Intermediate"
-  pills: string[]; // Use case badges
-  summary: string; // 1-sentence description of use
+  proficiency: number; // 0-100 percentage
+  level: string; // e.g. "Expert", "Advanced", "Proficient", "Working Knowledge", "Foundational"
+  row: 1 | 2 | 3; // Row 1: Frontend & Languages, Row 2: Backend & Data, Row 3: Design & Workflow
+  pills?: string[];
+  summary?: string;
 }
 
 export const techStackData: TechTool[] = [
-  {
-    name: "React",
-    category: "Frontend Library",
-    color: "#61DAFB",
-    bg: "rgba(97,218,251,.12)",
-    type: "react",
-    proficiency: 90,
-    level: "Advanced",
-    pills: ["Interactive UI", "State Architecture", "Custom Hooks", "Component Systems"],
-    summary: "Primary daily driver for building reactive, high-performance client web applications.",
-  },
+  // ==========================================
+  // ROW 1: Frontend & Core Languages (11 tools)
+  // ==========================================
   {
     name: "Next.js",
-    category: "Fullstack Framework",
+    category: "Fullstack React Framework",
     color: "#F2E9DC",
     bg: "rgba(242,233,220,.08)",
     type: "next",
-    proficiency: 88,
+    proficiency: 90,
     level: "Advanced",
-    pills: ["App Router", "SSR & SSG", "API Routes", "SEO Architecture"],
-    summary: "Production backbone for hybrid server/client rendering and scalable fullstack web apps.",
+    row: 1,
   },
   {
-    name: "Tailwind",
-    category: "Styling Engine",
+    name: "React",
+    category: "UI Component Library",
+    color: "#61DAFB",
+    bg: "rgba(97,218,251,.08)",
+    type: "react",
+    proficiency: 92,
+    level: "Advanced",
+    row: 1,
+  },
+  {
+    name: "TypeScript",
+    category: "Typed JavaScript",
+    color: "#3178C6",
+    bg: "rgba(49,120,198,.08)",
+    type: "typescript",
+    proficiency: 88,
+    level: "Advanced",
+    row: 1,
+  },
+  {
+    name: "JavaScript",
+    category: "Core Web Language",
+    color: "#F7DF1E",
+    bg: "rgba(247,223,30,.08)",
+    type: "javascript",
+    proficiency: 90,
+    level: "Advanced",
+    row: 1,
+  },
+  {
+    name: "Tailwind CSS",
+    category: "Utility Styling Engine",
     color: "#38BDF8",
-    bg: "rgba(56,189,248,.12)",
+    bg: "rgba(56,189,248,.08)",
     type: "tailwind",
     proficiency: 94,
     level: "Expert",
-    pills: ["Design Tokens", "Responsive Layouts", "Micro-Interactions", "Glassmorphism"],
-    summary: "Utility-first styling architecture for crafting cohesive, pixel-perfect interfaces rapidly.",
+    row: 1,
+  },
+  {
+    name: "Shadcn UI",
+    category: "Accessible Component System",
+    color: "#F2E9DC",
+    bg: "rgba(242,233,220,.08)",
+    type: "shadcn",
+    proficiency: 90,
+    level: "Advanced",
+    row: 1,
+  },
+  {
+    name: "HTML5",
+    category: "Semantic Web Markup",
+    color: "#E34F26",
+    bg: "rgba(227,79,38,.08)",
+    type: "html5",
+    proficiency: 95,
+    level: "Expert",
+    row: 1,
+  },
+  {
+    name: "CSS3",
+    category: "Modern Layout & Motion",
+    color: "#1572B6",
+    bg: "rgba(21,114,182,.08)",
+    type: "css",
+    proficiency: 92,
+    level: "Advanced",
+    row: 1,
+  },
+  {
+    name: "TanStack Query",
+    category: "Async Server State & Cache",
+    color: "#FF4154",
+    bg: "rgba(255,65,84,.08)",
+    type: "tanstack",
+    proficiency: 82,
+    level: "Proficient",
+    row: 1,
+  },
+  {
+    name: "Redux",
+    category: "State Architecture",
+    color: "#764ABC",
+    bg: "rgba(118,74,188,.08)",
+    type: "redux",
+    proficiency: 80,
+    level: "Proficient",
+    row: 1,
+  },
+  {
+    name: "Framer Motion",
+    category: "Spring Physics & Gestures",
+    color: "#0055FF",
+    bg: "rgba(0,85,255,.08)",
+    type: "framer",
+    proficiency: 84,
+    level: "Proficient",
+    row: 1,
+  },
+
+  // ==========================================
+  // ROW 2: Backend, Database & Infra (9 tools)
+  // (Toned down per brief: Working Knowledge / Foundational, 65%-76%)
+  // ==========================================
+  {
+    name: "Node.js",
+    category: "JavaScript Runtime",
+    color: "#5FA04E",
+    bg: "rgba(95,160,78,.08)",
+    type: "node",
+    proficiency: 74,
+    level: "Working Knowledge",
+    row: 2,
+  },
+  {
+    name: "Express",
+    category: "REST API Framework",
+    color: "#B8A996",
+    bg: "rgba(184,169,150,.08)",
+    type: "express",
+    proficiency: 72,
+    level: "Working Knowledge",
+    row: 2,
   },
   {
     name: "Python",
-    category: "General Purpose",
+    category: "Scripting & Automation",
     color: "#FFD43B",
-    bg: "rgba(255,212,59,.12)",
+    bg: "rgba(255,212,59,.08)",
     type: "python",
-    proficiency: 78,
-    level: "Proficient",
-    pills: ["Data Automation", "Scripting", "CLI Utilities", "Backend Logic"],
-    summary: "Tool of choice for task automation, data processing pipelines, and background logic.",
+    proficiency: 76,
+    level: "Working Knowledge",
+    row: 2,
   },
   {
-    name: "Git",
-    category: "Version Control",
-    color: "#F05032",
-    bg: "rgba(240,80,50,.12)",
-    type: "git",
-    proficiency: 86,
-    level: "Advanced",
-    pills: ["Branch Strategies", "Merge & Rebase", "Release Tags", "Team Collab"],
-    summary: "Essential source control discipline for clean history, code reviews, and continuous delivery.",
+    name: "PostgreSQL",
+    category: "Relational Database",
+    color: "#4169E1",
+    bg: "rgba(65,105,225,.08)",
+    type: "postgresql",
+    proficiency: 70,
+    level: "Working Knowledge",
+    row: 2,
   },
   {
     name: "MySQL",
     category: "Relational Database",
-    color: "#4D8DAC",
-    bg: "rgba(77,141,172,.12)",
+    color: "#4479A1",
+    bg: "rgba(68,121,161,.08)",
     type: "mysql",
-    proficiency: 75,
-    level: "Intermediate",
-    pills: ["Schema Modeling", "Complex Queries", "Foreign Keys", "Data Integrity"],
-    summary: "Structured relational database design, table relationships, and performant querying.",
+    proficiency: 72,
+    level: "Working Knowledge",
+    row: 2,
   },
   {
+    name: "Redis",
+    category: "In-Memory Key/Value Store",
+    color: "#DC382D",
+    bg: "rgba(220,56,45,.08)",
+    type: "redis",
+    proficiency: 65,
+    level: "Foundational",
+    row: 2,
+  },
+  {
+    name: "Prisma",
+    category: "Next-gen Database ORM",
+    color: "#5A67D8",
+    bg: "rgba(90,103,216,.08)",
+    type: "prisma",
+    proficiency: 70,
+    level: "Working Knowledge",
+    row: 2,
+  },
+  {
+    name: "Docker",
+    category: "Containerization Engine",
+    color: "#2496ED",
+    bg: "rgba(36,150,237,.08)",
+    type: "docker",
+    proficiency: 66,
+    level: "Foundational",
+    row: 2,
+  },
+  {
+    name: "GraphQL",
+    category: "Data Query & Schema API",
+    color: "#E10098",
+    bg: "rgba(225,0,152,.08)",
+    type: "graphql",
+    proficiency: 65,
+    level: "Foundational",
+    row: 2,
+  },
+
+  // ==========================================
+  // ROW 3: Design, Workflow & Networking (7 tools)
+  // ==========================================
+  {
     name: "Figma",
-    category: "Product & UI/UX",
+    category: "UI/UX & Design Systems",
     color: "#F24E1E",
-    bg: "rgba(242,78,30,.12)",
+    bg: "rgba(242,78,30,.08)",
     type: "figma",
     proficiency: 95,
     level: "Expert",
-    pills: ["Design Systems", "Interactive Prototypes", "Auto-Layout", "Dev Handoff"],
-    summary: "Core workspace for product strategy, high-fidelity prototypes, and component libraries.",
+    row: 3,
   },
   {
     name: "Canva",
-    category: "Visual Design",
+    category: "Brand & Visual Media",
     color: "#7D2AE8",
-    bg: "rgba(125,42,232,.12)",
+    bg: "rgba(125,42,232,.08)",
     type: "canva",
-    proficiency: 92,
+    proficiency: 90,
     level: "Advanced",
-    pills: ["Event Branding", "Promotional Flyers", "Social Creatives", "Print Layouts"],
-    summary: "High-speed graphic design for ministry events, marketing collateral, and creative media.",
+    row: 3,
+  },
+  {
+    name: "Git",
+    category: "Distributed Version Control",
+    color: "#F05032",
+    bg: "rgba(240,80,50,.08)",
+    type: "git",
+    proficiency: 88,
+    level: "Advanced",
+    row: 3,
+  },
+  {
+    name: "GitHub",
+    category: "Code Collaboration & CI/CD",
+    color: "#F2E9DC",
+    bg: "rgba(242,233,220,.08)",
+    type: "github",
+    proficiency: 86,
+    level: "Advanced",
+    row: 3,
   },
   {
     name: "Cisco",
-    category: "Networking & Telecom",
+    category: "Enterprise Network Infrastructure",
     color: "#1BA0D7",
-    bg: "rgba(27,160,215,.12)",
+    bg: "rgba(27,160,215,.08)",
     type: "cisco",
     proficiency: 82,
     level: "Proficient",
-    pills: ["Switch/Router CLI", "VLAN Segmentation", "Diagnostics", "Data Room Ops"],
-    summary: "Enterprise network hardware configuration, routing diagnostics, and field operations.",
+    row: 3,
+  },
+  {
+    name: "Postman",
+    category: "API Testing & Workflows",
+    color: "#FF6C37",
+    bg: "rgba(255,108,55,.08)",
+    type: "postman",
+    proficiency: 80,
+    level: "Proficient",
+    row: 3,
+  },
+  {
+    name: "Vercel",
+    category: "Edge Deployment & Hosting",
+    color: "#F2E9DC",
+    bg: "rgba(242,233,220,.08)",
+    type: "vercel",
+    proficiency: 86,
+    level: "Advanced",
+    row: 3,
   },
 ];
 
 export const tools = techStackData;
-
-// Compute responsive popover alignment so it never bleeds off viewport edges on mobile/tablet/desktop
-export function getPopoverPosition(index: number) {
-  // Mobile (3 cols: index % 3)
-  const mobileCol = index % 3;
-  let mobileClass = "left-1/2 -translate-x-1/2 right-auto";
-  let mobileArrow = "left-1/2 -translate-x-1/2 right-auto";
-  if (mobileCol === 0) {
-    mobileClass = "left-0 translate-x-0 right-auto";
-    mobileArrow = "left-8 right-auto translate-x-0";
-  } else if (mobileCol === 2) {
-    mobileClass = "right-0 left-auto translate-x-0";
-    mobileArrow = "right-8 left-auto translate-x-0";
-  }
-
-  // Tablet (5 cols: index % 5)
-  const smCol = index % 5;
-  let smClass = "sm:left-1/2 sm:-translate-x-1/2 sm:right-auto";
-  let smArrow = "sm:left-1/2 sm:-translate-x-1/2 sm:right-auto";
-  if (smCol === 0) {
-    smClass = "sm:left-0 sm:translate-x-0 sm:right-auto";
-    smArrow = "sm:left-8 sm:right-auto sm:translate-x-0";
-  } else if (smCol === 4) {
-    smClass = "sm:right-0 sm:left-auto sm:translate-x-0";
-    smArrow = "sm:right-8 sm:left-auto sm:translate-x-0";
-  }
-
-  // Desktop (9 cols in single row)
-  let lgClass = "lg:left-1/2 lg:-translate-x-1/2 lg:right-auto";
-  let lgArrow = "lg:left-1/2 lg:-translate-x-1/2 lg:right-auto";
-  if (index <= 1) {
-    lgClass = "lg:left-0 lg:translate-x-0 lg:right-auto";
-    lgArrow = "lg:left-8 lg:right-auto lg:translate-x-0";
-  } else if (index >= 7) {
-    lgClass = "lg:right-0 lg:left-auto lg:translate-x-0";
-    lgArrow = "lg:right-8 lg:left-auto lg:translate-x-0";
-  }
-
-  return {
-    popover: `${mobileClass} ${smClass} ${lgClass}`,
-    arrow: `${mobileArrow} ${smArrow} ${lgArrow}`,
-  };
-}

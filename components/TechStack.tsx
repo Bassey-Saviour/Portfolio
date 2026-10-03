@@ -8,6 +8,24 @@ import { useSectionScale } from "@/hooks/useSectionScale";
 
 export type { TechTool };
 
+const toolRows = [
+  {
+    id: "frontend",
+    label: "Frontend & Core Languages",
+    tools: techStackData.filter((t) => t.row === 1),
+  },
+  {
+    id: "backend",
+    label: "Backend, Database & Cloud",
+    tools: techStackData.filter((t) => t.row === 2),
+  },
+  {
+    id: "design-infra",
+    label: "Design, Workflow & Networking",
+    tools: techStackData.filter((t) => t.row === 3),
+  },
+];
+
 export default function TechStack() {
   const [activeToolName, setActiveToolName] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -45,7 +63,7 @@ export default function TechStack() {
       className="py-16 sm:py-20 md:py-24 lg:py-28 section-rule relative will-change-transform"
     >
       {/* Grounded section header with anchored architectural watermark */}
-      <div className="relative mb-8 sm:mb-10 z-10">
+      <div className="relative mb-8 sm:mb-12 z-10">
         {/* Monumental Watermark: "TOOLS" — Left-aligned flush with header text */}
         <div
           ref={watermarkRef}
@@ -73,174 +91,89 @@ export default function TechStack() {
             </h2>
           </div>
           <p className="max-w-xs text-xs min-[380px]:text-sm leading-relaxed text-[#B8A996]">
-            Hover on desktop or tap any tool to inspect proficiency, use cases, and daily application.
+            Hover on desktop or tap any tool to inspect proficiency and capability.
           </p>
         </div>
       </div>
 
-      {/* Interactive Tool Grid & Mobile Inspector Container (Elevated z-index so popovers render cleanly above header) */}
+      {/* Interactive Tool Grid & Mobile Inspector Container */}
       <div ref={containerRef} className={`relative ${activeToolName ? "z-30" : "z-20"}`}>
-        <div className="reveal-on-scroll reveal-delay-200 mt-8 sm:mt-10 grid grid-cols-3 gap-2 sm:grid-cols-5 lg:grid-cols-9">
-          {techStackData.map((tool, index) => (
-            <TechCard
-              key={tool.name}
-              tool={tool}
-              index={index}
-              isActive={activeToolName === tool.name}
-              onSelect={setActiveToolName}
-            />
+        {/* 3 Organized Rows Matching Reference Design */}
+        <div className="reveal-on-scroll reveal-delay-200 flex flex-col gap-6 sm:gap-8 max-w-4xl mx-auto">
+          {toolRows.map((row) => (
+            <div key={row.id} className="flex flex-col items-center">
+              <span className="text-[10px] sm:text-[10.5px] font-mono tracking-widest uppercase text-[#B8A996]/60 mb-2.5 sm:mb-3">
+                {row.label}
+              </span>
+              <div className="flex flex-wrap justify-center gap-2 sm:gap-2.5">
+                {row.tools.map((tool, index) => (
+                  <TechCard
+                    key={tool.name}
+                    tool={tool}
+                    index={index}
+                    totalInRow={row.tools.length}
+                    isActive={activeToolName === tool.name}
+                    onSelect={setActiveToolName}
+                  />
+                ))}
+              </div>
+            </div>
           ))}
         </div>
 
-        {/* Dedicated Mobile & Tablet Inspector Card (< lg) */}
+        {/* Dedicated Mobile & Tablet Inspector Card (< lg) — Restyled clean & minimal, no glow */}
         {activeTool && (
           <div
-            className="lg:hidden mt-4 popover-enter w-full"
+            className="lg:hidden mt-6 popover-enter w-full max-w-md mx-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <div
-              className="relative w-full rounded-2xl border bg-[#15121b]/98 p-4 sm:p-5 shadow-[0_24px_50px_rgba(0,0,0,0.65)] backdrop-blur-2xl transition-all duration-300"
-              style={{
-                borderColor: `${activeTool.color}55`,
-                boxShadow: `0 20px 50px rgba(0,0,0,0.65), 0 0 30px ${activeTool.color}20, inset 0 1px 0 rgba(255,255,255,0.08)`,
-              }}
-            >
-              {/* Ambient corner glow */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -right-6 -top-6 h-28 w-28 rounded-full blur-2xl opacity-60"
-                style={{ backgroundColor: activeTool.color }}
-              />
-
-              {/* Top Row: Icon, Name & Category, Level & Close Button */}
+            <div className="relative w-full rounded-2xl border border-white/[0.10] bg-[#121018]/98 p-4 shadow-[0_16px_40px_rgba(0,0,0,0.65)] backdrop-blur-2xl transition-all duration-300">
+              {/* Row 1: Icon, Name & Percentage + Close Button */}
               <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
-                    style={{ backgroundColor: activeTool.bg }}
-                  >
-                    <BrandMark type={activeTool.type} color={activeTool.color} />
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.06]">
+                    <BrandMark type={activeTool.type} color={activeTool.color} className="h-4 w-4" />
                   </div>
-                  <div className="min-w-0">
-                    <h3 className="font-display text-base font-bold tracking-tight text-[#F2E9DC] truncate">
-                      {activeTool.name}
-                    </h3>
-                    <p className="text-[11px] font-mono text-[#B8A996] truncate">
-                      {activeTool.category}
-                    </p>
-                  </div>
+                  <h3 className="font-display text-sm font-bold tracking-tight text-[#F2E9DC] truncate">
+                    {activeTool.name}
+                  </h3>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
-                  <span
-                    className="rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-medium"
-                    style={{
-                      borderColor: `${activeTool.color}35`,
-                      backgroundColor: `${activeTool.color}12`,
-                      color: activeTool.color,
-                    }}
-                  >
-                    {activeTool.level}
+                <div className="flex items-center gap-2.5 shrink-0">
+                  <span className="font-mono text-xs font-semibold text-[#F2E9DC]">
+                    {activeTool.proficiency}%
                   </span>
                   <button
                     type="button"
                     onClick={() => setActiveToolName(null)}
                     aria-label="Close inspector"
-                    className="h-7 w-7 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-[#B8A996] hover:text-[#F2E9DC] flex items-center justify-center text-xs transition-colors cursor-pointer active:scale-95"
+                    className="h-6 w-6 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-[#B8A996] hover:text-[#F2E9DC] flex items-center justify-center text-xs transition-colors cursor-pointer active:scale-95"
                   >
                     ✕
                   </button>
                 </div>
               </div>
 
-              {/* Proficiency Slider Bar */}
-              <div className="mt-4 pt-3.5 border-t border-[#F2E9DC]/[0.08]">
-                <div className="flex items-center justify-between font-mono text-[10.5px]">
-                  <span className="font-semibold tracking-wider text-[#B8A996] uppercase text-[9.5px]">
-                    Proficiency
-                  </span>
-                  <span className="font-bold" style={{ color: activeTool.color }}>
-                    {activeTool.proficiency}%
-                  </span>
-                </div>
-
-                <div className="relative mt-2 h-2.5 w-full rounded-full bg-[#0c0a10] border border-[#F2E9DC]/12 overflow-visible">
-                  <div className="absolute inset-0 flex justify-between px-1.5 items-center pointer-events-none z-0">
-                    <span className="h-1 w-px bg-[#F2E9DC]/20" />
-                    <span className="h-1.5 w-px bg-[#F2E9DC]/30" />
-                    <span className="h-1.5 w-px bg-[#F2E9DC]/30" />
-                    <span className="h-1.5 w-px bg-[#F2E9DC]/30" />
-                    <span className="h-1 w-px bg-[#F2E9DC]/20" />
-                  </div>
-
-                  <div
-                    className="h-full rounded-full transition-all duration-500 ease-out relative z-10"
-                    style={{
-                      width: `${activeTool.proficiency}%`,
-                      background: `linear-gradient(90deg, ${activeTool.color}77, ${activeTool.color})`,
-                      boxShadow: `0 0 10px ${activeTool.color}55`,
-                    }}
-                  />
-
-                  <div
-                    className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-4 w-4 rounded-full bg-[#18141f] border-2 shadow-md z-20 flex items-center justify-center transition-all duration-500"
-                    style={{
-                      left: `${activeTool.proficiency}%`,
-                      borderColor: activeTool.color,
-                      boxShadow: `0 0 10px ${activeTool.color}`,
-                    }}
-                  >
-                    <div
-                      className="h-1.5 w-1.5 rounded-full"
-                      style={{ backgroundColor: activeTool.color }}
-                    />
-                  </div>
-                </div>
-
-                <div className="mt-1 flex justify-between font-mono text-[8.5px] text-[#B8A996]/50 px-0.5">
-                  <span>Beginner</span>
-                  <span>Working</span>
-                  <span>Expert</span>
-                </div>
-              </div>
-
-              {/* Use Case Pills */}
-              <div className="mt-3.5">
-                <p className="font-mono text-[9.5px] font-semibold tracking-wider text-[#B8A996] uppercase">
-                  Primary Uses
-                </p>
-                <div className="mt-1.5 flex flex-wrap gap-1.5">
-                  {activeTool.pills.map((pill) => (
-                    <span
-                      key={pill}
-                      className="rounded-md border px-2 py-0.5 font-mono text-[10.5px] font-medium leading-tight"
-                      style={{
-                        backgroundColor: `${activeTool.color}10`,
-                        borderColor: `${activeTool.color}30`,
-                        color: "#F2E9DC",
-                      }}
-                    >
-                      {pill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Summary */}
-              <p className="mt-3.5 border-t border-[#F2E9DC]/[0.08] pt-2.5 text-xs leading-relaxed text-[#B8A996]/95">
-                {activeTool.summary}
+              {/* Row 2: Full width Category / Subtitle */}
+              <p className="mt-1.5 text-xs font-mono text-[#B8A996]/75">
+                {activeTool.category}
               </p>
 
-              {/* Bottom Quick Controls */}
-              <div className="mt-3 flex items-center justify-between text-[10.5px] font-mono text-[#B8A996]/60 border-t border-[#F2E9DC]/[0.06] pt-2">
-                <span>Tap any tool to inspect</span>
-                <button
-                  type="button"
-                  onClick={() => setActiveToolName(null)}
-                  className="text-[#E8963C] hover:underline cursor-pointer font-medium"
-                >
-                  Dismiss ✕
-                </button>
+              {/* Row 3: Minimal Restyled Hairline Proficiency Bar */}
+              <div className="mt-3 relative h-1.5 w-full rounded-full bg-white/[0.08] overflow-hidden">
+                <div
+                  className="h-full rounded-full transition-all duration-500 ease-out"
+                  style={{
+                    width: `${activeTool.proficiency}%`,
+                    backgroundColor: activeTool.color,
+                  }}
+                />
+              </div>
+
+              {/* Row 4: Clean Typographic Level (NO PILL) */}
+              <div className="mt-2 flex items-center justify-between font-mono text-[10px] text-[#B8A996]/60">
+                <span className="uppercase tracking-wider text-[9px]">Proficiency</span>
+                <span className="text-[#F2E9DC]/85 font-medium">{activeTool.level}</span>
               </div>
             </div>
           </div>

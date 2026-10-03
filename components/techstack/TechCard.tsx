@@ -6,11 +6,18 @@ import TechPopover from "./TechPopover";
 interface TechCardProps {
   tool: TechTool;
   index: number;
+  totalInRow?: number;
   isActive: boolean;
   onSelect: (name: string | null) => void;
 }
 
-export default function TechCard({ tool, index, isActive, onSelect }: TechCardProps) {
+export default function TechCard({
+  tool,
+  index,
+  totalInRow = 11,
+  isActive,
+  onSelect,
+}: TechCardProps) {
   const handleMouseEnter = () => {
     if (typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches) {
       onSelect(tool.name);
@@ -44,48 +51,34 @@ export default function TechCard({ tool, index, isActive, onSelect }: TechCardPr
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Base tool tile */}
+      {/* Sleek squircle tile matching Image 2 */}
       <button
         type="button"
         onClick={handleClick}
         onKeyDown={handleKeyDown}
-        className={`group w-full aspect-square rounded-2xl border p-2.5 sm:p-3 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E8963C] text-left cursor-pointer ${
+        className={`group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl border transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E8963C] cursor-pointer ${
           isActive
-            ? "bg-[#211d28]/95 -translate-y-1.5 shadow-[0_16px_36px_rgba(0,0,0,0.4)]"
-            : "bg-[#17141d]/45 hover:-translate-y-1.5 hover:border-[#F2E9DC]/30 hover:bg-[#211d28]/70 hover:shadow-[0_12px_28px_rgba(0,0,0,0.3)]"
+            ? "bg-[#1c1826] border-white/[0.28] -translate-y-1 shadow-[0_8px_24px_rgba(0,0,0,0.55)]"
+            : "bg-[#14121a]/80 border-[#F2E9DC]/[0.08] hover:bg-[#191624] hover:border-white/[0.20] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.45)]"
         }`}
-        style={{
-          borderColor: isActive ? tool.color : "rgba(242,233,220,0.08)",
-          boxShadow: isActive
-            ? `0 16px 36px rgba(0,0,0,0.4), 0 0 20px ${tool.color}35, inset 0 1px 0 rgba(255,255,255,.08)`
-            : `inset 0 1px 0 rgba(255,255,255,.04)`,
-        }}
         aria-expanded={isActive}
-        aria-label={`Inspect ${tool.name}`}
+        aria-label={`${tool.name} — ${tool.category}`}
+        title={`${tool.name} (${tool.level})`}
       >
-        <div
-          className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110"
-          style={{ backgroundColor: tool.bg }}
-        >
-          <BrandMark type={tool.type} color={tool.color} />
-        </div>
-        <p className="mt-3 sm:mt-4 text-[10.5px] sm:text-[11px] font-mono text-[#F2E9DC] transition-colors duration-200 group-hover:text-white font-medium truncate">
-          {tool.name}
-        </p>
-        <span
-          className={`mt-1 block h-px transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            isActive ? "w-9" : "w-4 group-hover:w-9"
-          }`}
-          style={{ backgroundColor: tool.color }}
+        <BrandMark
+          type={tool.type}
+          color={tool.color}
+          className="h-5 w-5 sm:h-6 sm:w-6 transition-transform duration-300 group-hover:scale-110"
         />
       </button>
 
-      {/* On desktop (>= lg), floating popover anchored above the card */}
+      {/* Floating minimal popover on desktop (>= lg) */}
       <div className="hidden lg:block">
         {isActive && (
           <TechPopover
             tool={tool}
             index={index}
+            totalInRow={totalInRow}
             onClose={() => onSelect(null)}
           />
         )}

@@ -126,7 +126,7 @@ export default function Navbar() {
 
           <a
             href="#contact"
-            className="hidden sm:flex btn-shimmer btn-tactile group items-center gap-1.5 text-xs font-mono font-medium text-[#F2E9DC] bg-[#211d28]/75 hover:bg-[#352D24] hover:border-[#E8963C]/50 hover:shadow-[0_4px_20px_rgba(232,150,60,0.15)] px-4 py-2 sm:px-5 rounded-full transition-all duration-300 border border-[#F2E9DC]/15 backdrop-blur-xl"
+            className="hidden sm:flex btn-shimmer btn-tactile group items-center gap-1.5 text-xs font-display font-medium text-[#F2E9DC] bg-[#211d28]/75 hover:bg-[#352D24] hover:border-[#E8963C]/50 hover:shadow-[0_4px_20px_rgba(232,150,60,0.15)] px-4 py-2 sm:px-5 rounded-full transition-all duration-300 border border-[#F2E9DC]/15 backdrop-blur-xl"
           >
             <IconDownload className="w-3.5 h-3.5 text-[#E8963C] transition-transform duration-300 group-hover:translate-y-0.5" />
             <span>CV / Contact</span>
