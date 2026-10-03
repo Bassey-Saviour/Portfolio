@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { personalData } from "@/data/personal";
 import { IconDownload, IconMail, IconGithub, IconLinkedin } from "./Icons";
 import InteractiveAsterisk from "./hero/InteractiveAsterisk";
+import { useIntro } from "./loading/IntroContext";
 
 // =============================================================================
 // BACKGROUND: Seamless Site Atmosphere & Fluted Glass Columns
@@ -123,6 +124,16 @@ function ScrambleLetter({
     }, 58); // 58ms per tick: crisp, responsive, and readable
   }, [char]);
 
+  // Trigger entrance scramble synchronized with staggered slide-up entrance
+  useEffect(() => {
+    if (hasEntered && char.trim() !== "") {
+      const timer = setTimeout(() => {
+        handleEnter();
+      }, delay);
+      return () => clearTimeout(timer);
+    }
+  }, [hasEntered, delay, handleEnter, char]);
+
   // Clean up on unmount
   useEffect(() => {
     return () => {
@@ -167,6 +178,7 @@ function ScrambleLetter({
 // MAIN HERO COMPONENT
 // =============================================================================
 export default function Hero() {
+  const { phase } = useIntro();
   const [hasEntered, setHasEntered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
@@ -179,12 +191,32 @@ export default function Hero() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Trigger entrance transition reliably on client mount
+  // Synchronize Hero entrance with Intro Loading phases:
+  // - While "loading": keep hero in hidden entrance state behind the white curtain
+  // - On "transitioning": trigger as the curtain begins lifting so the entire scramble & stagger unfolds live
+  // - On "complete": trigger immediately (e.g. returning visitor or skipped intro)
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setHasEntered(true);
-    }, 80);
+    if (phase === "loading") {
+      setHasEntered(false);
+      return;
+    }
 
+    if (phase === "transitioning") {
+      const timer = setTimeout(() => {
+        setHasEntered(true);
+      }, 160);
+      return () => clearTimeout(timer);
+    }
+
+    if (phase === "complete") {
+      const timer = setTimeout(() => {
+        setHasEntered(true);
+      }, 80);
+      return () => clearTimeout(timer);
+    }
+  }, [phase]);
+
+  useEffect(() => {
     let ticking = false;
 
     const handleScroll = () => {
@@ -238,7 +270,6 @@ export default function Hero() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => {
-      clearTimeout(timer);
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);

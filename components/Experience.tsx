@@ -6,7 +6,7 @@ import { IconArrowUpRight } from "./Icons";
 import { useSectionScale } from "@/hooks/useSectionScale";
 
 export default function Experience() {
-  const [openId, setOpenId] = useState<string | null>(experienceData[0]?.id ?? null);
+  const [openId, setOpenId] = useState<string | null>(null);
   const watermarkRef = useRef<HTMLDivElement | null>(null);
   const sectionRef = useSectionScale({ watermarkRef });
 
