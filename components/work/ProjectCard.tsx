@@ -6,103 +6,7 @@ import { WorkItem, WorkLink } from "@/data/work";
 import { IconArrowUpRight, IconGithub } from "../Icons";
 import { SiFigma, SiInstagram } from "react-icons/si";
 
-function ProjectCardMedia({
-  item,
-  index,
-  isPending,
-  onOpenShowcase,
-}: {
-  item: WorkItem;
-  index: number;
-  isPending: boolean;
-  onOpenShowcase?: (slideIndex?: number) => void;
-}) {
-  const hasShowcase = Boolean(item.showcaseItems && item.showcaseItems.length > 0);
 
-  return (
-    <div
-      onClick={() => {
-        if (hasShowcase && onOpenShowcase) {
-          onOpenShowcase(0);
-        }
-      }}
-      className={`relative aspect-16/10 w-full overflow-hidden bg-[#16131b] group/media select-none ${
-        hasShowcase ? "cursor-pointer" : ""
-      }`}
-    >
-      {/* Single Clean Hero Image with Silky Zoom on Hover */}
-      <Image
-        src={item.image}
-        alt={item.imageAlt}
-        fill
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-        className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
-      />
-
-      {/* Subtle hover wash */}
-      <div className="absolute inset-0 bg-[#1C1712]/0 group-hover:bg-[#1C1712]/15 transition-colors duration-300 pointer-events-none z-1" />
-
-      {/* Project Index: subtle, refined architectural numbering */}
-      <div className="absolute left-3.5 top-3.5 z-10 pointer-events-none flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#100f14]/70 backdrop-blur-md border border-white/[0.08] transition-colors duration-300 group-hover:border-[#E8963C]/35">
-        <span className="w-1 h-1 rounded-full bg-[#E8963C]" />
-        <span className="text-[10.5px] font-mono tracking-widest text-[#F2E9DC]/75 group-hover:text-[#F2E9DC]">
-          {index + 1 < 10 ? `0${index + 1}` : index + 1}
-        </span>
-      </div>
-
-      {/* Gallery Stack Indicator directly on image */}
-      {hasShowcase && !isPending && (
-        <div
-          className="absolute right-4 top-4 z-10 pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] text-[#F2E9DC]/85 group-hover:text-[#F2E9DC] group-hover:scale-110 drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)] group-hover:drop-shadow-[0_0_10px_rgba(232,150,60,0.55)]"
-          aria-hidden="true"
-        >
-          <svg
-            className="w-5 h-5 sm:w-[22px] sm:h-[22px] transition-transform duration-300"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            {/* Back card (fans slightly on hover) */}
-            <rect
-              x="6"
-              y="2.5"
-              width="15"
-              height="15"
-              rx="3"
-              strokeWidth="1.8"
-              className="fill-black/35 stroke-current opacity-70 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-            {/* Front card */}
-            <rect
-              x="2.5"
-              y="6"
-              width="15"
-              height="15"
-              rx="3"
-              strokeWidth="1.8"
-              className="fill-black/35 stroke-current transition-colors duration-300"
-            />
-            {/* Minimalist mountain & sun artwork cue */}
-            <circle cx="7" cy="10.5" r="1.1" fill="currentColor" stroke="none" />
-            <path
-              d="M3.5 17.5l4-4 3 3 2.5-2.5 3.5 3.5"
-              strokeWidth="1.5"
-            />
-          </svg>
-        </div>
-      )}
-
-      {/* Pending status pill if applicable */}
-      {isPending && (
-        <span className="soft-chip absolute top-3.5 right-3.5 text-[10.5px] font-mono text-[#B8A996] backdrop-blur-sm px-2.5 py-0.5 z-10 pointer-events-none">
-          Pending
-        </span>
-      )}
-    </div>
-  );
-}
 
 function ActionLink({
   link,
@@ -360,7 +264,7 @@ export default function ProjectCard({
           transformOrigin: "top center",
           willChange: "transform, opacity",
         }}
-        className="spotlight-card group relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-[#F2E9DC]/[0.08] bg-[#13111a] backdrop-blur-md p-4 min-[380px]:p-5 sm:p-7 lg:p-8 shadow-[0_-12px_44px_rgba(0,0,0,0.6)] transition-colors duration-300 hover:border-[#E8963C]/35"
+        className="spotlight-card group relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-[#F2E9DC]/[0.07] bg-[#13111a] hover:bg-[#15131e] backdrop-blur-md p-4 min-[380px]:p-5 sm:p-7 lg:p-8 shadow-[0_-12px_44px_rgba(0,0,0,0.55)] hover:shadow-[0_-16px_52px_rgba(0,0,0,0.7)] transition-all duration-500 ease-out"
       >
         <div className="grid grid-cols-1 md:grid-cols-[1fr_1.15fr] lg:grid-cols-[0.9fr_1.1fr] gap-4 sm:gap-6 lg:gap-8 items-center">
           {/* Left Column: Text & Meta */}
@@ -378,12 +282,12 @@ export default function ProjectCard({
               </div>
 
               {/* Title */}
-              <h3 className="font-display font-bold text-xl min-[380px]:text-2xl sm:text-3xl text-[#F2E9DC] tracking-tight mt-2 sm:mt-3">
+              <h3 className="font-display font-bold text-xl min-[380px]:text-2xl sm:text-3xl text-[#F2E9DC] group-hover:text-white transition-colors duration-300 tracking-tight mt-2 sm:mt-3">
                 {item.title}
               </h3>
 
               {/* Description */}
-              <p className="text-xs sm:text-sm text-[#B8A996] leading-relaxed mt-2 sm:mt-2.5 max-w-md">
+              <p className="text-xs sm:text-sm text-[#B8A996] leading-relaxed mt-2 sm:mt-2.5 max-w-md transition-colors duration-300 group-hover:text-[#C5B7A6]">
                 {item.description}
               </p>
             </div>
@@ -429,7 +333,7 @@ export default function ProjectCard({
             onClick={() => {
               if (hasShowcase) onOpenShowcase(0);
             }}
-            className={`order-1 md:order-2 relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-[#181520] border border-white/[0.06] group/media ${
+            className={`order-1 md:order-2 relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-[#181520] border border-white/[0.05] ${
               hasShowcase ? "cursor-pointer" : ""
             }`}
           >
@@ -438,15 +342,52 @@ export default function ProjectCard({
               alt={item.imageAlt}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 55vw, 650px"
-              className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/media:scale-[1.03]"
+              className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.025]"
             />
-            <div className="absolute inset-0 bg-black/0 group-hover/media:bg-black/15 transition-colors duration-300 pointer-events-none" />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500 pointer-events-none" />
 
-            {/* Gallery badge if item has showcase */}
-            {hasShowcase && (
-              <div className="absolute right-3 top-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#100f14]/80 backdrop-blur-md border border-white/[0.08] text-[10.5px] font-mono text-[#F2E9DC] transition-colors group-hover/media:border-[#E8963C]/40">
-                <span>Gallery ({item.showcaseItems?.length})</span>
-                <IconArrowUpRight className="w-3 h-3 text-[#E8963C]" />
+            {/* Gallery Stack SVG Indicator (clean floating icon directly on media) */}
+            {hasShowcase && !isPending && (
+              <div
+                className="absolute right-3.5 top-3.5 sm:right-4 sm:top-4 z-10 pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] text-[#F2E9DC]/80 group-hover:text-[#F2E9DC] group-hover:scale-110 drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]"
+                title={`Open gallery (${item.showcaseItems?.length} items)`}
+                aria-label={`Open gallery with ${item.showcaseItems?.length} items`}
+              >
+                <svg
+                  className="w-5 h-5 transition-transform duration-300"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  {/* Back card (fans slightly on hover) */}
+                  <rect
+                    x="6"
+                    y="2.5"
+                    width="15"
+                    height="15"
+                    rx="3"
+                    strokeWidth="1.8"
+                    className="fill-black/40 stroke-current opacity-70 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                  {/* Front card */}
+                  <rect
+                    x="2.5"
+                    y="6"
+                    width="15"
+                    height="15"
+                    rx="3"
+                    strokeWidth="1.8"
+                    className="fill-black/35 stroke-current transition-colors duration-300"
+                  />
+                  {/* Minimalist mountain & sun artwork cue */}
+                  <circle cx="7" cy="10.5" r="1.1" fill="currentColor" stroke="none" />
+                  <path
+                    d="M3.5 17.5l4-4 3 3 2.5-2.5 3.5 3.5"
+                    strokeWidth="1.5"
+                  />
+                </svg>
               </div>
             )}
           </div>
