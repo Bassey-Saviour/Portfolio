@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { IconDownload } from "./Icons";
+import { IconDownload, IconCommand } from "./Icons";
 import { openCommandPalette } from "./command/CommandPalette";
 
 export default function Navbar() {
@@ -25,10 +25,11 @@ export default function Navbar() {
     observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
 
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 20);
 
       const sections = ["hero", "about", "work", "experience", "contact"];
-      const scrollPosition = window.scrollY + 200;
+      const scrollPosition = scrollY + 200;
 
       for (const section of sections) {
         const el = document.getElementById(section);
@@ -43,10 +44,19 @@ export default function Navbar() {
       }
     };
 
+    // Execute immediately on mount to recognize scroll position on reload
+    handleScroll();
+    const rafId = requestAnimationFrame(handleScroll);
+    const timerId = setTimeout(handleScroll, 100);
+
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+      cancelAnimationFrame(rafId);
+      clearTimeout(timerId);
       observer.disconnect();
     };
   }, []);
@@ -107,11 +117,11 @@ export default function Navbar() {
           <button
             type="button"
             onClick={openCommandPalette}
-            className="flex items-center justify-center px-3 py-1.5 rounded-full bg-[#211d28]/70 btn-tactile btn-shimmer hover:bg-[#2a2434] border border-[#F2E9DC]/12 hover:border-[#E8963C]/40 text-[#B8A996] hover:text-[#F2E9DC] lg:text-[11px] sm:text-[13px] font-mono transition-all duration-200 cursor-pointer active:scale-95 shadow-sm"
+            className="flex items-center justify-center p-2 text-[#B8A996] hover:text-[#F2E9DC] transition-all duration-200 cursor-pointer hover:scale-110 active:scale-95"
             aria-label="Open command palette (Cmd+K)"
             title="Command Palette (Cmd+K)"
           >
-            <span>⌘K</span>
+            <IconCommand className="w-4 h-4 text-current transition-transform duration-200" />
           </button>
 
           <a
